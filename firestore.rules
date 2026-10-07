@@ -1,12 +1,12 @@
 rules_version = '2';
 
 // 推拿整復手札：Firestore 安全性規則
-// OWNER_UID 換成擁有者的 Firebase Authentication UID（與 docs/config.js 的 ownerUid 相同）
+// 擁有者 UID（與 docs/config.js 的 ownerUid 相同）；自行部署時換成你自己的 UID
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
     function me() { return request.auth.uid; }
-    function isOwner() { return signedIn() && me() == 'OWNER_UID'; }
+    function isOwner() { return signedIn() && me() == 'bEQ8JvmPHEORpIoOFEoh46V4E473'; }
     function rolesPath() { return /databases/$(database)/documents/config/roles; }
     function roles() { return get(rolesPath()).data; }
     function isAdmin() { return isOwner() || (signedIn() && exists(rolesPath()) && me() in roles().get('admins', [])); }
