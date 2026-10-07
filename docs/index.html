@@ -457,6 +457,11 @@ mark { background: var(--warn-soft); color: inherit; border-radius: 2px; padding
   function sampleNS() {
     if (sampleP) return sampleP;
     sampleP = (async () => {
+      if (C.recaptchaKey) {
+        // App Check（reCAPTCHA v3）：只在管理員使用 AI 時才載入
+        const AC = await import(B + 'firebase-app-check.js');
+        AC.initializeAppCheck(fb.app, { provider: new AC.ReCaptchaV3Provider(C.recaptchaKey), isTokenAutoRefreshEnabled: true });
+      }
       const AI = await import(B + 'firebase-ai.js');
       const ai = AI.getAI(fb.app, { backend: new AI.GoogleAIBackend() });
       const models = [].concat(C.models || ['gemini-2.5-flash']);
@@ -489,7 +494,7 @@ mark { background: var(--warn-soft); color: inherit; border-radius: 2px; padding
       const f = await boot; if (!f) return null;
       if (name === 'db') return dbNS;
       if (name === 'user') return userNS;
-      if (name === 'sample') return f.user ? sampleNS() : null;
+      if (name === 'sample') return f.user && isAdmin() ? sampleNS() : null; // AI 只開放管理員
       return null;
     },
   };
@@ -4320,9 +4325,15 @@ window.KB_ITEMS = [
       } });
       const audBtn = h('button', { type: 'button', class: 'btn sm', hidden: true, onclick: () => audIn.click() }, '錄音檔辨識');
       const aiBtn = h('button', { type: 'button', class: 'btn sm', onclick: async () => { const t = (n.body || '').trim(); if (t.length < 10) { say('先在「內容」輸入或用語音說一段文字，再按 AI 整理。'); return; } aiBtn.disabled = true; const o = await AI.run('text', (n.title ? n.title + '\n' : '') + t, say); aiBtn.disabled = false; if (o) fill(o); } }, 'AI 整理文字');
+      if (!pub) {
+        // AI 輔助（照片、錄音、AI 整理）只開放管理員；會員用文字或語音輸入
+        D.ap(h('div', { class: 'ai-bar' }, h('span', { class: 'small muted' }, '快速輸入：'), voiceBtn), status,
+          h('p', { class: 'small muted', style: { margin: '2px 0 0' } }, '照片、錄音檔辨識與 AI 整理僅限管理員使用；你可以直接輸入或用語音輸入，管理員審核時會再整理。'));
+      } else {
       D.ap(h('div', { class: 'ai-bar' }, h('span', { class: 'small muted' }, '快速輸入：'), imgBtn, audBtn, voiceBtn, aiBtn, fileIn, audIn), status);
       D.ap(h('p', { class: 'small muted', style: { margin: '2px 0 0' } }, FB ? '照片、錄音檔辨識與 AI 整理使用 Gemini（Firebase 免費額度，全站共用）。錄音檔建議 10 分鐘內。' : '照片辨識與 AI 整理會用你自己的 Claude 額度。錄音檔請傳給 Claude 在對話中轉成逐字稿（網頁內無法直接辨識錄音檔）。'));
       Auth.sampler().then((s) => { if (!s) { imgBtn.disabled = true; aiBtn.disabled = true; imgBtn.title = aiBtn.title = FB ? '需要登入才能使用 AI' : '需要登入 claude.ai 才能使用 Claude'; } else if (Auth._lim && Auth._lim.audio) { audBtn.hidden = false; } else if (!Auth._lim || !Auth._lim.images) { imgBtn.disabled = true; imgBtn.title = '這個檢視無法傳送圖片'; } });
+      }
       // ---- 表單 ----
       const f = h('form', { class: 'form', onsubmit: async (e) => { e.preventDefault(); await this.saveForm(n); } });
       const inp = (k, lab, attrs = {}) => h('label', null, lab, h('input', Object.assign({ id: 'nf-' + k, value: n[k] || '', oninput: (e) => (n[k] = e.target.value) }, attrs)));

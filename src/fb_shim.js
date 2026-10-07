@@ -81,6 +81,11 @@
   function sampleNS() {
     if (sampleP) return sampleP;
     sampleP = (async () => {
+      if (C.recaptchaKey) {
+        // App Check（reCAPTCHA v3）：只在管理員使用 AI 時才載入
+        const AC = await import(B + 'firebase-app-check.js');
+        AC.initializeAppCheck(fb.app, { provider: new AC.ReCaptchaV3Provider(C.recaptchaKey), isTokenAutoRefreshEnabled: true });
+      }
       const AI = await import(B + 'firebase-ai.js');
       const ai = AI.getAI(fb.app, { backend: new AI.GoogleAIBackend() });
       const models = [].concat(C.models || ['gemini-2.5-flash']);
@@ -113,7 +118,7 @@
       const f = await boot; if (!f) return null;
       if (name === 'db') return dbNS;
       if (name === 'user') return userNS;
-      if (name === 'sample') return f.user ? sampleNS() : null;
+      if (name === 'sample') return f.user && isAdmin() ? sampleNS() : null; // AI 只開放管理員
       return null;
     },
   };
