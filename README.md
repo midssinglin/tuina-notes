@@ -23,8 +23,8 @@
 | 角色 | 可以做的事 |
 |---|---|
 | 未登入 | 評估、連鎖、模擬、3D、瀏覽知識庫 |
-| 會員 | ＋ 投稿知識條目（需審核）、自己的個案紀錄 |
-| 管理員 | ＋ 直接發佈／修改條目、審核投稿、會員後台、查看所有會員的個案 |
+| 會員 | ＋ 投稿知識條目（文字／語音輸入，需審核）、自己的個案紀錄 |
+| 管理員 | ＋ 直接發佈／修改條目、審核投稿、AI 照片／錄音辨識與整理、會員後台、查看所有會員的個案 |
 | 擁有者 | 同管理員，固定為網站建立者 |
 | 已停用 | 只能瀏覽 |
 
@@ -52,7 +52,8 @@ config/roles               { admins: [uid], blocked: [uid] }
 2. 建立 Cloud Firestore（正式版模式）。
 3. 註冊網頁應用程式，把設定填進 `docs/config.js`。
 4. 第一次用自己的 Google 帳號登入網站後，到 Authentication → 使用者 複製 UID，填入 `docs/config.js` 的 `ownerUid` 與 `firestore.rules` 的 `OWNER_UID`，再把規則貼到 Firestore → 規則 → 發佈。
-5. （選用）AI Logic → 開始使用 → Gemini Developer API，開啟照片／錄音辨識。
+5. （選用）AI Logic → 開始使用 → Gemini Developer API，開啟照片／錄音辨識；AI Logic 設定裡開啟「僅限通過驗證的使用者」。
+   2026-11-02 起 Firebase 要求 AI Logic 強制使用 App Check：到 reCAPTCHA 建立 v3 金鑰（網域填 `你的帳號.github.io`），在 App Check 註冊網頁應用程式並貼上密鑰，再把網站金鑰填進 `docs/config.js` 的 `recaptchaKey`。
 6. GitHub repo → Settings → Pages → Branch `main`、資料夾 `/docs`。
 
 ### 從原始碼建置

@@ -12,5 +12,7 @@ window.TN_FB = {
   ownerUid: 'bEQ8JvmPHEORpIoOFEoh46V4E473',
   // Gemini 模型（依序嘗試，前一個不存在就換下一個）
   models: ['gemini-3.8-flash', 'gemini-2.5-flash'],
+  // App Check（reCAPTCHA v3 網站金鑰）；2026-11-02 起 AI 功能必填
+  recaptchaKey: '',
   sdk: '12.19.0',
 };
