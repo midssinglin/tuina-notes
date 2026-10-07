@@ -1,0 +1,44 @@
+rules_version = '2';
+
+// 推拿整復手札：Firestore 安全性規則
+// OWNER_UID 換成擁有者的 Firebase Authentication UID（與 docs/config.js 的 ownerUid 相同）
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+    function isOwner() { return signedIn() && me() == 'OWNER_UID'; }
+    function rolesPath() { return /databases/$(database)/documents/config/roles; }
+    function roles() { return get(rolesPath()).data; }
+    function isAdmin() { return isOwner() || (signedIn() && exists(rolesPath()) && me() in roles().get('admins', [])); }
+    function isBlocked() { return signedIn() && !isOwner() && exists(rolesPath()) && me() in roles().get('blocked', []); }
+
+    // 已發佈的知識條目：所有人可讀，管理員可寫
+    match /notes/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    // 投稿：一人一份；本人與管理員可讀寫
+    match /kbsub/{uid} {
+      allow read: if signedIn() && (me() == uid || isAdmin());
+      allow write: if signedIn() && ((me() == uid && !isBlocked()) || isAdmin());
+    }
+    // 個案：本人可讀寫，管理員可讀
+    match /data/users/{uid}/{doc} {
+      allow read: if signedIn() && (me() == uid || isAdmin());
+      allow write: if signedIn() && me() == uid && !isBlocked();
+    }
+    // 會員資料（登入時間等）：本人寫自己的，管理員可讀全部
+    match /profiles/{uid} {
+      allow read: if signedIn() && (me() == uid || isAdmin());
+      allow create, update: if signedIn() && me() == uid;
+      allow delete: if isOwner();
+    }
+    // 角色表：公開可讀（只有 UID），管理員可改
+    match /config/roles {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.data.admins is list
+        && request.resource.data.blocked is list;
+    }
+  }
+}
