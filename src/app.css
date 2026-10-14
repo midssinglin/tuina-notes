@@ -343,3 +343,22 @@ mark { background: var(--warn-soft); color: inherit; border-radius: 2px; padding
 .seg button { flex: 1; border: 0; background: var(--surface); padding: 7px 8px; font-size: 13.5px; color: var(--ink2); }
 .seg button.on { background: var(--jade-soft); color: var(--ink); font-weight: 700; }
 .seg button + button { border-left: 1px solid var(--line); }
+
+/* ---------- 知識庫示意圖 ---------- */
+.kb-fig { margin: 10px 0 14px; padding: 10px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+.kb-fig svg { display: block; width: 100%; height: auto; max-height: 420px; }
+.kb-fig figcaption { font-size: 12.5px; color: var(--ink3); margin-top: 6px; }
+.kb-fig .f-ink { stroke: var(--ink); fill: none; }
+.kb-fig .f-ink2 { stroke: var(--ink2); fill: none; }
+.kb-fig .f-line { stroke: var(--line); fill: none; }
+.kb-fig .f-jade { stroke: var(--jade); fill: none; }
+.kb-fig .f-jadef { fill: var(--jade-soft); stroke: var(--jade); }
+.kb-fig .f-tight { stroke: var(--tight); fill: none; }
+.kb-fig .f-tightf { fill: var(--tight-soft); stroke: var(--tight); }
+.kb-fig .f-weak { stroke: var(--weak); fill: none; }
+.kb-fig .f-weakf { fill: var(--weak-soft); stroke: var(--weak); }
+.kb-fig .f-bone { fill: var(--surface2); stroke: var(--ink3); }
+.kb-fig text { fill: var(--ink2); font-size: 12px; font-family: var(--f-body); }
+.kb-fig text.t { fill: var(--ink); font-weight: 700; }
+.kb-fig text.r { fill: var(--tight); } .kb-fig text.b { fill: var(--weak); } .kb-fig text.j { fill: var(--jade); }
+.kb-conflict { border-left: 4px solid var(--warn); background: var(--warn-soft); padding: 8px 12px; border-radius: 6px; margin: 8px 0; font-size: 14px; }

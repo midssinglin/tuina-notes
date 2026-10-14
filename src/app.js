@@ -1033,7 +1033,7 @@
       this.renderFilters(); this.renderList(); this.renderDetail();
     },
     sources() {
-      const s = ['全部', '課堂', '補充', '新增條目', '逐字稿'];
+      const s = ['全部', '課堂', '補充', '參考書', '新增條目', '逐字稿'];
       if (Auth.isAdmin) s.push('審核佇列'); else if (Auth.canSubmit() || Object.keys(Subs.mine).length) s.push('我的投稿');
       return s;
     },
@@ -1058,6 +1058,7 @@
       if (this.src === '新增條目' && !it.mine) return false;
       if (this.src === '課堂' && !(String(it.src).includes('課堂') || String(it.src).includes('筆記'))) return false;
       if (this.src === '補充' && !String(it.src).includes('補充')) return false;
+      if (this.src === '參考書' && !String(it.src).startsWith('參考書')) return false;
       if (!this.q) return it.type === 'kb' || it.type === 'note' || this.cat === '經筋';
       const terms = this.q.split(/\s+/).filter(Boolean);
       const hay = (it.title + ' ' + it.body + ' ' + (it.tags || []).join(' ') + ' ' + (it.symptoms || []).join(' ') + ' ' + (it.muscles || []).map((m) => (MU[m] || {}).name || '').join(' ') + ' ' + it.cat).toLowerCase();
@@ -1101,7 +1102,7 @@
       }
       if (!items.length) { L.ap(h('div', { class: 'empty' }, '沒有找到「' + this.q + '」。試試別的關鍵字，或按「' + this.addBtn.textContent.replace('＋ ', '') + '」把它記下來。')); return; }
       items.slice(0, 120).forEach((it) => {
-        const preview = it.body.replace(/\*\*|\[\[.*?\]\]|#+ /g, '').replace(/\n/g, ' ').slice(0, 120);
+        const preview = it.body.replace(/\*\*|\[\[.*?\]\]|#+ |^!! /gm, '').replace(/\|[\s|:-]*\|/g, ' ').replace(/\|/g, ' ').replace(/\n/g, ' ').replace(/\s{2,}/g, ' ').slice(0, 120);
         const b = h('button', { class: 'kb-item' + (this.selId === it.id ? ' on' : ''), onclick: () => this.pick(it.id, b) },
           h('h4', { html: this.hl(it.title) }), h('p', { html: this.hl(preview) }),
           h('div', { class: 'kb-meta' }, h('span', { class: 'badge ' + (it.mine ? 'y' : it.type === 'kb' ? 'j' : '') }, it.mine ? (it.replaces ? '管理員修訂' : '新增條目') : it.cat), h('span', { class: 'badge' }, it.src)));
@@ -1115,9 +1116,12 @@
         const name = k === 'm' ? (MU[id] || {}).name : k === 'p' ? (PT[id] || {}).name : k === 's' ? (SIN[id] || {}).name : (NODE[id] || {}).name; return name ? `<button class="link ref" data-k="${k}" data-id="${id}">${esc(name)}</button>` : m0; });
       const flushT = () => { if (!tbl.length) return; html += '<div class="tblwrap"><table>' + tbl.map((r, i) => '<tr>' + r.map((c) => (i === 0 ? '<th>' : '<td>') + inline(c.trim()) + (i === 0 ? '</th>' : '</td>')).join('') + '</tr>').join('') + '</table></div>'; tbl = []; };
       lines.forEach((ln) => {
+        const fm = /^\s*\[\[fig:([\w-]+)\]\]\s*$/.exec(ln);
+        if (fm) { flushT(); if (inList) { html += '</ul>'; inList = false; } const F = (window.KB_FIGS || {})[fm[1]]; if (F) html += '<figure class="kb-fig">' + F.svg + (F.cap ? '<figcaption>' + esc(F.cap) + '</figcaption>' : '') + '</figure>'; return; }
         if (/^\|.*\|$/.test(ln.trim())) { if (inList) { html += '</ul>'; inList = false; } const cells = ln.trim().slice(1, -1).split('|'); if (!cells.every((c) => /^\s*-+\s*$/.test(c))) tbl.push(cells); return; } else flushT();
         if (/^\s*[-•]\s+/.test(ln)) { if (!inList) { html += '<ul>'; inList = true; } html += '<li>' + inline(ln.replace(/^\s*[-•]\s+/, '')) + '</li>'; return; }
         if (inList) { html += '</ul>'; inList = false; }
+        if (/^!!\s/.test(ln)) { if (inList) { html += '</ul>'; inList = false; } html += '<div class="kb-conflict">' + inline(ln.replace(/^!!\s/, '')) + '</div>'; return; }
         if (/^###?\s/.test(ln)) { html += '<p><strong>' + inline(ln.replace(/^###?\s/, '')) + '</strong></p>'; return; }
         if (ln.trim()) html += '<p>' + inline(ln) + '</p>';
       });
@@ -1135,9 +1139,9 @@
       if (sp === 'sub') { SubUI.renderDetail(D, this.selId); return; }
       const it = this.all().find((x) => x.id === this.selId);
       if (!it) {
-        D.ap(h('div', { class: 'eyebrow' }, '知識庫'), h('h3', null, '從左邊選一則來看'), h('p', { class: 'small' }, '收錄課堂筆記（經筋、薦椎、骨盆三角度、頭痛分類）與 12 段錄音整理出的重點，另以肌動學、整脊與經穴的通識補充（標示「補充」）。「逐字稿」可以依堂次、部位、知識點瀏覽 12 段錄音的原始逐字稿。'),
+        D.ap(h('div', { class: 'eyebrow' }, '知識庫'), h('h3', null, '從左邊選一則來看'), h('p', { class: 'small' }, '收錄課堂筆記（經筋、薦椎、骨盆三角度、頭痛分類）與 12 段錄音整理出的重點，另以肌動學、整脊與經穴的通識補充（標示「補充」）。「逐字稿」可以依堂次、部位、知識點瀏覽 12 段錄音的原始逐字稿；「參考書」收錄老師推薦書籍的重點整理（自己的話＋頁碼）與和課堂理論的比對。'),
           h('p', { class: 'small' }, '搜尋時也會找到肌肉、穴位與經筋資料；沒有搜尋時只列知識條目。'),
-          h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '快速入口'), h('div', { class: 'chips', style: { marginTop: '6px' } }, ['薦椎', '三個角度', '被拉長', '膝', '經筋', '頭痛', '梨狀肌', '手法'].map((t) => h('button', { class: 'chip', onclick: () => this.openSearch(t) }, t))),
+          h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '快速入口'), h('div', { class: 'chips', style: { marginTop: '6px' } }, ['薦椎', '三個角度', '被拉長', '膝', '經筋', '頭痛', '梨狀肌', '手法'].map((t) => h('button', { class: 'chip', onclick: () => this.openSearch(t) }, t)), (window.KB_BOOKS || []).length ? h('button', { class: 'chip on', onclick: () => this.open('b-overview') }, '參考書與課程比對') : null),
           h('div', { class: 'eyebrow', style: { marginTop: '12px' } }, '新增知識的方式'),
           h('p', { class: 'small' }, Auth.canPublish() ? '你是管理員：新增或修改的條目會直接發佈；也可以在「審核佇列」核准別人的投稿。' : Auth.canSubmit() ? '你可以投稿：用文字、語音輸入或拍照讓 Claude 辨識，送出後由管理員審核。' : '登入並取得投稿權限後，可以用文字、語音或照片投稿新知識（需管理員審核）。'));
         return;

@@ -64,6 +64,16 @@ python3 build.py      # 產生 dist/（claude.ai 版）與 gh/docs/（GitHub Pag
 
 3D 模型處理（`tools/anat/`）與逐字稿處理（`tools/tx/`）的腳本一併附上，需要原始資料才能重跑。
 
+## 參考書補充
+
+知識庫「參考書」來源收錄老師推薦書籍的重點整理，以及與課堂理論的逐項比對（衝突／程度差異／用詞不同／補充，標嚴重度與頁碼）：
+
+- 黃國松《經筋手療法圖解》（人民衛生出版社，2007）
+- 黃國松《四肢手療法（圖解）》（人民衛生出版社，2009）
+- 坂元大海、原島廣至《經穴大全》（WHO／WPRO 標準定位）
+
+條目都是**用自己的話整理並標註頁碼**，示意圖為依書中內容**重新繪製**（`src/data_figs.js`），不含原書文字或掃描圖。整理流程與中間資料在 `tools/books/`（掃描書 OCR → 逐本整理 → `gen_books.js` 產生 `src/data_books.js`）。穴位資料已依《經穴大全》（WHO 標準）修正 15 個穴的定位描述。
+
 ## 內容與授權說明
 
 - 3D 骨骼與肌肉模型：**BodyParts3D**，© The Database Center for Life Science，授權 [CC BY-SA 2.1 JP](https://creativecommons.org/licenses/by-sa/2.1/jp/)。本專案的簡化模型（`docs/anatomy.*`）依同一授權釋出。
