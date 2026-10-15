@@ -10,6 +10,10 @@ const BOOKS = [
   { slug: 'jingjin', title: '經筋手療法圖解' },
   { slug: 'sizhi', title: '四肢手療法（圖解）' },
   { slug: 'jingxue', title: '經穴大全' },
+  { slug: 'jizhui', title: '脊椎手療法圖解' },
+  { slug: 'zhengji', title: '整脊醫學' },
+  { slug: 'zhengfu', title: '整復醫學' },
+  { slug: 'kines', title: '基礎肌動學（第三版）' },
 ].filter((b) => fs.existsSync(require('path').join(__dirname, 'out', b.slug + '.json')));
 const refs = (s) => String(s || '')
   .replace(/\bk-[a-z0-9-]+/g, (id) => (KT[id] ? '「' + KT[id] + '」' : id))
@@ -50,6 +54,21 @@ hi.forEach((c) => (ob += `- **${c.topic}**（《${c.btitle}》${c.pages}）：${
 ob += '\n### 嚴重度「中」\n';
 mid.forEach((c) => (ob += `- **${c.topic}**（《${c.btitle}》${c.pages}，${c.type}）\n`));
 ob += '\n各書的完整比對見：' + BOOKS.map((b) => '「《' + b.title + '》與課程的比對」').join('、') + '。';
+// 課堂錄音整理（例如 class1012.json）：條目屬於課堂資料，另附「與既有資料的比對」
+const OUT = require('path').join(__dirname, 'out');
+fs.readdirSync(OUT).filter((f) => /^class\d+\.json$/.test(f)).sort().forEach((f) => {
+  const d = JSON.parse(fs.readFileSync(require('path').join(OUT, f), 'utf8'));
+  const lec = d.lecture;
+  d.entries.forEach((e) => items.push({ id: e.id, cat: e.cat, src: '課堂 ' + lec + (e.time ? '（錄音 ' + e.time + '）' : ''), title: e.title, body: e.body, tags: e.tags || [], muscles: e.muscles || [], points: e.points || [], regions: e.regions || [] }));
+  let rb = `${d.overview || ''}\n\n本堂錄音（${lec}）由語音辨識轉成逐字稿，再整理成 ${d.entries.length} 則條目；辨識不清處已標「待確認」，建議對照自己的筆記。\n`;
+  if ((d.updates || []).length) { rb += '\n### 對既有條目的補充\n'; d.updates.forEach((u) => (rb += `- ${refs(u.existing)}：${refs(u.what)}${u.time ? '（' + u.time + '）' : ''}\n`)); }
+  if ((d.conflicts || []).length) {
+    rb += '\n### 與既有資料不一致之處\n';
+    d.conflicts.slice().sort((a, c) => (SEV[a.severity] ?? 3) - (SEV[c.severity] ?? 3)).forEach((c) => (rb += `- **【${c.severity}】${c.topic}**：既有資料 ${refs(c.course)}；本堂 ${c.lecture}${c.time ? '（' + c.time + '）' : ''}。${refs(c.note)}\n`));
+  }
+  if ((d.cases || []).length) { rb += '\n### 課堂討論的個案（已去識別化）\n'; d.cases.forEach((c) => (rb += `- ${c}\n`)); }
+  items.push({ id: 'k-' + lec + '-review', cat: '原則', src: '課堂 ' + lec, title: '課堂 ' + lec + ' 重點與比對', body: rb, tags: ['課堂', lec, '比對'] });
+});
 items.unshift({ id: 'b-overview', cat: '原則', src: '參考書比對', title: '參考書與課程理論：衝突總覽', body: ob, tags: ['參考書', '衝突', '比對', '總覽'] });
 const out = '/* 參考書補充條目與比對（由 tools/books/gen_books.js 產生；內容為自行整理之摘要並標註頁碼） */\n'
   + 'window.KB_BOOKS = ' + JSON.stringify(books) + ';\n'
