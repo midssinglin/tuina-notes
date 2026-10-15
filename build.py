@@ -5,7 +5,7 @@ import os, sys
 d = os.path.dirname(os.path.abspath(__file__))
 src = lambda f: open(os.path.join(d, 'src', f), encoding='utf-8').read()
 html = src('index.html'); css = src('app.css')
-js = '\n;\n'.join(src(f) for f in ['data_motions.js', 'body3d.js', 'data_muscles.js', 'data_meridians.js', 'data_rules.js', 'data_kb.js', 'data_figs.js', 'data_books.js', 'app.js']).replace('</script', '<\\/script')
+js = '\n;\n'.join(src(f) for f in ['data_motions.js', 'body3d.js', 'data_muscles.js', 'data_meridians.js', 'data_rules.js', 'data_kb.js', 'data_figs.js', 'data_figs_b2a.js', 'data_figs_b2b.js', 'data_books.js', 'app.js']).replace('</script', '<\\/script')
 html = html.replace('/*CSS*/', css).replace('/*JS*/', js)
 if '--claude' in sys.argv:
     os.makedirs(os.path.join(d, 'dist'), exist_ok=True)
