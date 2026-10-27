@@ -445,6 +445,13 @@ details.det .prose p { margin: 4px 0; }
 .kb-meta { flex-wrap: wrap; min-width: 0; }
 .kb-meta .badge { white-space: normal; overflow-wrap: anywhere; }
 .pat .badge, .rec-item .badge, .care .badge { white-space: normal; overflow-wrap: anywhere; }
+
+/* ---------- AI 問答 ---------- */
+.ask-form textarea { width: 100%; margin-top: 10px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--surface); resize: vertical; min-height: 96px; }
+.ask-modes { max-width: 420px; }
+.ask-out { margin-top: 14px; }
+.ask-card .ask-q { font-weight: 600; margin: 6px 0 8px; white-space: pre-wrap; }
+.ask-refs { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; align-items: flex-start; }
 </style>
 </head>
 <body>
@@ -455,6 +462,7 @@ details.det .prose p { margin: 4px 0; }
 </div></header>
 <main>
   <section class="panel" id="p-assess"></section>
+  <section class="panel" id="p-ask" hidden></section>
   <section class="panel" id="p-chain" hidden></section>
   <section class="panel" id="p-sim" hidden></section>
   <section class="panel" id="p-v3d" hidden></section>
@@ -586,7 +594,8 @@ details.det .prose p { margin: 4px 0; }
       const f = await boot; if (!f) return null;
       if (name === 'db') return dbNS;
       if (name === 'user') return userNS;
-      if (name === 'sample') return f.user && isAdmin() ? sampleNS() : null; // AI 只開放管理員
+      // AI：管理員一律可用；一般會員依後台設定（config/roles.ai：'member' 開放 AI 問答，'admin' 只限管理員）。AI 新增條目在介面上仍只限管理員。
+      if (name === 'sample') { const blocked = !!(uid() && (fb.roles.blocked || []).includes(uid())); return f.user && !blocked && (isAdmin() || (fb.roles.ai || 'member') === 'member') ? sampleNS() : null; }
       return null;
     },
   };
@@ -602,7 +611,12 @@ details.det .prose p { margin: 4px 0; }
     async setRole(u, role) {
       const f = await boot; const r = f.roles; const rm = (k) => (r[k] = (r[k] || []).filter((x) => x !== u));
       rm('admins'); rm('blocked'); if (role === 'admin') r.admins.push(u); if (role === 'blocked') r.blocked.push(u);
-      await f.F.setDoc(f.F.doc(f.db, 'config/roles'), { admins: r.admins, blocked: r.blocked, updated: Date.now(), by: uid() });
+      await f.F.setDoc(f.F.doc(f.db, 'config/roles'), { admins: r.admins, blocked: r.blocked, ai: r.ai || 'member', updated: Date.now(), by: uid() });
+    },
+    aiAccess() { return (fb && fb.roles.ai) || 'member'; },
+    async setAiAccess(v) {
+      const f = await boot; const r = f.roles; r.ai = v === 'admin' ? 'admin' : 'member';
+      await f.F.setDoc(f.F.doc(f.db, 'config/roles'), { admins: r.admins || [], blocked: r.blocked || [], ai: r.ai, updated: Date.now(), by: uid() });
     },
   };
 })();
@@ -4396,7 +4410,7 @@ window.KB_ITEMS.push(...[{"id":"u-overview","cat":"原則","src":"整合說明",
   const sideBadge = (s, cls) => h('span', { class: 'side-b ' + (cls || ''), title: s === 'B' ? '雙側' : s === 'L' ? '左側' : '右側' }, sideTxt(s));
 
   // ---------- 分頁 ----------
-  const TABS = [['assess', '評估'], ['chain', '連鎖'], ['sim', '模擬'], ['v3d', '3D 圖譜'], ['kb', '知識庫'], ['cases', '個案'], ['admin', '後台']];
+  const TABS = [['assess', '評估'], ['ask', 'AI 問答'], ['chain', '連鎖'], ['sim', '模擬'], ['v3d', '3D 圖譜'], ['kb', '知識庫'], ['cases', '個案'], ['admin', '後台']];
   let curTab = 'assess';
   function showTab(id) {
     curTab = id;
@@ -4926,7 +4940,8 @@ window.KB_ITEMS.push(...[{"id":"u-overview","cat":"原則","src":"整合說明",
       R.ap(h('div', { class: 'row' },
         h('button', { class: 'btn pri', onclick: () => { V3.showTension(this.tensionMap(res)); } }, '在 3D 顯示緊／弱肌肉'),
         h('button', { class: 'btn', onclick: () => Chain.highlight(res.regions) }, '看連帶影響圖'),
-        h('button', { class: 'btn', onclick: () => Cases.fromAssess(), title: '把這次評估結果存成個案的就診紀錄' }, '存到個案紀錄')));
+        h('button', { class: 'btn', onclick: () => Cases.fromAssess(), title: '把這次評估結果存成個案的就診紀錄' }, '存到個案紀錄'),
+        h('button', { class: 'btn', onclick: () => Ask.fromAssess(), title: '把目前的評估結果交給 AI 整理成評估與處理建議' }, '問 AI 這個評估')));
       const edges = window.CHAIN_EDGES.filter((e) => res.regions.includes(e.a));
       R.ap(h('div', { class: 'card pad' }, h('div', { class: 'res-h' }, h('h3', null, '可能連帶影響的部位')),
         h('div', { class: 'chips', style: { marginBottom: '8px' } }, res.regions.map((r) => NODE[r] ? h('button', { class: 'chip', onclick: () => Chain.highlight([r], r) }, NODE[r].name) : null)),
@@ -5513,6 +5528,176 @@ window.KB_ITEMS.push(...[{"id":"u-overview","cat":"原則","src":"整合說明",
     },
   };
   const cmpBtn = (kind, id) => h('button', { class: 'btn sm' + (Compare.has(kind, id) ? ' on' : ''), title: '加入或移出多選比較', onclick: (e) => { Compare.toggle(kind, id); e.currentTarget.classList.toggle('on', Compare.has(kind, id)); e.currentTarget.textContent = Compare.has(kind, id) ? '✓ 已加入比較' : '＋ 比較'; } }, Compare.has(kind, id) ? '✓ 已加入比較' : '＋ 比較');
+
+  // =====================================================================
+  //  AI 問答：客人症狀評估＋知識點搜尋，整合答覆（先本機檢索，再交給 AI 整合）
+  // =====================================================================
+  const ASK_VOCAB = ['下背痛', '下背', '腰痛', '頸痛', '肩痛', '膝痛', '腳踝', '臀部', '大腿', '小腿', '手臂', '手指', '腳趾', '痛', '麻', '緊', '痠', '腫', '熱', '無力', '僵硬', '抽筋', '卡住', '放射', '頭痛', '頭暈', '落枕', '閃腰', '坐骨神經痛', '手麻', '腳麻', '五十肩', '網球肘', '高爾夫球肘', '長短腳', '高低肩', '骨盆', '側彎', '駝背', '圓肩', '前傾', '後傾', '膝', '踝', '腰', '肩', '頸', '背', '臀', '鼠蹊', '足跟', '足底', '手腕', '手肘', '肩胛', '薦椎', '尾椎', '肋', '胸悶', '呼吸', '扭傷', '久坐', '久站', '彎腰', '後仰', '轉頭', '舉手', '上樓梯', '蹲', '走路', '晚上', '早上', '孕', '產後', '經痛', '失眠', '眼睛'];
+  const Ask = {
+    hist: store.get('ask_hist', []), busy: false, withAssess: true, mode: 'auto',
+    build(root) {
+      this.root = root;
+      root.ap(h('div', { class: 'sec-h' }, h('h2', null, 'AI 問答'), h('span', { class: 'muted small' }, '描述客人的症狀或問一個知識點；先從本站資料找出相關內容，再由 AI 整合成答覆')));
+      root.ap(h('p', { class: 'lead' }, 'AI 只根據本站整理的課堂筆記、錄音、參考書與評估規則回答，並標出引用的條目；課堂筆記是標準。答覆是學習與評估的輔助，不是醫療診斷——有警訊時請轉介。'));
+      this.form = h('div', { class: 'card pad ask-form' }); this.out = h('div', { class: 'stack ask-out' });
+      root.ap(this.form, this.out);
+      this.renderForm(); this.renderOut();
+    },
+    renderForm() {
+      const F = clear(this.form);
+      const ta = h('textarea', { id: 'ask-q', rows: 4, placeholder: '例如：客人 45 歲久坐上班族，右下背痛三個月，早上起床僵、久坐更痛，偶爾右臀到大腿後側麻，彎腰比後仰痛。\n或：梨狀肌和臀中肌緊的差別？第三角度 EX 怎麼摸？', oninput: (e) => (this.draft = e.target.value) }, this.draft || '');
+      const say = (t) => { this.status && (this.status.textContent = t); };
+      const vb = h('button', { type: 'button', class: 'btn sm' }, '語音輸入'); vb.addEventListener('click', () => Voice.toggle(ta, vb, say));
+      const nSel = Object.keys(Assess.sel || {}).length;
+      const modes = [['auto', '自動判斷'], ['diag', '客人症狀評估'], ['kb', '知識點查詢']];
+      this.status = h('div', { class: 'small muted', role: 'status', 'aria-live': 'polite' });
+      F.ap(h('div', { class: 'seg ask-modes', role: 'radiogroup' }, modes.map(([k, n]) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(this.mode === k), class: this.mode === k ? 'on' : '', onclick: () => { this.mode = k; this.renderForm(); } }, n))),
+        ta,
+        h('div', { class: 'row', style: { marginTop: '8px' } }, vb,
+          nSel ? h('label', { class: 'small row', style: { gap: '4px' } }, h('input', { type: 'checkbox', checked: this.withAssess, onchange: (e) => (this.withAssess = e.target.checked) }), '帶入目前評估結果（' + nSel + ' 項）') : null,
+          h('span', { class: 'sp' }),
+          h('button', { class: 'btn pri', disabled: this.busy, onclick: () => this.ask(ta.value) }, this.busy ? '整理中…' : '送出')),
+        this.status,
+        h('div', { class: 'chips', style: { marginTop: '8px' } }, ['膝內側痛，蹲下更痛', '早上落枕，頭轉不過去', '拇指和食指麻，晚上更明顯', '骨盆前傾要放鬆哪些肌肉？', '足太陽經筋的結在哪裡？', '坐骨神經痛和梨狀肌症候群怎麼分？'].map((t) => h('button', { class: 'chip sm', onclick: () => { this.draft = t; this.renderForm(); } }, t))));
+      Auth.sampler().then((s) => { if (!s) say(FB ? (Auth.role() === 'guest' ? '登入後即可使用 AI 整合答覆；未登入時仍會列出本站相關的知識條目。' : 'AI 問答目前只開放給管理員；仍會列出本站相關的知識條目。') : '這個檢視無法使用 Claude（未登入或未開放）；仍會列出本站相關的知識條目。'); });
+    },
+    // ---- 本機檢索 ----
+    terms() {
+      if (this._terms) return this._terms;
+      const T = new Map(); const put = (t, o) => { t = String(t || '').trim(); if (t.length >= 2 && !T.has(t)) T.set(t, o); };
+      window.MUSCLES.forEach((m) => { put(m.name, { k: 'm', id: m.id }); m.name.replace(/（.*?）/g, '').split(/[／、]/).forEach((x) => put(x, { k: 'm', id: m.id })); (m.symptoms || []).forEach((s) => put(s, { k: 'sym' })); });
+      window.POINTS.forEach((p) => put(p.name, { k: 'p', id: p.id }));
+      window.SINEWS.forEach((s) => put(s.name, { k: 's', id: s.id }));
+      window.MERIDIANS.forEach((m) => put(m.name, { k: 'mer', id: m.id }));
+      Object.entries(NV()).forEach(([id, n]) => { put(n.name, { k: 'n', id }); put(String(n.name).replace(/（.*?）/g, ''), { k: 'n', id }); });
+      Object.entries(DET.bn || {}).forEach(([id, b]) => put(String(b.name).replace(/（.*?）/g, ''), { k: 'b', id }));
+      window.CHAIN_NODES.forEach((n) => String(n.name).split(/[／（）]/).forEach((x) => put(x, { k: 'r', id: n.id })));
+      window.KB_ITEMS.forEach((k) => (k.tags || []).forEach((t) => put(t, { k: 'tag' })));
+      ASK_VOCAB.forEach((t) => T.set(t, T.get(t) || { k: 'sym' }));
+      this._terms = [...T.entries()].sort((a, b) => b[0].length - a[0].length);
+      return this._terms;
+    },
+    extract(q) {
+      const STOP = new Set(['肌肉', '穴位', '經筋', '客人', '問題', '怎麼', '什麼', '哪些', '可以', '放鬆', '處理', '關係', '差別', '方法']);
+      const SYN = { 下背: ['腰', '腰椎', '下背痛'], 前傾: ['第一角度', '① A'], 後傾: ['第一角度', '① P'], 外八: ['外轉'], 內八: ['內轉'], 拇指: ['C6', '正中神經', '腕隧道'], 食指: ['C6', '正中神經'], 中指: ['C7'], 小指: ['C8', '尺神經'], 無名指: ['C8', '尺神經'], 膝內側: ['鵝足', '半月板', '內側副韌帶'], 膝外側: ['髂脛束', '跑者膝'], 膝前: ['髕骨', '股四頭'], 蹲: ['半月板', '髕骨'], 落枕: ['提肩胛肌', '胸鎖乳突肌', '轉頭'], 閃腰: ['急性腰閃傷', '腰閃傷'], 閃到腰: ['急性腰閃傷'], 坐骨神經: ['梨狀肌', '直腿抬高'], 晚上: ['夜間'], 麻: ['神經', '皮節'], 舉手: ['旋轉肌袖', '夾擠', '五十肩'], 彎腰: ['前彎', '椎間盤'], 後仰: ['小面關節'], 久坐: ['坐'], 頭痛: ['頭痛分經'], 鼠蹊: ['恥骨', '第三角度', '內收肌'], 長短腳: ['第一角度', '第三角度'], 側彎: ['側彎', '第三角度'] };
+      const found = []; this.terms().forEach(([t, o]) => { if (!STOP.has(t) && q.includes(t)) found.push(Object.assign({ t, w: 1 }, o)); });
+      // 被更長的詞包含的短詞降權
+      found.forEach((x) => { if (found.some((y) => y !== x && y.t.length > x.t.length && y.t.includes(x.t))) x.w = 0.6; });
+      Object.entries(SYN).forEach(([k, arr]) => { if (q.includes(k)) arr.forEach((t) => { if (!found.some((x) => x.t === t)) found.push({ t, w: 0.7, k: 'syn' }); }); });
+      return found;
+    },
+    bigrams(s) { const o = new Set(); s = String(s).replace(/[\s，。、；：？！,.;:?!（）()「」]/g, ''); for (let i = 0; i < s.length - 1; i++) o.add(s.slice(i, i + 2)); return o; },
+    localPatterns(q, hits) {
+      const cand = this.findingCands(q, hits); const sel = {}; cand.forEach((c) => (sel[c.f.id] = Math.min(1, c.s / 4)));
+      return window.PATTERNS.map((p) => { let s = 0; for (const k in p.t) if (sel[k]) s += p.t[k] * sel[k]; const nm = p.name.replace(/（.*?）/g, ''); hits.forEach(({ t }) => { if (t.length >= 2 && (nm.includes(t) || String(p.desc || '').includes(t))) s += nm.includes(t) ? 2 : 0.6; }); return { p, s }; })
+        .filter((x) => x.s >= 2).sort((a, b) => b.s - a.s).slice(0, 5).map((x) => x.p);
+    },
+    retrieve(q, hits) {
+      const qb = this.bigrams(q); const ids = { m: new Set(), p: new Set() }; const direct = new Set(); hits.forEach((x) => { if (x.k === 'm') ids.m.add(x.id); if (x.k === 'p') ids.p.add(x.id); if (x.k === 's') direct.add('sw:' + x.id); if (x.k === 'n') direct.add('nv:' + x.id); if (x.k === 'b') direct.add(x.id); });
+      const strip = (b) => String(b || '').replace(/\[\[[a-z]+:([\w-]+)\]\]/g, (m0, id) => (MU[id] || PT[id] || SIN[id] || {}).name || id).replace(/[#*|]/g, ' ').replace(/\s+/g, ' ');
+      const scored = KB.all().map((it) => {
+        let s = 0, sb = 0; const title = it.title || ''; const body = it.body || ''; const tags = (it.tags || []).join(' ');
+        hits.forEach(({ t, w: hw }) => { const w = (t.length >= 3 ? 1.5 : t.length === 2 ? 1 : 0.15) * (hw || 1); if (title.includes(t)) s += 6 * w; if (tags.includes(t)) s += 3 * w; if (body.includes(t)) sb += 1.5 * w; });
+        s += sb / (1 + body.length / 2500);
+        (it.muscles || []).forEach((m) => { if (ids.m.has(m)) s += 2.5; }); (it.points || []).forEach((p) => { if (ids.p.has(p)) s += 2.5; });
+        if (it.mid && ids.m.has(it.mid)) s += 8; if (it.pid && ids.p.has(it.pid)) s += 8; if (direct.has(it.id)) s += 12;
+        let bo = 0; this.bigrams(title).forEach((b) => { if (qb.has(b)) bo++; }); s += bo * 0.8;
+        if (s > 0) { const src = String(it.src || ''); if (/筆記/.test(src)) s *= 1.5; else if (/課堂/.test(src)) s *= 1.3; if (['muscle', 'point', 'sinew', 'bone', 'tech'].includes(it.type) && !(it.mid && ids.m.has(it.mid)) && !(it.pid && ids.p.has(it.pid)) && !direct.has(it.id)) s *= 0.6; if (/比對|導讀|總覽/.test(title)) s *= 0.5; }
+        return { it, s };
+      }).filter((x) => x.s > 0.8).sort((a, b) => b.s - a.s);
+      const seen = new Set(); const top = [];
+      for (const x of scored) { if (top.length >= 10) break; const key = x.it.title; if (seen.has(key)) continue; seen.add(key); top.push(x); }
+      return top.map((x) => ({ id: x.it.id, title: x.it.title, src: x.it.src, type: x.it.type, text: strip(x.it.body).slice(0, x.it.type === 'kb' || x.it.type === 'note' ? 900 : 600) }));
+    },
+    findingCands(q, hits) {
+      const qb = this.bigrams(q); const out = [];
+      window.FINDINGS.forEach((g) => g.items.forEach((f) => { let s = 0; this.bigrams(f.label).forEach((b) => { if (qb.has(b)) s++; }); hits.forEach(({ t }) => { if (f.label.includes(t)) s += t.length >= 2 ? 2 : 0.5; }); if (s >= 2) out.push({ f, s, g: g.group }); }));
+      return out.sort((a, b) => b.s - a.s).slice(0, 30);
+    },
+    // ---- 問 AI ----
+    async ask(q) {
+      q = String(q || '').trim(); if (q.length < 3) { this.status.textContent = '請多描述一點：哪裡、怎樣不舒服、多久、什麼時候加重。'; return; }
+      if (this.busy) return;
+      const hits = this.extract(q); const refs = this.retrieve(q, hits);
+      const mode = this.mode !== 'auto' ? this.mode : (/客人|個案|患者|病人|痛|麻|僵|緊|腫|扭傷|閃到|不舒服|抽筋|無力/.test(q) && !/^(什麼是|請問.*是什麼|.*的差別|.*怎麼摸|.*在哪)/.test(q) ? 'diag' : 'kb');
+      const entry = { q, t: Date.now(), mode, refs: refs.map((r) => r.id), ans: null, err: '' };
+      this.hist.unshift(entry); this.hist = this.hist.slice(0, 30); this.draft = ''; this.busy = true; this.renderForm(); this.renderOut();
+      const s = await Auth.sampler();
+      if (!s) { entry.err = 'noai'; this.done(); return; }
+      if (!Auth.isAdmin) { const k = 'ask_n_' + new Date().toISOString().slice(0, 10); const n = store.get(k, 0); if (n >= 30) { entry.err = '今天的 AI 問答次數已達上限（30 次），明天再試。'; this.done(); return; } store.set(k, n + 1); }
+      const cand = mode === 'diag' ? this.findingCands(q, hits) : [];
+      const lp = mode === 'diag' ? this.localPatterns(q, hits) : []; entry.lp = lp.map((p) => p.id);
+      const lpText = lp.map((p) => '【' + p.id + '】' + p.name + '\n說明：' + (p.desc || '') + '\n處理：' + (p.tech || '') + ((p.confirm || []).length ? '\n再確認：' + p.confirm.map((c) => c.text.replace(/^再確認：/, '')).join('；') : '')).join('\n\n');
+      const asum = this.withAssess && Object.keys(Assess.sel || {}).length ? Assess.summary() : null;
+      const pats = window.PATTERNS.map((p) => p.id + '｜' + p.name + '｜' + String(p.desc || '').slice(0, 60)).join('\n');
+      const prev = this.hist.slice(1, 3).filter((x) => x.ans).map((x) => 'Q：' + x.q + '\nA：' + String(x.ans.answer || '').slice(0, 600)).join('\n\n');
+      const ctx = refs.map((r) => '【' + r.id + '】' + r.title + '（' + (r.src || '') + '）\n' + r.text).join('\n\n');
+      const head = '你是「推拿整復手札」的助理，服務推拿整復課程的學員，使用繁體中文（台灣用語）。規則：\n'
+        + '1. 只根據下方「本站資料」與評估規則回答；資料沒有的就說不知道或建議請教老師，不要編造。\n'
+        + '2. 老師的手寫課堂筆記（來源含「筆記」）是標準；錄音與參考書和筆記不同時，以筆記為準，其他說法可簡短標為「其他說法（參考）」。\n'
+        + '3. 這是學習與評估輔助，不是醫療診斷。出現警訊（外傷劇痛變形、夜間痛發燒體重減輕、大小便異常或會陰麻木、進行性無力、胸痛冒冷汗、突發劇烈頭痛、兩側或上下肢同時麻）要先寫「先轉介」。不建議頸部高速扳動、侵入性處置。\n'
+        + '4. 引用本站條目時用 [[k:條目id]]（只能用下面列出的 id）；提到肌肉、穴位、經筋時盡量用 [[m:肌肉id]]、[[p:穴位id]]、[[s:經筋id]]。\n'
+        + '5. 簡潔、條列、實用。\n';
+      const task = mode === 'diag'
+        ? '任務：根據客人的描述做評估推理。answer 依序寫：**先排除警訊**（有就寫轉介）→ **可能的模式**（1–3 個，各一兩句理由，用規則名稱）→ **再確認的檢查**（具體怎麼做、陽性表徵是什麼；骨頭位置、肌肉緊／被拉長、神經測試）→ **處理方向**（依「先地基、再脊椎、最後局部」：要放鬆的肌肉、經筋與結、穴位、骨頭／關節、手法）→ **居家建議**。資訊不足就列出還需要問的問題。'
+        : '任務：回答知識點問題，整合本站多個條目的內容，先給結論再分點說明，指出課堂筆記怎麼說、哪些是補充。';
+      const schema = '只輸出一個 JSON 物件，不要其他文字：{"answer": markdown 字串, "patterns": [{"id": 評估規則 id, "why": 一句理由}]（知識問答可空）, "check": [{"f": 評估項目 id, "why": 為什麼要查}]（只能用「可對應的評估項目」中的 id，可空）, "muscles": [肌肉 id], "points": [穴位 id], "refs": [引用的條目 id], "refer": 是否建議先轉介（true/false）, "followups": [最多 3 個延伸問題]}';
+      const prompt = head + '\n' + task + '\n' + schema
+        + '\n\n=== 使用者的問題 ===\n' + q
+        + (asum ? '\n\n=== 目前評估頁已記錄的結果 ===\n' + asum.path + '\n' + asum.assess : '')
+        + (prev ? '\n\n=== 先前的對話（參考） ===\n' + prev : '')
+        + (cand.length ? '\n\n=== 可對應的評估項目（id｜項目｜所屬站） ===\n' + cand.map((c) => c.f.id + '｜' + c.f.label + '｜' + c.g).join('\n') : '')
+        + (lpText ? '\n\n=== 本機比對最可能的評估規則（完整內容） ===\n' + lpText : '')
+        + (mode === 'diag' ? '\n\n=== 評估規則（id｜名稱｜說明） ===\n' + pats : '')
+        + '\n\n=== 本站資料（條目） ===\n' + (ctx || '（沒有找到直接相關的條目）')
+        + '\n\n肌肉 id：' + window.MUSCLES.map((m) => m.id + '=' + m.name.replace(/（.*?）/g, '')).join('；');
+      try {
+        this.status.textContent = AI_NAME + ' 正在整理答覆…';
+        const r = await s.json(prompt.slice(0, 60000), { modelTier: 'default' });
+        const arr = (v) => (Array.isArray(v) ? v : []);
+        const P = {}; window.PATTERNS.forEach((p) => (P[p.id] = p));
+        entry.ans = { answer: String(r.answer || ''), patterns: arr(r.patterns).filter((x) => x && P[x.id]).slice(0, 4), check: arr(r.check).filter((x) => x && FIND[x.f]).slice(0, 8), muscles: arr(r.muscles).map(String).filter((x) => MU[x]).slice(0, 10), points: arr(r.points).map(String).filter((x) => PT[x]).slice(0, 10), refs: arr(r.refs).map(String).filter((x) => KB.has(x)).slice(0, 10), refer: !!r.refer, followups: arr(r.followups).map(String).slice(0, 3) };
+      } catch (e) {
+        const code = e && e.code;
+        entry.err = code === 'rate_limited' ? AI_NAME + ' 使用次數暫時到上限，請稍後再試。' : code === 'not_granted' ? (FB ? 'AI 功能尚未啟用或沒有權限。' : '你沒有允許這個頁面使用 Claude。') : 'AI 整理失敗，請再試一次。（' + String((e && e.message) || e).slice(0, 80) + '）';
+      }
+      this.done();
+    },
+    done() { this.busy = false; store.set('ask_hist', this.hist); this.renderForm(); this.renderOut(); },
+    renderOut() {
+      const O = clear(this.out);
+      if (!this.hist.length) { O.ap(h('div', { class: 'empty' }, '還沒有問題。描述客人的症狀（部位、性質、多久、什麼時候加重、做過哪些檢查），或問一個知識點。')); return; }
+      this.hist.forEach((x, i) => {
+        const card = h('div', { class: 'card pad ask-card' });
+        card.ap(h('div', { class: 'row' }, h('span', { class: 'badge ' + (x.mode === 'diag' ? 't' : 'j') }, x.mode === 'diag' ? '症狀評估' : '知識查詢'), h('span', { class: 'muted small' }, new Date(x.t).toLocaleString('zh-TW', { hour12: false })), h('span', { class: 'sp' }),
+          h('button', { class: 'link small', onclick: () => { this.draft = x.q; this.renderForm(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }, '再問一次'), h('button', { class: 'link small', onclick: () => { this.hist.splice(i, 1); store.set('ask_hist', this.hist); this.renderOut(); } }, '刪除')));
+        card.ap(h('p', { class: 'ask-q' }, x.q));
+        if (i === 0 && this.busy) card.ap(h('div', { class: 'small muted' }, '正在檢索本站資料並請 ' + AI_NAME + ' 整理…'));
+        const a = x.ans;
+        if (a) {
+          if (a.refer) card.ap(h('div', { class: 'alert' }, h('b', null, '建議先轉介：'), '描述中有需要醫師先確認的情況，推拿只做周邊放鬆。'));
+          const body = h('div', { class: 'prose', html: KB.md(a.answer) }); card.ap(body); KB.bindRefs(body);
+          if (a.patterns.length) card.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '對應的評估模式'), h('div', { class: 'stack', style: { gap: '4px', marginTop: '4px' } }, a.patterns.map((p) => { const P = window.PATTERNS.find((y) => y.id === p.id); return h('div', { class: 'small' }, h('b', null, P.name), '：', p.why || ''); })));
+          if (a.check.length) card.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '建議再確認（確認有這個表現就點一下，記到評估頁）'), h('div', { class: 'stack', style: { gap: '4px', marginTop: '4px' } }, a.check.map((c) => { const f = FIND[c.f]; const on = !!Assess.sel[c.f];
+            const setv = (v) => { if (Assess.sel[c.f] === v) delete Assess.sel[c.f]; else Assess.sel[c.f] = v; Assess.changed(); this.renderOut(); };
+            const cur = Assess.sel[c.f];
+            return h('div', { class: 'row small' }, h('b', null, (on ? '✓ ' : '') + f.label), f.side ? ['L', 'R', 'B'].map((v) => h('button', { class: 'chip sm' + (cur === v ? ' on' : ''), onclick: () => setv(v) }, sideTxt(v))) : h('button', { class: 'chip sm' + (on ? ' on' : ''), onclick: () => setv('B') }, on ? '已記錄' : '記錄'), h('span', { class: 'muted' }, (f.stName ? f.stName + '・' : '') + (c.why || ''))); })),
+            h('button', { class: 'btn sm', style: { marginTop: '6px' }, onclick: () => showTab('assess') }, '到評估頁看判讀結果'));
+          const links = [];
+          a.muscles.forEach((m) => links.push(h('button', { class: 'chip sm', onclick: () => V3.focusMuscle(m) }, h('span', { class: 'dot t' }), MU[m].name)));
+          a.points.forEach((p) => links.push(h('button', { class: 'chip sm', onclick: () => V3.focusPoint(p) }, h('span', { class: 'dot j' }), PT[p].name)));
+          if (links.length) card.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '在 3D 查看'), h('div', { class: 'chips', style: { marginTop: '4px' } }, links), a.muscles.length > 1 ? h('button', { class: 'btn sm', style: { marginTop: '6px' }, onclick: () => V3.showMuscles(a.muscles) }, '在 3D 一次標出這些肌肉') : null);
+          if (a.followups.length) card.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '延伸問題'), h('div', { class: 'chips', style: { marginTop: '4px' } }, a.followups.map((f) => h('button', { class: 'chip sm', onclick: () => { this.draft = f; this.renderForm(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }, f))));
+        } else if (x.err && x.err !== 'noai') card.ap(h('div', { class: 'alert' }, x.err));
+        const refIds = (a && a.refs.length ? a.refs : []).concat(x.refs.filter((r) => !(a && a.refs.includes(r)))).slice(0, 10);
+        if (refIds.length) card.ap(h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, a ? '引用與相關條目' : '本站相關條目'), h('div', { class: 'ask-refs' }, refIds.filter((r) => KB.has(r)).map((r) => h('button', { class: 'link small', onclick: () => KB.open(r) }, (a && a.refs.includes(r) ? '◆ ' : '') + KB.title(r)))));
+        else if (!a) card.ap(h('p', { class: 'small muted' }, '本站沒有找到直接相關的條目，換個說法或關鍵字試試。'));
+        O.ap(card);
+      });
+      if (this.hist.length > 1) O.ap(h('button', { class: 'link small', onclick: () => { this.hist = []; store.set('ask_hist', []); this.renderOut(); } }, '清除全部紀錄'));
+    },
+    fromAssess() { this.withAssess = true; this.mode = 'diag'; this.draft = this.draft || '請根據目前的評估結果，整理可能的問題、還需要再確認的檢查與處理順序。'; showTab('ask'); this.renderForm(); },
+  };
 
   const V3 = {
     inst: null, layers: { skin: false, bone: true, muscle: true, meridian: false, sinew: false, point: false, nerve: false }, sel: null, tension: null, q: '', mode: 'muscle',
@@ -6414,6 +6599,9 @@ window.KB_ITEMS.push(...[{"id":"u-overview","cat":"原則","src":"整合說明",
       if (!FB || !Auth.isAdmin) { root.ap(h('div', { class: 'lock-card' }, h('div', { class: 'lock-ic' }, '鎖'), h('h3', null, '只有管理員可以使用後台'))); return; }
       root.ap(h('p', { class: 'lead' }, '會員用 Google 帳號登入即自動註冊。你可以在這裡看每位會員的基本資料與登入時間、調整權限，並查看他們的投稿與個案。'));
       if (this.err) root.ap(h('div', { class: 'alert' }, this.err));
+      if (BACKEND.aiAccess) root.ap(h('div', { class: 'card pad', style: { margin: '0 0 12px' } }, h('div', { class: 'row' }, h('b', null, 'AI 問答開放對象'), h('span', { class: 'muted small' }, '（使用 Firebase 免費額度，全站共用；AI 新增條目仍只限管理員）'), h('span', { class: 'sp' }),
+        h('select', { class: 'inp', onchange: async (e) => { try { await BACKEND.setAiAccess(e.target.value); toast('已更新 AI 問答開放對象'); } catch (er) { toast('變更失敗：' + (er && er.message || er)); } } },
+          [['member', '所有登入會員（每人每天 30 次）'], ['admin', '只限管理員']].map(([v, n]) => h('option', { value: v, selected: BACKEND.aiAccess() === v }, n))))));
       if (this.loading && !this.loaded) { root.ap(h('div', { class: 'empty' }, '讀取會員資料…')); return; }
       const now = Date.now(); const week = this.rows.filter((p) => now - (p.lastLogin || 0) < 7 * 864e5).length;
       const subsBy = {}; Subs.all.forEach((u) => (subsBy[u.uid] = Object.values(u.items)));
@@ -6461,7 +6649,7 @@ window.KB_ITEMS.push(...[{"id":"u-overview","cat":"原則","src":"整合說明",
   // =====================================================================
   function boot() {
     const nav = $('#tabs'); TABS.forEach(([id, n], i) => nav.ap(h('button', { class: 'tab', role: 'tab', 'data-tab': id, 'aria-selected': 'false', onclick: () => showTab(id) }, h('span', { class: 'n' }, '0' + (i + 1)), n, id === 'cases' ? h('span', { class: 'tab-lock', 'aria-hidden': 'true' }, '鎖') : null)));
-    Assess.build($('#p-assess')); Chain.build($('#p-chain')); Sim.build($('#p-sim')); V3.build($('#p-v3d')); KB.build($('#p-kb'));
+    Assess.build($('#p-assess')); Ask.build($('#p-ask')); Chain.build($('#p-chain')); Sim.build($('#p-sim')); V3.build($('#p-v3d')); KB.build($('#p-kb'));
     Notes.listeners.push(() => { KB.renderList(); if (!KB.editing) KB.renderDetail(); Assess.renderRight(); });
     Subs.listeners.push(() => { if (curTab === 'admin' && Admin.loaded) Admin.render(); KB.renderFilters(); if (KB.special() === 'sub') { KB.renderList(); if (!KB.editing) KB.renderDetail(); } Acct.render(); });
     Auth.listeners.push(() => { Acct.render(); KB.refresh(); if (Cases.mode === 'loading' || (Cases.mode === 'db' && Auth.ownWrite === false && !Cases.writeFail)) Cases.init(); else Cases.render(); const t = $('.tab[data-tab="cases"] .tab-lock'); if (t) t.hidden = !!(Auth.id || Auth.dev); const at = $('.tab[data-tab="admin"]'); if (at) at.hidden = !(FB && Auth.isAdmin); if (curTab === 'admin') { if (FB && Auth.isAdmin) Admin.load(); else if (Auth.ready) showTab('assess'); } });
@@ -6473,7 +6661,7 @@ window.KB_ITEMS.push(...[{"id":"u-overview","cat":"原則","src":"整合說明",
     showTab(TABS.some((t) => t[0] === start) ? start : 'assess');
     Auth.init().then(() => { Notes.init(); Subs.init(); Cases.init(); });
   }
-  window.APP = { Assess, Chain, Sim, V3, KB, Notes, Subs, Auth, Cases, TX, Admin, Compare, showTab };
+  window.APP = { Assess, Ask, Chain, Sim, V3, KB, Notes, Subs, Auth, Cases, TX, Admin, Compare, showTab };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
 </script>

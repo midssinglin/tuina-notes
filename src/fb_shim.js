@@ -118,7 +118,8 @@
       const f = await boot; if (!f) return null;
       if (name === 'db') return dbNS;
       if (name === 'user') return userNS;
-      if (name === 'sample') return f.user && isAdmin() ? sampleNS() : null; // AI 只開放管理員
+      // AI：管理員一律可用；一般會員依後台設定（config/roles.ai：'member' 開放 AI 問答，'admin' 只限管理員）。AI 新增條目在介面上仍只限管理員。
+      if (name === 'sample') { const blocked = !!(uid() && (fb.roles.blocked || []).includes(uid())); return f.user && !blocked && (isAdmin() || (fb.roles.ai || 'member') === 'member') ? sampleNS() : null; }
       return null;
     },
   };
@@ -134,7 +135,12 @@
     async setRole(u, role) {
       const f = await boot; const r = f.roles; const rm = (k) => (r[k] = (r[k] || []).filter((x) => x !== u));
       rm('admins'); rm('blocked'); if (role === 'admin') r.admins.push(u); if (role === 'blocked') r.blocked.push(u);
-      await f.F.setDoc(f.F.doc(f.db, 'config/roles'), { admins: r.admins, blocked: r.blocked, updated: Date.now(), by: uid() });
+      await f.F.setDoc(f.F.doc(f.db, 'config/roles'), { admins: r.admins, blocked: r.blocked, ai: r.ai || 'member', updated: Date.now(), by: uid() });
+    },
+    aiAccess() { return (fb && fb.roles.ai) || 'member'; },
+    async setAiAccess(v) {
+      const f = await boot; const r = f.roles; r.ai = v === 'admin' ? 'admin' : 'member';
+      await f.F.setDoc(f.F.doc(f.db, 'config/roles'), { admins: r.admins || [], blocked: r.blocked || [], ai: r.ai, updated: Date.now(), by: uid() });
     },
   };
 })();
