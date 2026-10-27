@@ -431,3 +431,7 @@ details.det .prose p { margin: 4px 0; }
 .confirm { margin-top: 8px; border-top: 1px dashed var(--line); padding-top: 6px; }
 .confirm ul { margin: 4px 0 0; padding-left: 18px; font-size: 13px; display: grid; gap: 4px; }
 .confirm li .badge { font-size: 10.5px; }
+.as-steps { max-width: 100%; min-width: 0; }
+.kb-meta { flex-wrap: wrap; min-width: 0; }
+.kb-meta .badge { white-space: normal; overflow-wrap: anywhere; }
+.pat .badge, .rec-item .badge, .care .badge { white-space: normal; overflow-wrap: anywhere; }

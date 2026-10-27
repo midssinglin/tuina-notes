@@ -1,0 +1,4165 @@
+{
+ "nerves": [
+  {
+   "id": "n-accessory",
+   "name": "副神經",
+   "en": "Accessory nerve (CN XI)",
+   "roots": "CN XI（脊髓根 C1–C5；斜方肌另有 C3–C4 本體感覺纖維）",
+   "plexus": "腦神經",
+   "course": "由上頸段脊髓發出的纖維先往上經枕骨大孔進顱，再與延腦根會合後從頸靜脈孔出顱。出顱後穿過或貼著胸鎖乳突肌深面，在其後緣中點附近（約耳大神經繞出處上方）進入頸後三角，這一段只隔著皮膚與筋膜，位置很淺。接著斜向外下，走到斜方肌上束前緣深面，沿肌肉內面往下分布到中、下束。",
+   "motor": [
+    "scm",
+    "trap_u",
+    "trap_m",
+    "trap_l"
+   ],
+   "motorText": "胸鎖乳突肌、斜方肌（上、中、下束）。",
+   "sensory": "本身幾乎沒有皮膚感覺；斜方肌、胸鎖乳突肌的本體感覺由 C2–C4 頸神經叢纖維傳入。",
+   "entrap": [
+    {
+     "site": "頸後三角（胸鎖乳突肌後緣到斜方肌前緣之間）",
+     "cause": "這段很淺，頸部手術、淋巴結切片、背重肩帶或指壓過深都可能傷到。",
+     "signs": "聳肩無力、肩下垂、肩胛外移輕度翼狀（外展時明顯），肩頸鈍痛。",
+     "test": "對抗聳肩比較兩側；手臂外展超過 90° 困難或肩胛向外下翻。",
+     "tuina": "頸側三角區只做輕柔的揉、拿，不用指尖深壓或彈撥；已有聳肩無力、肌肉萎縮者轉介。"
+    }
+   ],
+   "lesion": "斜方肌萎縮、肩下垂，手臂外展舉高困難，肩胛向外下翻（側方型翼狀肩胛，與胸長神經的內緣翹起不同）。",
+   "points": [
+    "GB21",
+    "SI15",
+    "TE15",
+    "SI16",
+    "SI17"
+   ],
+   "sinew": [
+    "SI",
+    "GB",
+    "BL"
+   ],
+   "notes": "課堂「肩胛胸廓關節（ST）」筆記把上、中、下斜方肌的神經記作「副」（k-st-nerves）。",
+   "sources": "TeachMeAnatomy：Accessory nerve (CN XI) https://teachmeanatomy.info/head/cranial-nerves/accessory/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-st-nerves"
+  },
+  {
+   "id": "n-gon",
+   "name": "枕大神經",
+   "en": "Greater occipital nerve",
+   "roots": "C2（後支內側支）",
+   "plexus": "脊神經後支",
+   "course": "C2 後支在寰椎後弓與樞椎之間穿出，繞過頭下斜肌下緣往上內走。之後穿過頭半棘肌，再在枕外隆突外下方約 2–3 cm 處穿出斜方肌腱膜到皮下，與枕動脈伴行上行到頭頂。穿過頭半棘肌與斜方肌腱膜這兩處，是最常被肌肉緊繃擠壓的位置。",
+   "motor": [],
+   "motorText": "以感覺為主；沿途可有細支到頭半棘肌。",
+   "sensory": "後腦勺到頭頂（枕部、頂部後半），可延伸到耳上方；與 C2 皮節重疊。",
+   "entrap": [
+    {
+     "site": "頭半棘肌與斜方肌在上項線附近的腱膜穿出點（約風池、天柱一帶）",
+     "cause": "頭前傾、長時間低頭滑手機或打電腦使枕下與頸後肌群持續收縮；揮鞭傷。",
+     "signs": "後頭一側陣發性刺痛、電擊感，從後頭往頭頂竄，有時到眼眶後；頭皮觸碰或梳頭敏感。",
+     "test": "按壓枕外隆突外下方的穿出點重現放射痛（壓痛、Tinel 樣）；與枕下肌壓痛的鈍痛比較。",
+     "tuina": "仰臥用指腹托住枕骨下緣緩慢上托放鬆枕下肌群與頭夾肌，再輕揉風池、天柱；穿出點不要用力點按或彈撥。突發劇烈頭痛、合併神經症狀先就醫。"
+    }
+   ],
+   "lesion": "屬感覺神經，受壓主要是枕神經痛（後頭、頭頂刺痛或麻木），不會造成無力。",
+   "points": [
+    "GB20",
+    "BL10",
+    "GV16",
+    "GB12"
+   ],
+   "sinew": [
+    "BL",
+    "GB"
+   ],
+   "notes": "筆記 C1：「頭頂（痠痛麻）」與枕大神經分布的頭頂後半相近；筆記 C2 寫「顏面」，主流顏面感覺屬三叉神經，C2 主要在後頭（見皮節表）。",
+   "sources": "StatPearls：Anatomy, Head and Neck, Occipital Nerves https://www.ncbi.nlm.nih.gov/books/NBK542213/；k-nerve-c"
+  },
+  {
+   "id": "n-suboccipital",
+   "name": "枕下神經",
+   "en": "Suboccipital nerve",
+   "roots": "C1（後支）",
+   "plexus": "脊神經後支",
+   "course": "C1 後支在椎動脈與寰椎後弓之間穿出，進入枕下三角（頭後大直肌、頭上斜肌、頭下斜肌圍成）。在三角內分支到四條枕下小肌，本身幾乎沒有皮膚分支。枕下三角深處同時有椎動脈經過，這裡不適合深壓。",
+   "motor": [
+    "subocc"
+   ],
+   "motorText": "頭後大、小直肌，頭上、下斜肌；部分到頭半棘肌。",
+   "sensory": "一般沒有皮膚分布（所以 C1 沒有皮節）。",
+   "entrap": [],
+   "lesion": "單獨受損少見；枕下肌群緊繃主要影響本體感覺與上頸活動，常與枕大神經頭痛並存。",
+   "points": [
+    "GB20",
+    "BL10",
+    "GV16",
+    "GV15"
+   ],
+   "sinew": [
+    "BL",
+    "GB"
+   ],
+   "notes": "課堂「三分法」筆記把後枕骨（枕下肌群）列為本體感覺三個重點之一（k-three）；筆記 C1 對應頭頂、高血壓、睡眠（k-nerve-c）。",
+   "sources": "StatPearls：Anatomy, Head and Neck, Occipital Nerves https://www.ncbi.nlm.nih.gov/books/NBK542213/；k-three；k-nerve-c"
+  },
+  {
+   "id": "n-cervical-plexus",
+   "name": "頸神經叢（皮支與肌支）",
+   "en": "Cervical plexus",
+   "roots": "C1–C4（前支）",
+   "plexus": "頸神經叢",
+   "course": "C1–C4 前支在提肩胛肌與中斜角肌前方組成神經叢，位置在胸鎖乳突肌深面。皮支（枕小、耳大、頸橫、鎖骨上神經）集中在胸鎖乳突肌後緣中點附近穿出，呈放射狀分布到耳後、頸前與肩上。肌支到頸部深肌、提肩胛肌、斜角肌上段，並分出膈神經。",
+   "motor": [
+    "scalene",
+    "levator"
+   ],
+   "motorText": "頸長肌、頭長肌、頭前直肌與頭外側直肌、舌骨下肌群（經頸袢）、中斜角肌與提肩胛肌的一部分；膈神經另列。",
+   "sensory": "枕小神經：耳後、乳突上方；耳大神經：耳垂、下頜角；頸橫神經：頸前；鎖骨上神經：鎖骨、肩上到第 2 肋（C3–C4 皮節）。",
+   "entrap": [
+    {
+     "site": "胸鎖乳突肌後緣中點（皮支穿出處）",
+     "cause": "胸鎖乳突肌長期緊繃、頭前傾與轉頭姿勢。",
+     "signs": "耳後、下頜角、頸前或鎖骨上一片刺麻或敏感。",
+     "test": "輕壓胸鎖乳突肌後緣中點是否重現放射。",
+     "tuina": "胸鎖乳突肌用拿捏法由上往下，力道中等；頸前不重壓（頸動脈）。"
+    }
+   ],
+   "lesion": "單一皮支受損多是局部感覺異常；肩上鎖骨區感覺異常要與 C4 神經根區分。",
+   "points": [
+    "SI16",
+    "SI17",
+    "LI18",
+    "TE17",
+    "GB12"
+   ],
+   "sinew": [
+    "SI",
+    "ST",
+    "GB"
+   ],
+   "notes": "筆記 C3：喉嚨；C4：肩膀（筆記：流鼻血）。鎖骨上神經分布的肩上與筆記 C4「肩膀」相合。",
+   "sources": "TeachMeAnatomy：Cervical plexus https://teachmeanatomy.info/neck/nerves/cervical-plexus/；k-nerve-c"
+  },
+  {
+   "id": "n-phrenic",
+   "name": "膈神經",
+   "en": "Phrenic nerve",
+   "roots": "C3–C5（主要 C4）",
+   "plexus": "頸神經叢",
+   "course": "由 C3–C5 前支組成後，貼在前斜角肌前面由外上往內下走，被椎前筋膜覆蓋。經鎖骨下動、靜脈之間進入胸腔，沿心包兩側下行到橫膈。右側穿過下腔靜脈孔附近，左側在心尖附近穿入橫膈。",
+   "motor": [
+    "diaphragm"
+   ],
+   "motorText": "橫膈膜（唯一運動神經）。",
+   "sensory": "橫膈中央部、心包與縱膈胸膜的感覺；橫膈受刺激時痛會轉移到同側肩上（C4 皮節）。",
+   "entrap": [
+    {
+     "site": "前斜角肌前面",
+     "cause": "前斜角肌緊繃、頸部外傷或手術、腫瘤壓迫（極少）。",
+     "signs": "打嗝不止、呼吸淺、仰臥時喘；肩上轉移痛。",
+     "test": "推拿師不做專門測試；觀察吸氣時腹部是否隆起、兩側下肋擴張是否對稱。",
+     "tuina": "斜角肌只做輕柔放鬆，不重壓缺盆；持續打嗝超過 48 小時、呼吸困難或胸痛要就醫。"
+    }
+   ],
+   "lesion": "單側麻痺：同側橫膈上抬、運動時喘；雙側：平躺呼吸困難（醫療狀況）。",
+   "points": [
+    "ST12",
+    "LI17",
+    "LI18",
+    "BL17",
+    "CV14"
+   ],
+   "sinew": [
+    "LU",
+    "PC"
+   ],
+   "notes": "筆記：「膈神經 → 胃脹、打嗝」，另記喉返神經、迷走神經（k-nerve-test、k-viscera）；網站肌肉資料 diaphragm 同記。",
+   "sources": "TeachMeAnatomy：Phrenic nerve https://teachmeanatomy.info/neck/nerves/phrenic/；k-nerve-test；k-viscera"
+  },
+  {
+   "id": "n-plexus",
+   "name": "臂神經叢（總覽）",
+   "en": "Brachial plexus",
+   "roots": "C5–T1（常有 C4、T2 小量參與）",
+   "plexus": "臂神經叢",
+   "course": "C5–T1 前支從椎間孔出來後，在前、中斜角肌之間（斜角肌間隙）穿出，與鎖骨下動脈同行，這段組成上、中、下三幹。往外下經鎖骨與第 1 肋之間（肋鎖間隙），分成前、後股；進入腋窩後在胸小肌深面（喙突下方）圍繞腋動脈組成外側束、後束、內側束。出胸小肌下緣後分成五條終支：肌皮、腋、橈、正中、尺神經。",
+   "motor": [
+    "scalene",
+    "levator",
+    "rhomboid",
+    "serratus",
+    "supraspinatus",
+    "infraspinatus",
+    "subscap",
+    "teres_major",
+    "lat",
+    "pec_major",
+    "pec_minor",
+    "deltoid",
+    "teres_minor",
+    "biceps",
+    "brachialis",
+    "triceps",
+    "brachiorad",
+    "forearm_ext",
+    "supinator",
+    "pronator",
+    "forearm_flex"
+   ],
+   "motorText": "整個上肢與肩帶：根部分支（肩胛背、胸長神經、斜角肌支）、幹部分支（肩胛上、鎖骨下肌神經）、束部分支（胸內外側、上下肩胛下、胸背神經）與五條終支。手內在肌（大小魚際、骨間肌、蚓狀肌）網站沒有獨立條目。",
+   "sensory": "整個上肢（C5–T1 皮節）；腋窩內側與上臂內側上段另有 T2 肋間臂神經。",
+   "entrap": [
+    {
+     "site": "斜角肌間隙（前、中斜角肌之間）",
+     "cause": "斜角肌緊（頭前傾、胸式淺呼吸、揹重物）、頸肋或纖維束。",
+     "signs": "整隻手或尺側麻、手沉重無力，頭轉向對側或上提手臂加重。",
+     "test": "Adson、ULTT；輕壓缺盆上方斜角肌重現手麻。",
+     "tuina": "斜角肌輕柔放鬆、配合腹式呼吸；不重壓缺盆（臂神經叢、鎖骨下動脈）。"
+    },
+    {
+     "site": "肋鎖間隙（鎖骨與第 1 肋之間）",
+     "cause": "圓肩、肩下垂、鎖骨下肌緊、第 1 肋上抬、背重背包。",
+     "signs": "手舉高或肩往後下壓時手麻、手冷、脈搏變弱。",
+     "test": "肋鎖擠壓（肩往後下）、Roos 舉手 3 分鐘。",
+     "tuina": "放鬆胸大肌、鎖骨下方，改善圓肩；第 1 肋只做溫和的呼吸配合下壓。"
+    },
+    {
+     "site": "胸小肌下方（喙突下）",
+     "cause": "胸小肌縮短（圓肩、肩胛前傾），睡覺手舉過頭。",
+     "signs": "手舉過頭加重的手麻；喙突下壓痛。",
+     "test": "過度外展測試（手外展過頭）手麻、脈搏變弱；喙突下壓痛重現麻。",
+     "tuina": "胸小肌放鬆（喙突下、腋前），手法緩慢；腋窩只輕觸。"
+    }
+   ],
+   "lesion": "上幹（C5–C6，Erb 型）：手臂內轉下垂、掌心朝後（服務生小費姿勢）；下幹（C8–T1，Klumpke 型）：手內在肌無力、爪形手。屬外傷或產傷，推拿師只認得、轉介。",
+   "points": [
+    "ST12",
+    "LI17",
+    "LU1",
+    "LU2",
+    "HT1",
+    "PC2"
+   ],
+   "sinew": [
+    "LU",
+    "PC",
+    "HT",
+    "LI"
+   ],
+   "notes": "課堂 1019-1（錄音約 17:48–20:57）：臂神經叢從頸椎出來，經鎖骨下方穿出、經胸小肌下方、從腋下出來到手臂；老師並提到用神經傳導檢查找出卡在胸廓出口哪一段。課堂 0727：前、中斜角肌之間 → 鎖骨與第一肋之間 → 胸小肌下方（k-tos）。筆記正中神經卡壓路線：頸椎 → 前中斜角肌 → 鎖骨（鎖骨下肌）→ 肩關節 → 胸小肌 → 肱二頭肌 → 旋前圓肌 → 腕隧道（k-elbow）。",
+   "sources": "TeachMeAnatomy：The Brachial Plexus https://teachmeanatomy.info/upper-limb/nerves/brachial-plexus/；Kenhub：Brachial plexus https://www.kenhub.com/en/library/anatomy/brachial-plexus；Univ. of Brighton MSK Physiotherapy：Thoracic Outlet Syndrome; are clinical tests useful? https://blogs.brighton.ac.uk/musculoskeletalphysiotherapy/?p=224；k-tos；k-elbow；課堂 1019-1 錄音"
+  },
+  {
+   "id": "n-dorsalscap",
+   "name": "肩胛背神經",
+   "en": "Dorsal scapular nerve",
+   "roots": "C5（常有 C4）",
+   "plexus": "臂神經叢",
+   "course": "從 C5 神經根直接分出，多數穿過中斜角肌肌腹往後外走。接著在提肩胛肌深面下行，沿肩胛骨內緣與大、小菱形肌深面往下，伴行肩胛背動脈。中斜角肌與提肩胛肌是它最常被擠壓的兩處。",
+   "motor": [
+    "levator",
+    "rhomboid"
+   ],
+   "motorText": "提肩胛肌（與 C3–C4 頸神經叢共同）、大小菱形肌。",
+   "sensory": "無皮膚分支；受壓時以肩胛內緣深層痠痛表現。",
+   "entrap": [
+    {
+     "site": "中斜角肌肌腹",
+     "cause": "中斜角肌緊（頭前傾、側睡姿勢、長時間講電話夾脖子）。",
+     "signs": "肩胛內緣、肩胛間深層灼痛或痠痛，按菱形肌放鬆後很快又回來；可伴頸側痛。",
+     "test": "頸側中斜角肌壓痛並放射到肩胛內緣；肩胛內緣壓痛。",
+     "tuina": "除了菱形肌，要回頭放鬆中斜角肌與提肩胛肌；斜角肌區輕柔，不重壓。"
+    }
+   ],
+   "lesion": "菱形肌、提肩胛肌無力：肩胛內緣離脊椎變遠、輕度翼狀（內緣下角外翻）。",
+   "points": [
+    "SI14",
+    "SI15",
+    "BL41",
+    "BL42",
+    "BL43"
+   ],
+   "sinew": [
+    "SI",
+    "BL"
+   ],
+   "notes": "筆記提肩胛肌與菱形肌的神經記「肩胛背」（k-st-nerves）。肩胛間痛（c_scap_between）除了菱形肌本身，也可能是這條神經在斜角肌受壓。",
+   "sources": "TeachMeAnatomy：The Brachial Plexus https://teachmeanatomy.info/upper-limb/nerves/brachial-plexus/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-st-nerves"
+  },
+  {
+   "id": "n-longthor",
+   "name": "胸長神經（長胸神經）",
+   "en": "Long thoracic nerve",
+   "roots": "C5–C7",
+   "plexus": "臂神經叢",
+   "course": "由 C5、C6 根穿過中斜角肌、C7 根在其前方會合，經第 1 肋與鎖骨後方下降到胸壁。沿著胸壁外側（約腋中線）在前鋸肌表面一路往下，逐段分支到各個肌齒。走得長、又貼在表面，揹重物或胸壁外側受壓都可能拉傷。",
+   "motor": [
+    "serratus"
+   ],
+   "motorText": "前鋸肌。",
+   "sensory": "無皮膚分支。",
+   "entrap": [
+    {
+     "site": "中斜角肌與腋中線胸壁",
+     "cause": "長期肩揹重物、反覆過頭動作（網球、游泳、搬貨）、側睡壓迫、胸壁外側撞擊或手術。",
+     "signs": "翼狀肩胛（推牆時肩胛內緣與下角翹起）、手舉高無力、肩頸後側鈍痛。",
+     "test": "雙手推牆：肩胛內緣翹起；比較兩側肩胛上旋。",
+     "tuina": "可放鬆斜角肌與胸壁外側肌肉；新出現的翼狀肩胛要轉介（神經恢復需時間），推拿只做周邊放鬆，不強力牽拉肩胛。"
+    }
+   ],
+   "lesion": "前鋸肌無力 → 翼狀肩胛（內緣型），手臂前推與上舉無力。",
+   "points": [
+    "GB22",
+    "SP21",
+    "HT1"
+   ],
+   "sinew": [
+    "SP",
+    "GB"
+   ],
+   "notes": "筆記前鋸肌的神經記「長胸」（k-st-nerves）；站姿評估已有「翼狀肩胛」（o_wing）。",
+   "sources": "TeachMeAnatomy：The Brachial Plexus https://teachmeanatomy.info/upper-limb/nerves/brachial-plexus/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-st-nerves"
+  },
+  {
+   "id": "n-suprascap",
+   "name": "肩胛上神經",
+   "en": "Suprascapular nerve",
+   "roots": "C5–C6（常有 C4）",
+   "plexus": "臂神經叢",
+   "course": "從上幹分出後經頸後三角往外走，到斜方肌與肩胛舌骨肌深面。在肩胛骨上緣的肩胛上切跡穿過肩胛上橫韌帶下方（動脈走韌帶上方），進入棘上窩支配棘上肌。再繞過肩胛棘外側的棘盂切跡到棘下窩，支配棘下肌。",
+   "motor": [
+    "supraspinatus",
+    "infraspinatus"
+   ],
+   "motorText": "棘上肌、棘下肌；另有感覺支到盂肱與肩鎖關節。",
+   "sensory": "沒有皮膚分布，但傳導盂肱關節、肩鎖關節的深層感覺（肩後上深痛）。",
+   "entrap": [
+    {
+     "site": "肩胛上切跡（肩胛上橫韌帶下）",
+     "cause": "反覆過頭動作（排球扣球、投擲）、肩胛長期前傾外展、揹重物；腱鞘囊腫。",
+     "signs": "肩後上深層鈍痛，外展、外轉無力；棘上、棘下肌都萎縮。",
+     "test": "外展、外轉抗阻比較兩側；棘上窩深壓痛；手臂水平內收牽拉肩胛時痛加重。",
+     "tuina": "放鬆斜方肌上束、棘上肌、棘下肌，改善肩胛前傾；肌肉明顯萎縮者轉介。"
+    },
+    {
+     "site": "棘盂切跡",
+     "cause": "過頭運動員、盂唇旁囊腫。",
+     "signs": "只有棘下肌萎縮（棘下窩凹陷），外轉無力，痛較少。",
+     "test": "外轉抗阻無力而外展正常。",
+     "tuina": "同上；棘下窩凹陷、無痛無力屬神經問題（三分法），轉介。"
+    }
+   ],
+   "lesion": "外展起始與外轉無力，棘上窩、棘下窩凹陷，肩後深痛。",
+   "points": [
+    "SI12",
+    "SI13",
+    "SI11",
+    "GB21",
+    "TE15"
+   ],
+   "sinew": [
+    "SI",
+    "LI"
+   ],
+   "notes": "筆記棘上、棘下肌的神經記「肩胛上」（k-gh）。天宗壓痛（t_infra）多是棘下肌本身；若合併棘下窩凹陷、外轉無力則想到此神經。",
+   "sources": "TeachMeAnatomy：The Brachial Plexus https://teachmeanatomy.info/upper-limb/nerves/brachial-plexus/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-gh"
+  },
+  {
+   "id": "n-subscapular",
+   "name": "上、下肩胛下神經",
+   "en": "Upper and lower subscapular nerves",
+   "roots": "C5–C6（下支可到 C7）",
+   "plexus": "臂神經叢",
+   "course": "由後束分出，貼著肩胛下肌前面下行。上支進入肩胛下肌上部；下支分到肩胛下肌下部後，再往外下到大圓肌。位置深，在腋窩後壁，很少單獨受壓。",
+   "motor": [
+    "subscap",
+    "teres_major"
+   ],
+   "motorText": "肩胛下肌、大圓肌。",
+   "sensory": "無皮膚分布。",
+   "entrap": [],
+   "lesion": "單獨受損少見；肩內轉力量變弱（闊背肌、胸大肌可代償）。",
+   "points": [
+    "HT1",
+    "SI9"
+   ],
+   "sinew": [
+    "HT",
+    "SI"
+   ],
+   "notes": "筆記肩胛下肌、大圓肌的神經記「肩胛下」（k-gh）。",
+   "sources": "TeachMeAnatomy：The Brachial Plexus https://teachmeanatomy.info/upper-limb/nerves/brachial-plexus/；k-gh"
+  },
+  {
+   "id": "n-thoracodorsal",
+   "name": "胸背神經",
+   "en": "Thoracodorsal nerve",
+   "roots": "C6–C8",
+   "plexus": "臂神經叢",
+   "course": "由後束分出，在上、下肩胛下神經之間，沿腋窩後壁、肩胛下肌表面往外下走。伴隨胸背動脈到闊背肌深面，從肌肉前內側進入。腋窩後壁下段是它經過的位置。",
+   "motor": [
+    "lat"
+   ],
+   "motorText": "闊背肌。",
+   "sensory": "無皮膚分布。",
+   "entrap": [],
+   "lesion": "單獨受損少見（乳癌腋下淋巴手術可能傷到）：伸肩、內收、內轉力量變弱，撐拐杖、爬升困難。",
+   "points": [
+    "GB22",
+    "SI9",
+    "HT1"
+   ],
+   "sinew": [
+    "BL",
+    "SP"
+   ],
+   "notes": "筆記闊背肌的神經記「胸背」（k-gh）。",
+   "sources": "TeachMeAnatomy：The Brachial Plexus https://teachmeanatomy.info/upper-limb/nerves/brachial-plexus/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-gh"
+  },
+  {
+   "id": "n-pectoral",
+   "name": "胸內側、胸外側神經",
+   "en": "Medial and lateral pectoral nerves",
+   "roots": "外側 C5–C7；內側 C8–T1",
+   "plexus": "臂神經叢",
+   "course": "胸外側神經來自外側束，穿過鎖胸筋膜到胸大肌鎖骨頭與胸骨頭上部。胸內側神經來自內側束，先進入胸小肌（多數穿過它），再到胸大肌下部。名稱的內、外是依神經束而來，位置上反而是「內側」在外。",
+   "motor": [
+    "pec_major",
+    "pec_minor"
+   ],
+   "motorText": "胸大肌（兩者）、胸小肌（胸內側神經為主）。",
+   "sensory": "無皮膚分布。",
+   "entrap": [
+    {
+     "site": "胸小肌穿越處",
+     "cause": "胸小肌長期縮短（圓肩、健身過度訓練）。",
+     "signs": "胸前深層痠痛，可與胸廓出口症狀並存。",
+     "test": "喙突下胸小肌壓痛；評估圓肩。",
+     "tuina": "胸小肌放鬆時從腋前緣斜向喙突下，慢慢沉入，不用彈撥。"
+    }
+   ],
+   "lesion": "胸大肌無力：手臂內收、水平內收、推的力量下降。",
+   "points": [
+    "LU1",
+    "LU2",
+    "ST15",
+    "ST16",
+    "KI25"
+   ],
+   "sinew": [
+    "LU",
+    "PC",
+    "HT"
+   ],
+   "notes": "筆記胸大、胸小肌的神經記「胸」（k-st-nerves、k-gh）。",
+   "sources": "TeachMeAnatomy：The Brachial Plexus https://teachmeanatomy.info/upper-limb/nerves/brachial-plexus/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-st-nerves"
+  },
+  {
+   "id": "n-axillary",
+   "name": "腋神經",
+   "en": "Axillary nerve",
+   "roots": "C5–C6",
+   "plexus": "臂神經叢",
+   "course": "由後束分出，在肩胛下肌前面往下，經腋窩後壁的四邊孔（上：小圓肌；下：大圓肌；內：肱三頭肌長頭；外：肱骨外科頸）往後走。繞過肱骨外科頸後方，分出到小圓肌的分支與上臂外側皮神經，主幹在三角肌深面由後往前繞。肩脫臼、外科頸骨折時最容易受傷。",
+   "motor": [
+    "deltoid",
+    "teres_minor"
+   ],
+   "motorText": "三角肌、小圓肌。",
+   "sensory": "上臂外側皮神經：三角肌下半表面一塊（俗稱「軍徽區」）。",
+   "entrap": [
+    {
+     "site": "四邊孔",
+     "cause": "過頭投擲動作反覆外展外轉、小圓肌與大圓肌緊、纖維束；肩脫臼、外科頸骨折。",
+     "signs": "肩後外側深痛，三角肌、小圓肌無力或萎縮（肩外側凹下），三角肌下外側皮膚麻。",
+     "test": "肩外展抗阻無力；四邊孔（肩貞附近）壓痛；三角肌區感覺比較。",
+     "tuina": "放鬆小圓肌、大圓肌與三頭肌長頭，用輕到中等力道；外傷後肩外側麻或三角肌萎縮轉介。"
+    }
+   ],
+   "lesion": "三角肌萎縮、肩外側變平、肩峰突出；外展 15° 以上無力；上臂外側一塊麻木。",
+   "points": [
+    "SI9",
+    "SI10",
+    "TE14",
+    "LI15",
+    "LI14"
+   ],
+   "sinew": [
+    "SI",
+    "TE",
+    "LI"
+   ],
+   "notes": "筆記三角肌、小圓肌記「腋」（k-gh）。上臂外側（三角肌區）是皮節圖上的 C5；筆記的 C5 則寫「手臂陰面延伸至手掌心」（k-nerve-c）。",
+   "sources": "TeachMeAnatomy：Axillary nerve https://teachmeanatomy.info/upper-limb/nerves/axillary-nerve/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-gh"
+  },
+  {
+   "id": "n-musculocut",
+   "name": "肌皮神經",
+   "en": "Musculocutaneous nerve",
+   "roots": "C5–C7",
+   "plexus": "臂神經叢",
+   "course": "由外側束分出，穿過喙肱肌後在肱二頭肌與肱肌之間往外下走，沿途支配這三條屈肘肌。到肘窩外側、肱二頭肌腱外緣穿出深筋膜，改名前臂外側皮神經，往下分布到前臂外側。喙肱肌與肱二頭肌腱外緣是兩個可能受壓處。",
+   "motor": [
+    "biceps",
+    "brachialis"
+   ],
+   "motorText": "喙肱肌、肱二頭肌、肱肌（外側部另有橈神經）。",
+   "sensory": "前臂外側皮神經：前臂外側（橈側）從肘到腕。",
+   "entrap": [
+    {
+     "site": "喙肱肌穿越處",
+     "cause": "大重量臥推、伏地挺身、長時間揹肩帶。",
+     "signs": "屈肘、旋後無力，前臂外側麻。",
+     "test": "屈肘抗阻比較；二頭肌反射減弱。",
+     "tuina": "放鬆喙肱肌（腋前內）與肱二頭肌，力道中等。"
+    },
+    {
+     "site": "肘窩外側（肱二頭肌腱外緣）",
+     "cause": "反覆用力伸肘加旋前（球拍、搬重物）、肘窩重壓。",
+     "signs": "前臂外側灼熱或麻，無力不明顯。",
+     "test": "肘伸直加旋前時症狀加重；尺澤外側輕壓重現。",
+     "tuina": "肘窩外側只輕揉，不在肌腱旁彈撥。"
+    }
+   ],
+   "lesion": "屈肘、旋後力量明顯變弱（肱橈肌可部分代償），二頭肌反射減弱，前臂外側感覺減退。",
+   "points": [
+    "LU3",
+    "LU4",
+    "LU5",
+    "PC2"
+   ],
+   "sinew": [
+    "LU",
+    "PC"
+   ],
+   "notes": "筆記肱二頭肌、喙肱肌的神經記「肌皮」（k-gh）。前臂外側到拇指一線是皮節圖 C6；筆記 C6 寫「第 1、2 指，第 3 指一半」。",
+   "sources": "TeachMeAnatomy：Musculocutaneous nerve https://teachmeanatomy.info/upper-limb/nerves/musculocutaneous-nerve/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-gh"
+  },
+  {
+   "id": "n-radial",
+   "name": "橈神經（含後骨間神經、淺支）",
+   "en": "Radial nerve (PIN, superficial branch)",
+   "roots": "C5–T1",
+   "plexus": "臂神經叢",
+   "course": "由後束延續而來，先在腋窩後方分支到肱三頭肌，接著與肱深動脈一起繞到肱骨後面的橈神經溝（螺旋溝），由內上往外下走，這段緊貼骨頭。在上臂中下 1/3 穿過外側肌間隔到前面，走在肱肌與肱橈肌之間，到肱骨外上髁前方分成兩支。深支（後骨間神經）鑽入旋後肌（入口為 Frohse 弓）到前臂背側支配伸肌；淺支在肱橈肌深面下行，約腕上 7–8 cm 從肱橈肌腱下方穿出，到手背橈側。",
+   "motor": [
+    "triceps",
+    "brachiorad",
+    "forearm_ext",
+    "supinator",
+    "brachialis"
+   ],
+   "motorText": "主幹：肱三頭肌、肘肌、肱橈肌、橈側伸腕長肌（及部分肱肌外側部）；後骨間神經：橈側伸腕短肌、旋後肌、伸指總肌、伸小指肌、尺側伸腕肌、外展拇長肌、伸拇長短肌、伸食指肌。",
+   "sensory": "上臂後側、前臂後側皮神經；淺支：手背橈側半、拇指到無名指一半的近端背側（甲床除外）、虎口背面。",
+   "entrap": [
+    {
+     "site": "橈神經溝（上臂中段後外側）",
+     "cause": "手臂掛在椅背睡著（週六夜麻痺）、肱骨幹骨折、側睡壓手、反覆用力伸肘。",
+     "signs": "垂腕、垂指，伸肘大致保留（三頭肌支多在溝上方分出），手背橈側麻。",
+     "test": "伸腕、伸指抗阻無力；壓上臂中段外側重現麻。",
+     "tuina": "上臂外側後方不要長時間定點深壓；出現垂腕立即轉介。"
+    },
+    {
+     "site": "橈隧道／旋後肌（Frohse 弓，後骨間神經）",
+     "cause": "反覆旋前旋後、用力伸腕（球拍、鎚子、滑鼠），旋後肌與橈側伸腕短肌緊。",
+     "signs": "後骨間神經：伸指、伸拇無力（手腕可伸但偏向橈側），沒有麻；橈隧道症候群：外上髁下方約 3–4 指深層痠痛，常被當作網球肘。",
+     "test": "中指伸直抗阻引發外上髁下方痛；旋後抗阻痛；手三里附近（外上髁下 4–5 cm）深層壓痛比外上髁本身明顯。",
+     "tuina": "放鬆伸肌群、旋後肌、肱橈肌，由遠往近；不在橈骨頸處重力橫撥。伸指無力屬神經問題，轉介。"
+    },
+    {
+     "site": "淺支（腕上橈側，肱橈肌腱與橈側伸腕長肌腱之間穿出處）",
+     "cause": "手錶或手環太緊、手銬、反覆旋前加尺偏（擰毛巾）、橈側腕部撞擊。",
+     "signs": "手背橈側、拇指背面刺麻或灼熱（Wartenberg 症候群），沒有無力。",
+     "test": "腕上橈側（列缺、陽谿附近）輕敲 Tinel 陽性；腕屈曲加尺偏、前臂旋前時加重。",
+     "tuina": "鬆開束縛物，放鬆肱橈肌；穿出點只輕撫，不用指甲掐按列缺、陽谿。與狄奎凡氏症（拇指肌腱）區分。"
+    }
+   ],
+   "lesion": "垂腕（手腕與手指掌指關節無法伸直）是典型；高位（腋窩、拐杖壓迫）連伸肘也無力；手背虎口麻。握力也變差，因為腕無法維持在伸直位。",
+   "points": [
+    "TE11",
+    "TE12",
+    "TE13",
+    "LI14",
+    "LI11",
+    "LI10",
+    "TE5",
+    "LU7",
+    "LI5",
+    "LI4"
+   ],
+   "sinew": [
+    "LI",
+    "TE",
+    "SI"
+   ],
+   "notes": "筆記：「橈神經損傷會垂腕；橈神經會穿過旋後肌」（k-elbow）；網站肌肉資料 supinator 同記。筆記 C6 檢查寫「橈神經區」（k-nerve-test）。肘外側痛：筆記另提往上查 T3（k-nerve-t）。",
+   "sources": "TeachMeAnatomy：Radial nerve https://teachmeanatomy.info/upper-limb/nerves/radial-nerve/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；Physiopedia：Upper Limb Tension Tests (ULTTs) https://www.physio-pedia.com/Upper_Limb_Tension_Tests_(ULTTs)；k-elbow；k-nerve-test"
+  },
+  {
+   "id": "n-median",
+   "name": "正中神經（含前骨間神經）",
+   "en": "Median nerve (AIN)",
+   "roots": "C5（C6）–T1",
+   "plexus": "臂神經叢",
+   "course": "由外側束與內側束合成，在腋動脈前方形成 V 字，沿上臂內側、肱二頭肌內緣與肱動脈並行。到肘窩時位於肱二頭肌腱與肱動脈的內側，經過二頭肌腱膜下方，再從旋前圓肌兩頭之間穿過、進入屈指淺肌纖維弓深面。在前臂中段分出前骨間神經（深層）；主幹在屈指淺、深肌之間下行，到腕部在掌長肌腱與橈側屈腕肌腱之間（大陵、內關一線）進入腕隧道，出隧道後分到大魚際與橈側三指半。",
+   "motor": [
+    "pronator",
+    "forearm_flex"
+   ],
+   "motorText": "旋前圓肌、橈側屈腕肌、掌長肌、屈指淺肌；前骨間神經：屈拇長肌、屈指深肌（食指、中指）、旋前方肌；手部：外展拇短肌、拇對掌肌、屈拇短肌淺頭、第 1–2 蚓狀肌。",
+   "sensory": "手掌橈側、拇指、食指、中指與無名指橈側半的掌面，以及這幾指末節背面（甲床）；掌皮支在腕隧道上方分出，所以腕隧道症候群手掌心多半不麻。",
+   "entrap": [
+    {
+     "site": "肘上：Struthers 韌帶、二頭肌腱膜（少見）",
+     "cause": "肱骨髁上突、二頭肌腱膜緊。",
+     "signs": "前臂旋前也無力，加上手部症狀。",
+     "test": "旋前抗阻、屈肘抗阻時誘發。",
+     "tuina": "放鬆肱二頭肌內緣、肘窩只輕揉。"
+    },
+    {
+     "site": "旋前圓肌症候群（兩頭之間、屈指淺肌弓）",
+     "cause": "反覆用力旋前與握持（工具、球拍、按摩師本身）、旋前圓肌肥厚。",
+     "signs": "前臂近端掌側痠痛，拇指到中指麻，手掌心也麻（掌皮支受影響），夜間麻較少。",
+     "test": "旋前抗阻加伸肘引發；旋前圓肌壓痛並重現麻；Phalen 常陰性。",
+     "tuina": "放鬆旋前圓肌、屈腕屈指肌群，從肘往腕；少海、曲澤附近不要深壓。"
+    },
+    {
+     "site": "前骨間神經",
+     "cause": "前臂深層肌肉緊、外傷、神經炎。",
+     "signs": "只有無力不麻：拇指末節與食指末節不能彎（做不出「OK」圓圈，捏成扁的）。",
+     "test": "OK 手勢測試。",
+     "tuina": "屬神經問題，轉介；推拿只做周邊放鬆。"
+    },
+    {
+     "site": "腕隧道（屈肌支持帶下方）",
+     "cause": "反覆屈腕握持、打字滑鼠、懷孕水腫、甲狀腺低下、糖尿病、腕骨排列改變。",
+     "signs": "拇指、食指、中指（無名指一半）麻刺，夜間或清晨麻醒，甩手會好；久了大魚際萎縮、捏力差。",
+     "test": "Phalen（雙手背相貼 60 秒）、腕部 Tinel、腕隧道壓迫測試；夜間手麻問診。",
+     "tuina": "放鬆前臂屈肌、旋前圓肌，往上查胸小肌、斜角肌（雙重擠壓）；大陵、內關一線只輕揉，不重壓腕隧道；大魚際萎縮轉介。"
+    }
+   ],
+   "lesion": "高位損傷：握拳時食指、中指伸直彎不下去（祝福手）；腕隧道：大魚際萎縮、拇指對掌無力（猿手）；拇指到中指感覺減退。",
+   "points": [
+    "PC2",
+    "PC3",
+    "PC4",
+    "PC6",
+    "PC7",
+    "PC8",
+    "HT1"
+   ],
+   "sinew": [
+    "PC",
+    "LU",
+    "HT"
+   ],
+   "notes": "筆記：正中神經可能被卡的地方依序為頸椎 → 前、中斜角肌 → 鎖骨（鎖骨下肌）→ 肩關節 → 胸小肌 → 肱二頭肌 → 旋前圓肌 → 手腕隧道（腕隧道症候群），手麻要沿這條路一段一段找（k-elbow）。網站肌肉資料 pronator：「正中神經會穿過旋前圓肌」。筆記 C7 檢查寫「正中神經區」（k-nerve-test）。",
+   "sources": "TeachMeAnatomy：Median nerve https://teachmeanatomy.info/upper-limb/nerves/median-nerve/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；Physiopedia：Upper Limb Tension Tests (ULTTs) https://www.physio-pedia.com/Upper_Limb_Tension_Tests_(ULTTs)；k-elbow；k-tos"
+  },
+  {
+   "id": "n-ulnar",
+   "name": "尺神經",
+   "en": "Ulnar nerve",
+   "roots": "C8–T1（常有 C7）",
+   "plexus": "臂神經叢",
+   "course": "來自內側束，沿上臂內側下行，在上臂中段穿過內側肌間隔到後方，經過 Struthers 弓。到肘後走在肱骨內上髁與尺骨鷹嘴之間的尺神經溝（小海一帶，俗稱「麻筋」），再經 Osborne 韌帶下方的肘隧道進入尺側屈腕肌兩頭之間。前臂段在尺側屈腕肌深面下行，到腕部在豆狀骨外側、經 Guyon 管（神門外下方）進入手掌，分成淺支（感覺）與深支（手內在肌）。",
+   "motor": [
+    "forearm_flex"
+   ],
+   "motorText": "尺側屈腕肌、屈指深肌（無名指、小指）；手部：小魚際肌、全部骨間肌、第 3–4 蚓狀肌、拇收肌、屈拇短肌深頭（網站沒有手內在肌條目）。",
+   "sensory": "小指全部、無名指尺側半，手掌與手背尺側；背側皮支在腕上約 5 cm 分出，所以 Guyon 管受壓時手背尺側通常不麻。",
+   "entrap": [
+    {
+     "site": "肘隧道／尺神經溝（內上髁後方）",
+     "cause": "長時間屈肘（講電話、睡覺抱手、靠在桌上手肘支撐）、尺側屈腕肌緊、肘外翻角變大、反覆投擲。",
+     "signs": "小指、無名指尺側麻，手背尺側也麻；屈肘久了加重；久了手指張合無力、手指不靈活、骨間肌萎縮（虎口背側凹）。",
+     "test": "肘部 Tinel（輕敲尺神經溝）、屈肘測試（肘全屈加腕伸 1–3 分鐘）、Froment、ULTT3。",
+     "tuina": "放鬆尺側屈腕肌、前臂屈肌與肱三頭肌內側頭；尺神經溝（小海）只輕撫，不按、不彈撥；建議睡覺不要長時間屈肘。"
+    },
+    {
+     "site": "Guyon 管（腕部豆狀骨與鉤骨之間）",
+     "cause": "騎自行車長時間手掌壓把手、用掌根敲打或推按（推拿師自己也要注意）、腱鞘囊腫。",
+     "signs": "小指、無名指掌側麻，手背尺側不麻；可能只有手內在肌無力。",
+     "test": "腕部尺側（神門外下方）Tinel；Froment。",
+     "tuina": "掌根推按時注意不要長時間壓自己的小魚際根部；客人腕尺側只輕揉。"
+    }
+   ],
+   "lesion": "爪形手（無名指、小指掌指關節過伸、指間關節屈曲）、骨間肌萎縮、手指張合無力、Froment 陽性（捏紙時拇指末節彎曲代償）、小指無法併攏。",
+   "points": [
+    "HT1",
+    "SI8",
+    "HT3",
+    "HT7",
+    "SI4",
+    "SI3",
+    "HT8"
+   ],
+   "sinew": [
+    "HT",
+    "SI"
+   ],
+   "notes": "筆記 C8 檢查寫「尺神經區」（k-nerve-test）；筆記 C8：第 4、5 指與第 3 指一半，並記「高爾夫球肘」（k-nerve-c）。肘內側痛也要分清是屈肌起點（高爾夫球肘）或尺神經溝（麻、電）。",
+   "sources": "TeachMeAnatomy：Ulnar nerve https://teachmeanatomy.info/upper-limb/nerves/ulnar-nerve/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；Physiopedia：Upper Limb Tension Tests (ULTTs) https://www.physio-pedia.com/Upper_Limb_Tension_Tests_(ULTTs)；k-nerve-c；k-nerve-test"
+  },
+  {
+   "id": "n-intercostal",
+   "name": "肋間神經（含肋下神經、肋間臂神經）",
+   "en": "Intercostal nerves (T1–T11), subcostal nerve (T12)",
+   "roots": "T1–T12",
+   "plexus": "肋間",
+   "course": "胸神經前支從椎間孔出來後，在肋骨下緣的肋溝內走，排列由上到下是靜脈、動脈、神經。沿途在腋中線附近分出外側皮支，到胸骨旁或腹直肌鞘穿出成前皮支。T7–T11 越過肋弓往前下進入腹壁，走在腹內斜肌與腹橫肌之間；T12 為肋下神經，沿第 12 肋下緣。T2 的外側皮支（肋間臂神經）到腋窩與上臂內側。",
+   "motor": [
+    "rectus_abd",
+    "ext_oblique",
+    "int_oblique"
+   ],
+   "motorText": "肋間內、外肌，肋下肌、胸橫肌；T7–T12：腹直肌、腹外斜肌、腹內斜肌、腹橫肌。",
+   "sensory": "胸腹壁的帶狀皮節（T4 約乳頭、T10 約肚臍）；肋間臂神經：腋窩、上臂內側近端。",
+   "entrap": [
+    {
+     "site": "肋骨與肋間（後側肋角、腋中線外側皮支穿出處）",
+     "cause": "胸椎旋轉、駝背、肋骨活動差、咳嗽、外傷；帶狀皰疹。",
+     "signs": "沿一條肋骨的帶狀刺痛或灼痛，深呼吸、咳嗽、轉身加重。",
+     "test": "沿肋間輕壓找痛點；比較皮節帶。皮膚出現成簇水泡或刺痛先於紅疹 → 疑似帶狀皰疹，轉介。",
+     "tuina": "肋間只用指腹輕揉，順著肋骨走，不在肋間用力點按（氣胸、肋骨骨折風險）；胸痛合併冒冷汗、喘先就醫。"
+    },
+    {
+     "site": "前皮支穿出腹直肌外緣（腹壁前皮神經卡壓）",
+     "cause": "腹肌緊、手術疤痕。",
+     "signs": "腹壁一指寬的局部刺痛，繃緊腹肌時加重（Carnett 徵象：抬頭繃腹痛更明顯，代表痛在腹壁不在內臟）。",
+     "test": "仰臥找點，請客人抬頭繃腹，痛不減反增。",
+     "tuina": "腹壁輕柔放鬆；腹痛來源不明、發燒、嘔吐先就醫。"
+    }
+   ],
+   "lesion": "單一肋間神經受損：一條帶狀的感覺異常；下段受損：腹壁局部鬆弛隆起。",
+   "points": [
+    "LR13",
+    "LR14",
+    "GB24",
+    "GB25",
+    "SP21",
+    "GB22",
+    "ST15",
+    "ST16",
+    "KI25",
+    "GB26"
+   ],
+   "sinew": [
+    "SP",
+    "GB",
+    "ST",
+    "LR"
+   ],
+   "notes": "筆記：「肋間神經（筆記：C2、T1–T3）」（k-nerve-test，寫法與主流不同，保留原文）；筆記用 T4 乳頭、T8 肋弓、T10 肚臍、T12 鼠蹊作為節段定位（k-nerve-test）。",
+   "sources": "StatPearls：Anatomy, Skin, Dermatomes（胸腹帶狀皮節）https://www.statpearls.com/point-of-care/29335；StatPearls：Anatomy, Skin, Dermatomes https://www.statpearls.com/point-of-care/29335；k-nerve-test"
+  },
+  {
+   "id": "n-dorsal-rami",
+   "name": "脊神經後支",
+   "en": "Dorsal rami of spinal nerves",
+   "roots": "C1–S5 各節",
+   "plexus": "脊神經後支",
+   "course": "每一節脊神經出椎間孔後立刻分出後支，往後繞過小面關節外側，分成內側支與外側支。內側支分布到小面關節與多裂肌、迴旋肌；外側支到豎脊肌，並穿出成背部的皮神經。後支不組成神經叢，一節管一條，所以背部的感覺與深層肌肉是一節一節排列的。L1–L3 外側支越過髂嵴成為臀上皮神經（另列 n-cluneal）。",
+   "motor": [
+    "erector",
+    "multifidus",
+    "splenius"
+   ],
+   "motorText": "豎脊肌（髂肋、最長、棘肌）、多裂肌、迴旋肌、橫突間肌、頭夾肌與頸夾肌、半棘肌、枕下肌（C1 後支）。",
+   "sensory": "背部中線兩旁一條條皮膚（比前支的皮節範圍窄）；C2 後支的枕大神經到後頭；L1–L3 的臀上皮神經到臀上外側。",
+   "entrap": [
+    {
+     "site": "小面關節內側支",
+     "cause": "小面關節受壓（後仰、久站、腰椎前凸增加）、退化。",
+     "signs": "中線旁局部痛，後仰、轉身加重，可轉移到臀部、大腿後側但多不過膝；沒有麻木無力。",
+     "test": "後仰加旋轉誘發（a_ext_pain）、棘突旁壓痛。",
+     "tuina": "放鬆多裂肌與豎脊肌，溫和牽引；不做衝擊扳法。"
+    },
+    {
+     "site": "外側支穿出胸腰筋膜處",
+     "cause": "豎脊肌外緣與筋膜長期緊繃、反覆彎腰。",
+     "signs": "背部一條局部刺痛或痠痛，位置比對應的椎間孔低 1–3 節（後支往外下走）。",
+     "test": "沿豎脊肌外緣找壓痛，再往上 1–3 節找相同節段的棘突旁壓痛。",
+     "tuina": "豎脊肌外緣順纖維推、揉；痛點不要定點重壓過久。"
+    }
+   ],
+   "lesion": "後支受損多表現為局部背痛與肌肉保護性緊繃，不會造成四肢無力。",
+   "points": [
+    "EX-B2",
+    "BL23",
+    "BL25",
+    "BL18",
+    "BL13",
+    "GV3",
+    "GB20",
+    "BL10"
+   ],
+   "sinew": [
+    "BL"
+   ],
+   "notes": "筆記背俞穴與節段對應（SHU：T1→大杼、T2→風門、T3→肺俞 … T8→胃脘下俞、T9→肝俞 … L5→關元俞）與夾脊都位於後支分布的範圍，可作為按壓找節段的位置（app.js SHU）。背俞穴在棘突下旁開 1.5 寸，與後支內外側支的位置接近，但穴位主治與神經節段不是一一對等。",
+   "sources": "WikiMSK：Cluneal Nerve Pain https://wikiMSK.org/wiki/Cluneal_Nerve_Pain；app.js SHU；b-jizhui-painsource"
+  },
+  {
+   "id": "n-cluneal",
+   "name": "臀上皮神經",
+   "en": "Superior cluneal nerves",
+   "roots": "L1–L3 後支外側支（部分 T12）",
+   "plexus": "脊神經後支",
+   "course": "L1–L3 後支的外側支在豎脊肌內往外下走，穿出胸腰筋膜後，在中線旁約 7–8 cm 處越過髂嵴（約腰眼、志室往下到髂嵴上緣）。越過髂嵴時穿過胸腰筋膜與髂嵴形成的骨纖維管，這是主要卡壓點。之後分布到臀部上外側皮下，最遠可到大轉子附近。",
+   "motor": [],
+   "motorText": "純感覺神經（皮支）。",
+   "sensory": "臀部上外側，可延伸到大轉子附近與大腿後外側上段。",
+   "entrap": [
+    {
+     "site": "越過髂嵴的骨纖維管（中線旁約 7–8 cm）",
+     "cause": "急性閃腰時被拉扯、反覆彎腰扭轉、腰方肌與豎脊肌外緣緊、腰帶束縛、骨盆一側上抬。",
+     "signs": "單側下背到臀部上外側痛，可延伸到大腿後外側但多停在膝以上；坐站轉換、彎腰時加重；按髂嵴上緣一點重現；沒有無力、反射正常，直腿抬高多為陰性。",
+     "test": "沿髂嵴上緣從中線往外滑，在中線旁約 7–8 cm 找到壓痛並重現臀痛。",
+     "tuina": "放鬆腰方肌、豎脊肌外緣與髂嵴上緣的筋膜，力道由輕到中；不要在痛點長時間重壓、不用指甲掐。"
+    }
+   ],
+   "lesion": "只有感覺症狀：臀上外側痛或麻，不會無力。",
+   "points": [
+    "BL52",
+    "EX-B7",
+    "BL23",
+    "GB25"
+   ],
+   "sinew": [
+    "BL",
+    "GB"
+   ],
+   "notes": "參考書《四肢手療法（圖解）》p.167：臀上皮神經經髂嵴骨纖維管，變窄或閃腰拉扯會臀痛並可串到膝窩；痛停在膝窩以上、按髂嵴上緣誘發要想到它（b-sizhi-hip-nerves）。筆記 L1：大腿上面一段（k-nerve-ls）。",
+   "sources": "WikiMSK：Cluneal Nerve Pain https://wikiMSK.org/wiki/Cluneal_Nerve_Pain；《四肢手療法（圖解）》p.166–167、172、239–240（b-sizhi-hip-nerves、b-sizhi-peroneal）；b-sizhi-hip-nerves；k-nerve-ls"
+  },
+  {
+   "id": "n-lumbarplex",
+   "name": "腰神經叢（總覽與直接肌支）",
+   "en": "Lumbar plexus",
+   "roots": "L1–L4（T12 參與）",
+   "plexus": "腰神經叢",
+   "course": "L1–L4 前支在腰大肌肌腹內組成神經叢，再從腰大肌外緣、內緣與前面分別穿出。外緣依序穿出髂腹下、髂腹股溝、股外側皮神經與股神經；前面穿出生殖股神經；內緣穿出閉孔神經。腰大肌緊或腰椎前凸增加，都會影響這些神經的出口。",
+   "motor": [
+    "iliopsoas",
+    "ql"
+   ],
+   "motorText": "腰大肌、腰小肌（L1–L3 直接肌支）、腰方肌（T12–L4 前支）；髂肌由股神經支配。",
+   "sensory": "下腹、鼠蹊、大腿前側、內側、外側，以及隱神經到小腿內側、足內側。",
+   "entrap": [
+    {
+     "site": "腰大肌內",
+     "cause": "腰大肌縮短（久坐、骨盆前傾）、腰椎前凸增加。",
+     "signs": "鼠蹊、大腿前側痠麻，伸髖時加重。",
+     "test": "Thomas 測試、股神經牽拉測試、臍旁腰大肌壓痛（q_psoas）。",
+     "tuina": "仰臥屈膝，臍旁 2–3 指慢慢沉入，避開腹主動脈搏動；孕婦、腹部手術後不做。"
+    }
+   ],
+   "lesion": "見各分支。",
+   "points": [
+    "ST25",
+    "SP15",
+    "BL23",
+    "BL52",
+    "GB25"
+   ],
+   "sinew": [
+    "SP",
+    "ST",
+    "KI"
+   ],
+   "notes": "筆記腰神經分布：L1 大腿上面一段、L2 大腿中間一段、L3 髕骨下緣一段、L4 大腿內側 → 小腿內側 → 前面 2 隻半腳趾（k-nerve-ls）；兄弟椎 L1↔C5、L2↔C4、L3↔C3、L4↔C2（k-family）。",
+   "sources": "TeachMeAnatomy：Lumbar plexus https://teachmeanatomy.info/lower-limb/nerves/lumbar-plexus/；Femoral nerve https://teachmeanatomy.info/lower-limb/nerves/femoral-nerve/；Obturator nerve https://teachmeanatomy.info/lower-limb/nerves/obturator-nerve/；k-nerve-ls；k-family"
+  },
+  {
+   "id": "n-iliohypogastric",
+   "name": "髂腹下神經、髂腹股溝神經",
+   "en": "Iliohypogastric and ilioinguinal nerves",
+   "roots": "L1（T12）",
+   "plexus": "腰神經叢",
+   "course": "兩者從腰大肌外緣上部穿出，斜過腰方肌前面，在髂嵴上方穿過腹橫肌，走在腹橫肌與腹內斜肌之間往前下。在髂前上棘內側附近穿出腹內斜肌。髂腹下神經到恥骨上方皮膚；髂腹股溝神經進入腹股溝管，從淺環出來到陰阜（陰囊或大陰唇前部）與大腿內上方。",
+   "motor": [
+    "int_oblique"
+   ],
+   "motorText": "腹內斜肌、腹橫肌下部。",
+   "sensory": "髂腹下：臀外上一小塊（外側皮支）、恥骨上方；髂腹股溝：鼠蹊、陰阜／陰囊或大陰唇前部、大腿內上方一小塊（L1 皮節）。",
+   "entrap": [
+    {
+     "site": "髂前上棘內側、腹內斜肌穿出處",
+     "cause": "疝氣或剖腹產等下腹手術後、腹肌與腰方肌緊、腰帶。",
+     "signs": "鼠蹊到陰部前方的灼痛、刺麻，走路伸髖加重、彎腰屈髖減輕。",
+     "test": "髂前上棘內側約 2–3 cm 壓痛重現；伸髖時加重。",
+     "tuina": "腹壁、腰方肌輕柔放鬆；鼠蹊處涉及隱私與大血管，需說明並取得同意，力道輕；術後疼痛轉介原醫師。"
+    }
+   ],
+   "lesion": "感覺異常為主；腹壁下部可輕度鬆弛。",
+   "points": [
+    "GB28",
+    "SP12",
+    "ST30",
+    "GB26"
+   ],
+   "sinew": [
+    "SP",
+    "LR",
+    "GB"
+   ],
+   "notes": "筆記 T12：鼠蹊（k-nerve-test）；筆記 L1：大腿上面一段（k-nerve-ls）。",
+   "sources": "TeachMeAnatomy：Lumbar plexus https://teachmeanatomy.info/lower-limb/nerves/lumbar-plexus/；Femoral nerve https://teachmeanatomy.info/lower-limb/nerves/femoral-nerve/；Obturator nerve https://teachmeanatomy.info/lower-limb/nerves/obturator-nerve/；k-nerve-test；k-nerve-ls"
+  },
+  {
+   "id": "n-lfcn",
+   "name": "股外側皮神經",
+   "en": "Lateral femoral cutaneous nerve",
+   "roots": "L2–L3",
+   "plexus": "腰神經叢",
+   "course": "從腰大肌外緣穿出，斜過髂肌前面往髂前上棘走。多數在髂前上棘內側約 1–2 cm 處從腹股溝韌帶下方（或穿過韌帶）出骨盆，這個轉角是主要卡壓點。之後穿過縫匠肌附近的闊筋膜，分成前、後支到大腿前外側皮膚。",
+   "motor": [],
+   "motorText": "純感覺神經，沒有運動支。",
+   "sensory": "大腿前外側一大片（約手掌大小，從髂前上棘下方到膝上），不越過中線、不到小腿。",
+   "entrap": [
+    {
+     "site": "髂前上棘內側、腹股溝韌帶下方",
+     "cause": "腰帶、緊身褲、工具腰帶、肥胖或懷孕腹部下垂、長時間屈髖坐姿或伸髖站立、骨盆前傾。",
+     "signs": "大腿前外側燒灼、刺麻、怕碰（感覺異常性股痛），站久走久加重、坐下屈髖減輕；沒有無力、反射正常。",
+     "test": "按壓髂前上棘內下方重現（或骨盆壓迫測試：側臥按壓骨盆 45 秒症狀減輕）；伸髖時加重。",
+     "tuina": "放鬆闊筋膜張肌、縫匠肌上端與髂肌周邊，髂前上棘內側只輕揉；建議鬆開腰帶。若合併無力、膝反射改變 → 想到 L2–L3 神經根或股神經，轉介。"
+    }
+   ],
+   "lesion": "只有感覺症狀：大腿前外側麻或燒灼，不會無力。",
+   "points": [
+    "ST31",
+    "GB28",
+    "GB29",
+    "GB31",
+    "ST32"
+   ],
+   "sinew": [
+    "ST",
+    "GB"
+   ],
+   "notes": "與筆記 L2「大腿中間一段」相鄰（k-nerve-ls）；站姿評估已有「大腿外側緊痛」（c_thigh_lat）。大腿外側麻要和髂脛束緊（痠緊）區分。",
+   "sources": "StatPearls：Meralgia Paresthetica https://www.ncbi.nlm.nih.gov/books/NBK557735/；k-nerve-ls"
+  },
+  {
+   "id": "n-femoral",
+   "name": "股神經（含隱神經）",
+   "en": "Femoral nerve; saphenous nerve",
+   "roots": "L2–L4",
+   "plexus": "腰神經叢",
+   "course": "從腰大肌外緣下部穿出，走在腰大肌與髂肌之間的溝裡，從腹股溝韌帶中點稍外側下方進入股三角，位置在股動脈外側（由外到內：神經、動脈、靜脈）。進入大腿後很快分成肌支與皮支。最長的皮支隱神經跟著股動脈進入縫匠肌深面的內收肌管（Hunter 管），在膝內側縫匠肌與股薄肌之間穿出，再沿小腿內側與大隱靜脈下行到足內側。",
+   "motor": [
+    "iliopsoas",
+    "rectus_fem",
+    "vastus_lat",
+    "vastus_med",
+    "vastus_int",
+    "sartorius",
+    "adductors"
+   ],
+   "motorText": "髂肌（腰大肌主要由腰神經叢直接支配）、股四頭肌、縫匠肌、恥骨肌（部分人另有閉孔神經）。",
+   "sensory": "股中間、股內側皮神經：大腿前側與前內側；隱神經：膝內側、小腿內側到內踝、足內側緣。",
+   "entrap": [
+    {
+     "site": "腹股溝韌帶下方",
+     "cause": "髂腰肌緊或血腫、長時間截石位或屈髖外展、髖手術。",
+     "signs": "大腿前側麻、伸膝無力（上下樓梯膝軟）、膝反射減弱。",
+     "test": "股神經牽拉測試、膝反射、伸膝抗阻。",
+     "tuina": "鼠蹊避開股動脈搏動處，只輕放鬆；伸膝無力或膝反射減弱轉介。"
+    },
+    {
+     "site": "內收肌管出口／膝內側（隱神經）",
+     "cause": "股內側肌與內收肌、縫匠肌緊，膝內側手術，騎車或跪姿。",
+     "signs": "膝內側到小腿內側灼熱、刺麻，沒有無力；常被當作膝內側痛（鵝足）。",
+     "test": "大腿內側中下段（箕門到血海之間、縫匠肌下）壓痛並往小腿內側放射；膝內側 Tinel。",
+     "tuina": "放鬆縫匠肌、股內側肌與內收肌群，膝內上方只輕揉不彈撥。"
+    }
+   ],
+   "lesion": "伸膝無力（膝軟、上下樓困難）、股四頭肌萎縮、膝反射減弱或消失，大腿前內側與小腿內側感覺減退。",
+   "points": [
+    "SP12",
+    "ST30",
+    "ST31",
+    "ST32",
+    "SP11",
+    "SP10",
+    "LR9",
+    "SP9",
+    "SP6"
+   ],
+   "sinew": [
+    "ST",
+    "SP",
+    "LR"
+   ],
+   "notes": "筆記 L3：髕骨下緣一段，檢查寫「膝」；L4：大腿內側 → 小腿內側 → 前面 2 隻半腳趾（k-nerve-ls、k-nerve-test），與股神經、隱神經的分布方向相符。",
+   "sources": "TeachMeAnatomy：Lumbar plexus https://teachmeanatomy.info/lower-limb/nerves/lumbar-plexus/；Femoral nerve https://teachmeanatomy.info/lower-limb/nerves/femoral-nerve/；Obturator nerve https://teachmeanatomy.info/lower-limb/nerves/obturator-nerve/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；Brookbush Institute：Lower Body Neurodynamic Tests https://brookbushinstitute.com/courses/special-tests-lower-body-neurodynamic-tests；k-nerve-ls；k-nerve-test"
+  },
+  {
+   "id": "n-obturator",
+   "name": "閉孔神經",
+   "en": "Obturator nerve",
+   "roots": "L2–L4",
+   "plexus": "腰神經叢",
+   "course": "從腰大肌內緣穿出，沿骨盆側壁往前下，經閉孔上方的閉孔管出骨盆。出來後分成前支、後支，夾著短內收肌往下，前支在長內收肌與短內收肌之間，後支在短內收肌與內收大肌之間。另有關節支到髖關節與膝關節。",
+   "motor": [
+    "adductors",
+    "deep_rot"
+   ],
+   "motorText": "長、短內收肌、內收大肌（內收部）、股薄肌、閉孔外肌（臀後六肌之一），部分恥骨肌。",
+   "sensory": "大腿內側中段一塊皮膚；髖關節與膝關節的關節感覺。",
+   "entrap": [
+    {
+     "site": "閉孔管、內收肌之間",
+     "cause": "內收肌緊（足球、溜冰、騎馬）、骨盆骨折、生產、骨盆腔手術。",
+     "signs": "鼠蹊內側到大腿內側深痛或麻，運動後加重；內收無力、走路外擺。",
+     "test": "內收抗阻比較；大腿內側中段感覺；被動外展牽拉時加重。",
+     "tuina": "內收肌群從膝上往鼠蹊分段放鬆，鼠蹊處力道放輕並取得同意。"
+    }
+   ],
+   "lesion": "內收無力、走路腿往外甩，大腿內側一塊麻。",
+   "points": [
+    "LR10",
+    "LR11",
+    "LR9",
+    "SP11",
+    "LR8"
+   ],
+   "sinew": [
+    "LR",
+    "SP",
+    "KI"
+   ],
+   "notes": "參考書：髖關節感覺大部分由閉孔神經支配，它也分支到膝，所以髖有問題常說膝痛（《經筋手療法圖解》p.212；《四肢手療法》p.172；b-jingjin-obturator、b-sizhi-hip-nerves）。",
+   "sources": "TeachMeAnatomy：Lumbar plexus https://teachmeanatomy.info/lower-limb/nerves/lumbar-plexus/；Femoral nerve https://teachmeanatomy.info/lower-limb/nerves/femoral-nerve/；Obturator nerve https://teachmeanatomy.info/lower-limb/nerves/obturator-nerve/；《經筋手療法圖解》p.212（b-jingjin-obturator）；《四肢手療法（圖解）》p.166–167、172、239–240（b-sizhi-hip-nerves、b-sizhi-peroneal）；b-jingjin-obturator"
+  },
+  {
+   "id": "n-supglut",
+   "name": "臀上神經",
+   "en": "Superior gluteal nerve",
+   "roots": "L4–S1",
+   "plexus": "薦神經叢",
+   "course": "從薦神經叢分出後，經坐骨大孔、在梨狀肌上緣出骨盆（梨狀肌上孔），與臀上動脈同行。進入臀中肌與臀小肌之間往前外走，分出上、下支，最後到闊筋膜張肌。",
+   "motor": [
+    "glute_med",
+    "glute_min",
+    "tfl_itb"
+   ],
+   "motorText": "臀中肌、臀小肌、闊筋膜張肌。",
+   "sensory": "無皮膚分布。",
+   "entrap": [
+    {
+     "site": "梨狀肌上孔、臀中小肌之間",
+     "cause": "梨狀肌上緣與臀中肌緊、臀部注射位置不當、髖手術。",
+     "signs": "臀外側深痛，走路骨盆晃、單腳站對側骨盆下掉。",
+     "test": "Trendelenburg（t_trend）、側臥外展抗阻比較。",
+     "tuina": "放鬆臀中肌、梨狀肌上緣與闊筋膜張肌；外展無力不痛 → 神經問題，轉介。"
+    }
+   ],
+   "lesion": "Trendelenburg 步態（站立腳臀中肌無力，對側骨盆下掉，身體往患側擺）。",
+   "points": [
+    "GB29",
+    "GB30",
+    "GB28"
+   ],
+   "sinew": [
+    "GB"
+   ],
+   "notes": "筆記「L5：外展」（k-nerve-test）與臀中小肌的 L4–S1 支配一致。",
+   "sources": "TeachMeAnatomy：Sacral plexus https://teachmeanatomy.info/lower-limb/nerves/sacral-plexus/；Sciatic nerve https://teachmeanatomy.info/lower-limb/nerves/sciatic-nerve/；Tibial nerve https://teachmeanatomy.info/lower-limb/nerves/tibial-nerve/；Common fibular nerve https://teachmeanatomy.info/lower-limb/nerves/common-fibular-nerve/；Pudendal nerve https://teachmeanatomy.info/pelvis/other/pudendal-nerve/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-nerve-test"
+  },
+  {
+   "id": "n-infglut",
+   "name": "臀下神經",
+   "en": "Inferior gluteal nerve",
+   "roots": "L5–S2",
+   "plexus": "薦神經叢",
+   "course": "從薦神經叢分出，經坐骨大孔、在梨狀肌下緣出骨盆（梨狀肌下孔），位置在坐骨神經內側淺層。出來後立刻往上進入臀大肌深面，分支分布到整塊臀大肌。",
+   "motor": [
+    "glute_max"
+   ],
+   "motorText": "臀大肌。",
+   "sensory": "無皮膚分布。",
+   "entrap": [
+    {
+     "site": "梨狀肌下孔",
+     "cause": "梨狀肌緊、久坐、臀部外傷。",
+     "signs": "起立、爬樓梯、從蹲站起無力，臀部深痛。",
+     "test": "俯臥屈膝伸髖抗阻比較。",
+     "tuina": "放鬆梨狀肌、臀大肌；伸髖無力不痛轉介。"
+    }
+   ],
+   "lesion": "伸髖無力：起身、爬坡困難，走路軀幹往後仰代償（臀大肌步態）；臀部萎縮扁平。",
+   "points": [
+    "BL54",
+    "GB30",
+    "BL36"
+   ],
+   "sinew": [
+    "BL"
+   ],
+   "notes": "筆記 S1 檢查「足跟向上」與臀大肌（S1 為主）同一節段。",
+   "sources": "TeachMeAnatomy：Sacral plexus https://teachmeanatomy.info/lower-limb/nerves/sacral-plexus/；Sciatic nerve https://teachmeanatomy.info/lower-limb/nerves/sciatic-nerve/；Tibial nerve https://teachmeanatomy.info/lower-limb/nerves/tibial-nerve/；Common fibular nerve https://teachmeanatomy.info/lower-limb/nerves/common-fibular-nerve/；Pudendal nerve https://teachmeanatomy.info/pelvis/other/pudendal-nerve/；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）"
+  },
+  {
+   "id": "n-sacral-short",
+   "name": "薦神經叢短肌支（梨狀肌神經、閉孔內肌神經、股方肌神經）",
+   "en": "Nerve to piriformis, nerve to obturator internus, nerve to quadratus femoris",
+   "roots": "梨狀肌神經 S1–S2；閉孔內肌神經 L5–S2；股方肌神經 L4–S1",
+   "plexus": "薦神經叢",
+   "course": "梨狀肌神經在骨盆內直接進入梨狀肌前面。閉孔內肌神經與股方肌神經經梨狀肌下孔出骨盆，前者繞過坐骨棘再經坐骨小孔回到閉孔內肌，並分支到上孖肌；後者走在坐骨神經深面，到下孖肌與股方肌。",
+   "motor": [
+    "piriformis",
+    "deep_rot"
+   ],
+   "motorText": "梨狀肌、閉孔內肌、上下孖肌、股方肌（閉孔外肌由閉孔神經支配）。",
+   "sensory": "無皮膚分布。",
+   "entrap": [],
+   "lesion": "單獨受損少見；這幾條肌肉的緊張度直接影響旁邊的坐骨神經。",
+   "points": [
+    "GB30",
+    "BL54"
+   ],
+   "sinew": [
+    "BL",
+    "GB"
+   ],
+   "notes": "筆記：坐骨神經從梨狀肌下方穿出，觸摸時從大轉子出發、手指張開輕輕撥開找（k-hip-rot）。",
+   "sources": "TeachMeAnatomy：Sacral plexus https://teachmeanatomy.info/lower-limb/nerves/sacral-plexus/；Sciatic nerve https://teachmeanatomy.info/lower-limb/nerves/sciatic-nerve/；Tibial nerve https://teachmeanatomy.info/lower-limb/nerves/tibial-nerve/；Common fibular nerve https://teachmeanatomy.info/lower-limb/nerves/common-fibular-nerve/；Pudendal nerve https://teachmeanatomy.info/pelvis/other/pudendal-nerve/；k-hip-rot"
+  },
+  {
+   "id": "n-sciatic",
+   "name": "坐骨神經",
+   "en": "Sciatic nerve",
+   "roots": "L4–S3",
+   "plexus": "薦神經叢",
+   "course": "由 L4–S3 前支在骨盆後壁、梨狀肌前面組成，是人體最粗的神經。多數從梨狀肌下緣經坐骨大孔出骨盆（少數整條或腓總神經那一支穿過梨狀肌、或從上方出來）。接著在臀大肌深面，走在坐骨結節與大轉子之間（約內 1/3 處）、閉孔內肌與股方肌後面往下。進入大腿後在股二頭肌長頭深面下行，沿途支配膕繩肌，約在膕窩上角分成脛神經與腓總神經（也可能在更高位置提早分開）。",
+   "motor": [
+    "hamstrings",
+    "adductors",
+    "gastroc",
+    "soleus",
+    "popliteus",
+    "tib_post",
+    "tib_ant",
+    "toe_ext",
+    "peroneus",
+    "plantar"
+   ],
+   "motorText": "大腿：半腱肌、半膜肌、股二頭肌長頭（脛神經部）、股二頭肌短頭（腓總神經部）、內收大肌後部；膝以下全部肌肉經脛神經與腓總神經。",
+   "sensory": "本身在大腿沒有皮支（大腿後側皮膚屬股後皮神經 S1–S3）；經分支負責小腿外側、後側與整個足部（隱神經區除外）。",
+   "entrap": [
+    {
+     "site": "梨狀肌下緣（梨狀肌症候群）",
+     "cause": "梨狀肌縮短緊繃（髖外轉傾向）或被拉長繃緊（髖內轉傾向）、久坐硬椅或錢包放後口袋、臀部撞擊；解剖變異（穿過梨狀肌）。",
+     "signs": "臀部深痛、往大腿後側甚至小腿放射，久坐加重；通常沒有明顯肌力或反射改變，腰部活動相對正常。",
+     "test": "課堂直腿抬高：45° 後痛、60–70° 最痛、超過 70° 不痛 → 梨狀肌（k-slr）；FAIR；梨狀肌壓痛重現。",
+     "tuina": "放鬆梨狀肌、臀後六肌與臀大肌，從大轉子往薦骨方向；壓下去若腿麻立即減力。伸展用屈髖加外轉（4 字）。"
+    },
+    {
+     "site": "坐骨結節與大轉子之間（環跳深層）",
+     "cause": "膕繩肌近端、股方肌緊、坐骨結節滑囊、久坐。",
+     "signs": "坐骨結節外側深痛，坐下加重，往大腿後側放射。",
+     "test": "坐骨結節外側壓痛、屈髖加伸膝牽拉時加重。",
+     "tuina": "環跳深層慢慢沉壓、停留，不做快速橫撥；腿麻立即減力。"
+    },
+    {
+     "site": "大腿後側（膕繩肌之間）",
+     "cause": "膕繩肌拉傷後的沾黏、疤痕。",
+     "signs": "大腿後側中段痛並往下放射，伸展膕繩肌時刺痛。",
+     "test": "SLR 加踝背屈（Bragard）重現；大腿後側壓痛點。",
+     "tuina": "膕繩肌放鬆以順纖維方向的揉、推為主；腿麻不做深壓。"
+    }
+   ],
+   "lesion": "高位完全損傷：屈膝無力、膝以下全部無力（垂足、不能踮腳），小腿外側與足部感覺喪失，踝反射消失。",
+   "points": [
+    "GB30",
+    "BL54",
+    "BL36",
+    "BL37",
+    "BL40"
+   ],
+   "sinew": [
+    "BL",
+    "GB"
+   ],
+   "notes": "課堂：坐骨神經由 L4、L5、S1–S3 合成，從梨狀肌下方（少數穿過肌腹）出來，到膕窩分成脛神經與腓總神經；直腿抬高鑑別真假坐骨神經痛（k-slr，課堂 0810）。筆記（師叔）「坐骨神經的兩條線」：腰椎線（股二頭肌 → 薦結節韌帶 → 副側韌帶 → 髂腰橫韌帶 → L4、L5）與梨狀肌線（骨盆）（k-iliolumbar）。《四肢手療法》p.166：體表定位為髂後上棘到坐骨結節連線中點連到大轉子尖，這條線內、中 1/3 交界是穿出點。",
+   "sources": "TeachMeAnatomy：Sacral plexus https://teachmeanatomy.info/lower-limb/nerves/sacral-plexus/；Sciatic nerve https://teachmeanatomy.info/lower-limb/nerves/sciatic-nerve/；Tibial nerve https://teachmeanatomy.info/lower-limb/nerves/tibial-nerve/；Common fibular nerve https://teachmeanatomy.info/lower-limb/nerves/common-fibular-nerve/；Pudendal nerve https://teachmeanatomy.info/pelvis/other/pudendal-nerve/；《四肢手療法（圖解）》p.166–167、172、239–240（b-sizhi-hip-nerves、b-sizhi-peroneal）；Brookbush Institute：Lower Body Neurodynamic Tests https://brookbushinstitute.com/courses/special-tests-lower-body-neurodynamic-tests；k-slr；k-iliolumbar；u-piriformis"
+  },
+  {
+   "id": "n-tibial",
+   "name": "脛神經（含足底內、外側神經）",
+   "en": "Tibial nerve; medial and lateral plantar nerves",
+   "roots": "L4–S3",
+   "plexus": "薦神經叢",
+   "course": "在膕窩上角由坐骨神經分出後，垂直走在膕窩正中最淺層（委中深處，比膕動靜脈淺），分出腓腸內側皮神經。往下穿過比目魚肌腱弓進入小腿深後腔，在脛骨後肌表面、與脛後動脈同行。到踝部經內踝後方（太谿、照海一帶）的跗骨隧道，被屈肌支持帶蓋住，隧道內由前到後是脛後肌腱、屈趾長肌腱、動靜脈、神經、屈拇長肌腱。出隧道後分成足底內側、外側神經與跟骨內側支。",
+   "motor": [
+    "gastroc",
+    "soleus",
+    "popliteus",
+    "tib_post",
+    "hamstrings",
+    "plantar"
+   ],
+   "motorText": "大腿：膕繩肌（脛神經部）；小腿：腓腸肌、比目魚肌、蹠肌、膕肌、脛後肌、屈趾長肌、屈拇長肌；足底：足底內側神經（外展拇肌、屈趾短肌、屈拇短肌、第 1 蚓狀肌）、足底外側神經（其餘足底內在肌）。",
+   "sensory": "腓腸內側皮神經（參與腓腸神經）；跟骨內側支：腳跟內側與足跟底；足底內側神經：足底內側 2/3 與內側三趾半；足底外側神經：足底外側與外側一趾半。",
+   "entrap": [
+    {
+     "site": "比目魚肌腱弓",
+     "cause": "小腿後側肌群肥厚緊繃、跑者。",
+     "signs": "小腿後側深層痛、足底麻。",
+     "test": "腓腸肌、比目魚肌中段深壓重現足底麻。",
+     "tuina": "小腿後側放鬆時順肌纖維走，承山深層不要長時間重壓。"
+    },
+    {
+     "site": "跗骨隧道（內踝後下方、屈肌支持帶下）",
+     "cause": "扁平足、跟骨外翻（足過度旋前拉扯）、踝扭傷後腫脹、腱鞘炎、靜脈曲張、緊鞋。",
+     "signs": "足底、腳趾燒灼刺麻，站久走久加重、夜間也會；腳跟內側痛，常被當足底筋膜炎。",
+     "test": "內踝後下方 Tinel；踝背屈加外翻並伸趾維持 5–10 秒（背屈外翻測試）重現。",
+     "tuina": "放鬆脛後肌、屈趾長肌與小腿後側，處理扁平足與跟骨外翻；太谿、照海附近只輕揉，不深壓、不彈撥。"
+    },
+    {
+     "site": "足底內側神經（舟骨下、外展拇肌深面；慢跑者足）",
+     "cause": "扁平足、外展拇肌緊、鞋墊壓迫。",
+     "signs": "足弓內側灼痛、內側腳趾麻。",
+     "test": "舟骨結節下方（然谷附近）壓痛、Tinel。",
+     "tuina": "外展拇肌與足底筋膜放鬆，力道中等。"
+    }
+   ],
+   "lesion": "高位損傷：不能踮腳（蹠屈無力）、腳趾不能屈、足底麻、踝反射減弱；跗骨隧道：足底麻、足內在肌萎縮、腳趾爪形。",
+   "points": [
+    "BL40",
+    "BL55",
+    "BL56",
+    "BL57",
+    "KI9",
+    "KI7",
+    "KI3",
+    "KI6",
+    "KI2",
+    "KI1"
+   ],
+   "sinew": [
+    "BL",
+    "KI"
+   ],
+   "notes": "筆記 S1 檢查「足跟向上（踮腳）」對應脛神經支配的蹠屈肌（k-nerve-test）。",
+   "sources": "TeachMeAnatomy：Sacral plexus https://teachmeanatomy.info/lower-limb/nerves/sacral-plexus/；Sciatic nerve https://teachmeanatomy.info/lower-limb/nerves/sciatic-nerve/；Tibial nerve https://teachmeanatomy.info/lower-limb/nerves/tibial-nerve/；Common fibular nerve https://teachmeanatomy.info/lower-limb/nerves/common-fibular-nerve/；Pudendal nerve https://teachmeanatomy.info/pelvis/other/pudendal-nerve/；StatPearls：Tarsal Tunnel Syndrome https://www.statpearls.com/point-of-care/29876；《基礎肌動學（第三版）》p.62–63、66、103、129、174–177、246–248、289–290、326–327（b-kines-nerves）；k-nerve-test"
+  },
+  {
+   "id": "n-peroneal",
+   "name": "腓總神經（腓深、腓淺神經）",
+   "en": "Common fibular (peroneal) nerve; deep and superficial fibular nerves",
+   "roots": "L4–S2",
+   "plexus": "薦神經叢",
+   "course": "在膕窩上角由坐骨神經分出，沿股二頭肌腱內緣往外下走（委陽一帶），分出腓腸外側皮神經。接著繞過腓骨頭後方、緊貼骨膜繞過腓骨頸外側（陽陵泉後下方），這段只有皮膚覆蓋，是下肢最容易受壓的神經。穿過腓骨長肌起點的纖維開口後分成兩支：腓深神經往前穿到前腔，與脛前動脈同行，經踝前伸肌支持帶下方（解谿一帶）到足背，終於第 1、2 趾間；腓淺神經在外側腔的腓骨長短肌之間下行，約在小腿下 1/3 前外側穿出深筋膜，到足背皮下。",
+   "motor": [
+    "hamstrings",
+    "tib_ant",
+    "toe_ext",
+    "peroneus"
+   ],
+   "motorText": "股二頭肌短頭（主幹）；腓深神經：脛前肌、伸趾長肌、伸拇長肌、第三腓骨肌、伸趾短肌與伸拇短肌；腓淺神經：腓骨長肌、腓骨短肌。",
+   "sensory": "腓腸外側皮神經：小腿上外側；腓淺神經：小腿下段前外側、足背大部分；腓深神經：第 1、2 趾之間的趾蹼背側一小塊。",
+   "entrap": [
+    {
+     "site": "腓骨頭、腓骨頸",
+     "cause": "翹腳（腿交叉壓膝外側）、久蹲或跪坐（採收、鋪地板）、石膏或護具太緊、快速減重、側臥手術姿勢、膝外側重壓或彈撥。",
+     "signs": "垂足、走路拖腳或抬高膝蓋跨步（跨閾步態），足背、小腿外側麻；踝內翻扭傷後也可能拉傷。",
+     "test": "腓骨頸 Tinel；踝背屈、伸拇抗阻、外翻抗阻比較兩側；腳跟走路。",
+     "tuina": "腓骨頸後方（陽陵泉後下）不持續深壓、不橫撥；按後出現足背麻或腳背抬不起來立即停止並轉介。可放鬆股二頭肌與腓骨長肌（避開腓骨頸）。"
+    },
+    {
+     "site": "踝前伸肌支持帶下（腓深神經，前跗骨隧道）",
+     "cause": "鞋帶綁太緊、高跟鞋、足背骨刺、踝扭傷。",
+     "signs": "足背中段痛、第 1、2 趾間麻。",
+     "test": "解谿附近 Tinel；踝蹠屈加腳趾屈時加重。",
+     "tuina": "鬆鞋帶、放鬆脛前肌與伸趾肌；踝前只輕揉。"
+    },
+    {
+     "site": "小腿下 1/3 前外側（腓淺神經穿出筋膜處）",
+     "cause": "反覆踝內翻扭傷、外側腔肌肉肥厚、筋膜緊。",
+     "signs": "小腿下段外側到足背刺麻，運動時加重，伸趾功能正常。",
+     "test": "外踝上約一掌寬前外側壓痛並往足背放射；踝蹠屈加內翻牽拉時重現。",
+     "tuina": "腓骨肌放鬆，穿出點只輕撫。"
+    }
+   ],
+   "lesion": "垂足（踝背屈、伸趾無力）、外翻無力、走路拖腳或跨閾步態，足背與小腿外側麻；腓深神經單獨受損：背屈無力、第 1 趾蹼麻。",
+   "points": [
+    "BL39",
+    "GB34",
+    "ST36",
+    "ST38",
+    "ST40",
+    "GB36",
+    "GB39",
+    "ST41",
+    "GB40",
+    "GB41",
+    "LR3"
+   ],
+   "sinew": [
+    "GB",
+    "ST"
+   ],
+   "notes": "網站統一說法：腓總神經繞過腓骨頸、緊貼骨膜，位置淺，陽陵泉後下不深壓（u-peroneal、k-caution-points、《四肢手療法》p.239–240）。筆記 L5 另一頁：「L5 神經支配沿小腿外側到足背」（k-nerve-test），與腓淺神經皮膚分布同一區，所以足背麻要分清 L5 神經根或腓總神經（看有沒有腰痛、臀中肌外展是否也無力）。",
+   "sources": "TeachMeAnatomy：Sacral plexus https://teachmeanatomy.info/lower-limb/nerves/sacral-plexus/；Sciatic nerve https://teachmeanatomy.info/lower-limb/nerves/sciatic-nerve/；Tibial nerve https://teachmeanatomy.info/lower-limb/nerves/tibial-nerve/；Common fibular nerve https://teachmeanatomy.info/lower-limb/nerves/common-fibular-nerve/；Pudendal nerve https://teachmeanatomy.info/pelvis/other/pudendal-nerve/；《四肢手療法（圖解）》p.166–167、172、239–240（b-sizhi-hip-nerves、b-sizhi-peroneal）；Brookbush Institute：Lower Body Neurodynamic Tests https://brookbushinstitute.com/courses/special-tests-lower-body-neurodynamic-tests；u-peroneal；k-nerve-test"
+  },
+  {
+   "id": "n-sural",
+   "name": "腓腸神經",
+   "en": "Sural nerve",
+   "roots": "S1–S2（L5 少量）",
+   "plexus": "薦神經叢",
+   "course": "由脛神經的腓腸內側皮神經與腓總神經的交通支在小腿後側會合而成。先在腓腸肌兩頭之間的溝裡下行，約小腿中段穿出深筋膜，與小隱靜脈並行。往下走在跟腱外側，繞過外踝後下方（崑崙、申脈一帶），沿足外側緣到小趾。",
+   "motor": [],
+   "motorText": "純感覺神經，沒有運動支。",
+   "sensory": "小腿後外側下段、外踝、足外側緣與小趾外側（與 S1 皮節大幅重疊）。",
+   "entrap": [
+    {
+     "site": "外踝後方、跟腱外側；小腿中段穿筋膜處",
+     "cause": "高筒靴或鞋子後跟、踝內翻扭傷、第 5 蹠骨骨折、跟腱手術、腱鞘囊腫。",
+     "signs": "足外側、小趾刺麻或燒灼，沒有無力、反射正常。",
+     "test": "外踝後方或小腿中段穿出處 Tinel；踝背屈加內翻牽拉時重現。",
+     "tuina": "小腿後側放鬆，崑崙、申脈附近只輕揉；只有麻沒有無力時可先從鞋具與周邊肌肉著手，若合併腰痛、踮腳無力則想 S1 神經根並轉介。"
+    }
+   ],
+   "lesion": "足外側、小趾感覺減退；常被醫師當作神經切片的取材處，因為切掉只留下小範圍麻。",
+   "points": [
+    "BL56",
+    "BL57",
+    "BL58",
+    "BL60",
+    "BL62",
+    "BL67"
+   ],
+   "sinew": [
+    "BL"
+   ],
+   "notes": "筆記 S1：大腿外側 → 小腿外側 → 後面 2 隻半腳趾（k-nerve-ls）；皮節圖 S1：足外側、小趾、足跟（附註資料）。腓腸神經只有感覺，可用「有沒有無力、反射改變」來和 S1 神經根分開。",
+   "sources": "TeachMeAnatomy：Sacral plexus https://teachmeanatomy.info/lower-limb/nerves/sacral-plexus/；Sciatic nerve https://teachmeanatomy.info/lower-limb/nerves/sciatic-nerve/；Tibial nerve https://teachmeanatomy.info/lower-limb/nerves/tibial-nerve/；Common fibular nerve https://teachmeanatomy.info/lower-limb/nerves/common-fibular-nerve/；Pudendal nerve https://teachmeanatomy.info/pelvis/other/pudendal-nerve/；k-nerve-ls"
+  },
+  {
+   "id": "n-pudendal",
+   "name": "陰部神經",
+   "en": "Pudendal nerve",
+   "roots": "S2–S4",
+   "plexus": "薦神經叢",
+   "course": "由 S2–S4 前支組成，經梨狀肌下孔出骨盆，繞過坐骨棘與薦棘韌帶後方，隨即經坐骨小孔回到會陰。之後走在閉孔內肌筋膜形成的陰部管（Alcock 管）內，往前分出直腸下神經、會陰神經與陰莖／陰蒂背神經。薦結節韌帶與薦棘韌帶之間、陰部管是兩個卡壓點。",
+   "motor": [],
+   "motorText": "肛門外括約肌、尿道外括約肌、骨盆底肌（提肛肌部分）、會陰肌群（網站沒有骨盆底肌條目）。",
+   "sensory": "會陰、肛門周圍、外生殖器（S2–S4 皮節中央區）。",
+   "entrap": [
+    {
+     "site": "薦結節韌帶與薦棘韌帶之間；陰部管",
+     "cause": "長時間騎自行車、久坐硬椅、骨盆底肌過度緊張、生產、骨盆手術。",
+     "signs": "坐著時會陰、肛門或生殖器燒灼痛或麻，站起或躺下減輕（坐在馬桶座上反而較好）。",
+     "test": "推拿師不做內部檢查；問診分辨「坐姿加重的會陰痛」。",
+     "tuina": "屬醫療評估範圍，轉介（泌尿、婦科、疼痛科）；推拿只做臀部、內收肌、薦結節韌帶周邊的放鬆，需說明並取得同意，不做經肛門或陰道的手法。大小便失禁、會陰麻木 → 馬尾警訊，立即急診。"
+    }
+   ],
+   "lesion": "會陰麻木、大小便或性功能障礙（需醫師評估）。",
+   "points": [
+    "GV1",
+    "BL34",
+    "BL54"
+   ],
+   "sinew": [
+    "BL"
+   ],
+   "notes": "筆記：S2–S5「肛門周圍擴散」（k-nerve-test）；筆記 Co（尾骨）：痔瘡、肛門痛、很怕痛（k-nerve-ls）。本站不做經肛門的尾骨矯正（k-redflag）。",
+   "sources": "TeachMeAnatomy：Sacral plexus https://teachmeanatomy.info/lower-limb/nerves/sacral-plexus/；Sciatic nerve https://teachmeanatomy.info/lower-limb/nerves/sciatic-nerve/；Tibial nerve https://teachmeanatomy.info/lower-limb/nerves/tibial-nerve/；Common fibular nerve https://teachmeanatomy.info/lower-limb/nerves/common-fibular-nerve/；Pudendal nerve https://teachmeanatomy.info/pelvis/other/pudendal-nerve/；k-nerve-test；k-nerve-ls；k-redflag"
+  },
+  {
+   "id": "n-cord",
+   "name": "脊髓（下端：脊髓圓錐、馬尾）",
+   "en": "Spinal cord; conus medullaris; cauda equina",
+   "roots": "脊髓 C1–S5、Co1；成人脊髓圓錐約在 L1–L2 椎體高度",
+   "plexus": "脊髓",
+   "course": "脊髓從枕骨大孔往下，位於椎管內，頸膨大（C5–T1）與腰膨大（L1–S2）分別發出到上、下肢的神經根。因為脊髓比脊柱短，成人脊髓圓錐多在 L1–L2 椎體高度（個體差異約 T12–L3），以下的腰薦神經根在椎管內斜向下走，像馬尾一樣，到各自的椎間孔才出去。所以腰椎間盤突出壓到的是馬尾中的神經根，而胸腰交界以上受壓則可能直接壓到脊髓。",
+   "motor": [],
+   "motorText": "全身骨骼肌（經各神經根）。",
+   "sensory": "全身（經各神經根）；脊髓圓錐與馬尾中央的 S2–S5 管會陰、肛門、膀胱與直腸感覺。",
+   "entrap": [
+    {
+     "site": "頸椎管（脊髓型頸椎病）",
+     "cause": "退化性頸椎狹窄、骨刺、後縱韌帶鈣化、大的頸椎間盤突出。",
+     "signs": "兩手笨拙（扣釦子、寫字變差）、兩側手麻、走路不穩像踩棉花、反射變得特別強；常不太痛。",
+     "test": "Hoffmann、Babinski、走直線、反射亢進；推拿師只篩檢不診斷。",
+     "tuina": "立即轉介；不做頸部扳動、牽引或重壓。"
+    },
+    {
+     "site": "腰椎管下段（馬尾症候群）",
+     "cause": "大的中央型腰椎間盤突出、腰椎管狹窄、腫瘤、感染、外傷。",
+     "signs": "大小便失禁或解不出來、會陰（鞍區）麻木、兩腿無力或麻、性功能突然改變。",
+     "test": "問診（r_saddle）；兩側下肢神經學篩檢。",
+     "tuina": "屬急症，立即送急診；不做任何推拿。"
+    },
+    {
+     "site": "腰椎管狹窄（神經性間歇跛行）",
+     "cause": "退化、黃韌帶肥厚、小面關節增生、滑脫。",
+     "signs": "走一段路兩腿痠麻沉重、要坐下或彎腰休息才好（騎腳踏車反而可以），後仰加重。",
+     "test": "問診：走路距離、彎腰休息是否緩解；與血管性跛行（站著休息就好、足背脈弱）區分。",
+     "tuina": "轉介確認；可做臀腿周邊放鬆與骨盆後傾的姿勢建議，不做後仰頂腰、不重壓腰椎。"
+    }
+   ],
+   "lesion": "上運動神經元（脊髓、腦）受損：無力伴肌肉張力增加、反射亢進、Babinski／Hoffmann 陽性、陣攣；馬尾（下運動神經元）受損：下肢軟弱無力、反射減弱、鞍區麻木、大小便障礙。",
+   "points": [
+    "GV14",
+    "GV12",
+    "GV9",
+    "GV4",
+    "GV3",
+    "GV1"
+   ],
+   "sinew": [
+    "BL"
+   ],
+   "notes": "課堂：脊髓從頸椎一路往下約到 L1–L2，再往下是馬尾神經（k-cervical，課堂 0914、0921）；統一說法 u-cord-level。筆記「父母椎」：1 個媽媽管 5 個孩子——S1↔C1–C5、S2↔C6–T2、S3↔T3–T7、S4↔T8–T12、S5↔L1–L5（k-family），屬課堂的力學模型。",
+   "sources": "k-redflag（課程警訊）；一般臨床：馬尾症候群需急診；StatPearls：Cervical Myelopathy https://www.statpearls.com/as/surgery/25450/；k-cervical；u-cord-level；k-redflag；k-family"
+  },
+  {
+   "id": "n-trigeminal-v3",
+   "name": "三叉神經下頜支",
+   "en": "Mandibular division of trigeminal nerve (CN V3)",
+   "roots": "CN V3",
+   "plexus": "腦神經",
+   "course": "從顱底卵圓孔出顱，進入顳下窩，位置在翼外肌深面。前幹分出咬肌神經（經下頜切跡到咬肌深面）與顳深神經（往上到顳肌），後幹分出耳顳神經、舌神經與下齒槽神經。耳顳神經繞到耳前上行，與顳淺動脈伴行。",
+   "motor": [
+    "masseter",
+    "temporalis"
+   ],
+   "motorText": "咬肌、顳肌、翼內肌、翼外肌、下頜舌骨肌、二腹肌前腹、鼓膜張肌、腭帆張肌。",
+   "sensory": "下唇、下巴、下排牙齒、舌前 2/3 一般感覺、耳前到顳部（耳顳神經）。整個臉的感覺屬三叉神經三支（不是頸神經）。",
+   "entrap": [
+    {
+     "site": "耳顳神經（耳前、顳肌附近）",
+     "cause": "顳肌、翼外肌緊，咬牙、夜間磨牙。",
+     "signs": "耳前到太陽穴的刺痛或灼熱，咀嚼時加重。",
+     "test": "顳肌、咬肌壓痛重現；張口偏移（q_jaw_dev）。",
+     "tuina": "咬肌、顳肌輕到中等力道揉散；耳前（聽宮、耳門）只輕揉。臉部突發劇烈電擊痛（三叉神經痛）或臉部麻木轉介。"
+    }
+   ],
+   "lesion": "咀嚼無力、張口時下頜偏向患側；下巴、下唇麻。",
+   "points": [
+    "ST6",
+    "ST7",
+    "GB8",
+    "TE20",
+    "EX-HN5",
+    "SI19",
+    "TE21",
+    "GB2"
+   ],
+   "sinew": [
+    "ST",
+    "GB",
+    "TE"
+   ],
+   "notes": "筆記 C2：「顏面（眼耳口鼻），頸椎造成的較少」（k-nerve-c）；主流把顏面皮膚感覺歸三叉神經，C2 皮節在後頭。兩者可並存：上頸的三叉頸核讓上頸問題可以把痛轉到臉與眼眶（見 n-gon）。",
+   "sources": "TeachMeAnatomy：Mandibular nerve https://teachmeanatomy.info/head/nerves/mandibular-nerve/；k-nerve-c"
+  }
+ ],
+ "dermatomes": [
+  {
+   "seg": "C1",
+   "area": "沒有皮節：多數人 C1 只有運動根（枕下肌群），沒有皮膚感覺分布。",
+   "landmark": "皮節圖從 C2 開始。",
+   "course": "筆記 C1：頭頂（痠、痛、麻）、高血壓、地中海禿、睡眠品質不好（k-nerve-c）。",
+   "diff": "筆記的 C1 是課堂的症狀對應（往哪一節找），不是皮膚感覺區；評估時兩者分開用：頭頂症狀依筆記往 C1 找，做感覺檢查時從 C2 開始。",
+   "src": "課堂筆記；StatPearls Dermatomes"
+  },
+  {
+   "seg": "C2",
+   "area": "後腦勺（枕部）到頭頂後方，耳後下方。",
+   "landmark": "枕外隆突外側約 1 cm（ISNCSCI 檢查點）；枕大神經區。",
+   "course": "筆記 C2：顏面（眼耳口鼻），頸椎造成的較少（胸椎較多）。",
+   "diff": "皮節圖 C2 在後頭；臉部皮膚屬三叉神經。筆記的「顏面」可理解為上頸問題轉到臉、眼眶的症狀（三叉頸核的轉移），兩者並存。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "C3",
+   "area": "頸部（前後一圈），往下到鎖骨上方。",
+   "landmark": "鎖骨上窩（鎖骨中線）。",
+   "course": "筆記 C3：喉嚨；檢查動作「側彎」（k-nerve-test）。",
+   "diff": "筆記的喉嚨在 C3 皮節的頸前範圍內，方向一致。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "C4",
+   "area": "肩上、鎖骨一帶到第 2 肋上方（像披肩）。",
+   "landmark": "肩鎖關節上方。",
+   "course": "筆記 C4：肩膀（筆記也記：流鼻血）；檢查動作「聳肩」。",
+   "diff": "肩膀位置與皮節圖一致；「流鼻血」屬筆記的臨床觀察，皮節圖沒有對應。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "C5",
+   "area": "上臂外側（三角肌區），往下到肘外側。",
+   "landmark": "肘窩外側、肘橫紋近端（ISNCSCI）；三角肌下外側。",
+   "course": "筆記 C5：手臂陰面延伸至手掌心；檢查動作「肩外展」。",
+   "diff": "筆記寫手臂陰面（掌側）到手掌心，皮節圖在上臂外側。依筆記判斷往 C5 找；做感覺檢查時，上臂外側也一併比較兩側。肌力檢查（肩外展）兩邊一致。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "C6",
+   "area": "前臂外側（橈側）到拇指、食指。",
+   "landmark": "拇指背側近節。",
+   "course": "筆記 C6：第 1、2 指，第 3 指一半；檢查寫「橈神經區」。",
+   "diff": "一致（筆記多了中指的一半，皮節本來就有重疊）。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "C7",
+   "area": "中指（手背、手掌中間），前臂後側中線一條。",
+   "landmark": "中指背側近節。",
+   "course": "筆記 C7：第 2、3、4 指；檢查寫「正中神經區」。",
+   "diff": "皮節圖只畫中指；筆記範圍較寬（食指、中指、無名指），中指兩者都有。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "C8",
+   "area": "無名指、小指與前臂內側（尺側）。",
+   "landmark": "小指背側近節。",
+   "course": "筆記 C8：從 C7 與 T1 之間出來；第 4、5 指與第 3 指一半；高爾夫球肘；檢查寫「尺神經區」。",
+   "diff": "一致；筆記另把高爾夫球肘列在 C8（肘內側痛往上查 C8）。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T1",
+   "area": "前臂近端內側到上臂內側。",
+   "landmark": "肘窩內側、內上髁上方（ISNCSCI）。",
+   "course": "筆記 T1：肩峰 → 手肘內側 → 手腕內側（k-nerve-t）；另頁：T1 血壓（k-viscera）。",
+   "diff": "筆記與皮節圖都在手臂內側；筆記的起點寫肩峰、終點到手腕內側，範圍較長。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T2",
+   "area": "上臂內側近腋窩、上胸（第 2 肋一帶）。",
+   "landmark": "腋窩頂。",
+   "course": "筆記 T2：肩峰後 2 指、肩胛骨稜線下緣 → 肘尖 → 手指末梢（5 指同時麻）；甲亢 T2–T4。",
+   "diff": "皮節圖 T2 只到上臂內側近腋窩；筆記的「五指同時麻」屬課堂臨床經驗。其他說法（參考）：主流認為五指同時麻較常見於頸部脊髓、胸廓出口或周邊神經病變，T2 神經根很少造成手指麻，遇到要先篩檢（見 n_bilateral）。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T3",
+   "area": "胸前第 3 肋間一帶的水平帶；背側略高。",
+   "landmark": "第 3 肋間、鎖骨中線。",
+   "course": "筆記 T3：再往後 2 指 → 腋下 → 肘窩（網球肘）→ 手會腫脹；T3 壓迫：躁鬱。",
+   "diff": "皮節圖 T3 在軀幹；筆記把網球肘、手腫脹連到 T3，是課堂往上找的線索。其他說法（參考）：《脊椎手療法圖解》把 T3 對應脖子痛（u-dermatomes）。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T4",
+   "area": "乳頭高度的水平帶。",
+   "landmark": "乳頭（男性）。",
+   "course": "筆記：T4 乳頭水平線（k-nerve-test）；T4 最容易出狀況的節段之一；甲亢 T2–T4；另頁：T4 膽。",
+   "diff": "定位一致。課堂 1019-3 也提到以男性乳頭位置為準。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T5",
+   "area": "乳頭下方的水平帶。",
+   "landmark": "乳頭與劍突之間。",
+   "course": "筆記 T5：半身痠麻、遊走性痠痛（手腕以下、腳踝以下）；T5 壓迫：憂鬱；T5–T7 高血壓、糖尿病；另頁：T5 肝。",
+   "diff": "皮節圖只是一條胸帶；「半身痠麻、遊走性」屬筆記的臨床觀點。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T6",
+   "area": "劍突高度的水平帶。",
+   "landmark": "劍突。",
+   "course": "筆記 T5–T6：眼耳口鼻、顏面、免疫、肝膽脾胃、健忘、內耳平衡；另頁：T6 胃。",
+   "diff": "臟腑對應屬老師觀點，不是皮節（見 k-viscera）。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T7",
+   "area": "劍突下、肋弓上方的水平帶。",
+   "landmark": "劍突與肋弓之間；兩肩胛下角連線約平 T7 棘突（筆記）。",
+   "course": "筆記 T5–T7：高血壓、糖尿病；另頁：T7 胰、十二指腸。",
+   "diff": "—",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T8",
+   "area": "肋弓下緣高度的水平帶。",
+   "landmark": "肋弓。",
+   "course": "筆記：T8 肋弓水平線（k-nerve-test）；胃 T8–T10；另頁：T8 皮膚、抗體。",
+   "diff": "定位一致。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T9",
+   "area": "肋弓與肚臍之間。",
+   "landmark": "肋弓下、臍上。",
+   "course": "筆記：胃 T8–T10；另頁：T9 腎、副腎。",
+   "diff": "—",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T10",
+   "area": "肚臍高度的水平帶。",
+   "landmark": "肚臍。",
+   "course": "筆記：T10 肚臍（k-nerve-test）；胃 T8–T10；T10–T12 造血功能。",
+   "diff": "一致。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T11",
+   "area": "肚臍與鼠蹊之間的水平帶。",
+   "landmark": "臍下約 3 指。",
+   "course": "筆記：T10–T12 造血功能（臟腑對應）。",
+   "diff": "—",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "T12",
+   "area": "下腹到腹股溝韌帶上方。",
+   "landmark": "腹股溝韌帶中點上方。",
+   "course": "筆記：T12 鼠蹊（k-nerve-test）；T12 最容易出狀況的節段之一；膈肌角（T12–L1）。",
+   "diff": "一致。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "L1",
+   "area": "鼠蹊、腹股溝韌帶一帶、大腿內上一小塊。",
+   "landmark": "腹股溝韌帶與 L2 點的中間。",
+   "course": "筆記 L1：大腿上面一段（k-nerve-ls）；兄弟椎 L1↔C5。",
+   "diff": "筆記與皮節圖都在大腿根部，一致。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "L2",
+   "area": "大腿前側上中段（斜向內下）。",
+   "landmark": "腹股溝韌帶到股骨內髁連線的中點。",
+   "course": "筆記 L2：大腿中間一段；兄弟椎 L2↔C4。",
+   "diff": "一致。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "L3",
+   "area": "大腿前側下段到膝內側。",
+   "landmark": "股骨內髁（膝內上方）。",
+   "course": "筆記 L3：髕骨下緣一段；檢查寫「膝」；兄弟椎 L3↔C3。",
+   "diff": "筆記位置稍低（髕骨下緣），都在膝前內側一帶。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "L4",
+   "area": "小腿內側到內踝、拇趾內側緣。",
+   "landmark": "內踝。",
+   "course": "筆記 L4：大腿內側 → 小腿內側 → 前面 2 隻半腳趾；檢查寫「內側」；兩髂嵴最高點連線約平 L4；兄弟椎 L4↔C2。",
+   "diff": "小腿內側一致；筆記另寫到前面 2 隻半腳趾。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "L5",
+   "area": "小腿前外側、足背、第 1–3 趾。",
+   "landmark": "足背第 3 蹠趾關節。",
+   "course": "筆記 L5（k-nerve-ls）：大腿後側 → 小腿後側 → 中間 3 隻腳趾；另一頁筆記（k-nerve-test）：L5 沿小腿外側到足背；檢查寫「外展」；兄弟椎 L5↔C1。",
+   "diff": "筆記兩頁寫法不同：「小腿外側到足背」那頁與皮節圖一致，「大腿、小腿後側」那頁與皮節圖的 S1／S2 方向接近。兩頁都保留，待老師確認；中間 3 趾兩者都有。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "S1",
+   "area": "足外側、小趾、足底外側、足跟，小腿後外側。",
+   "landmark": "足跟外側。",
+   "course": "筆記 S1：大腿外側 → 小腿外側 → 後面 2 隻半腳趾；檢查寫「足跟向上（踮腳）」。",
+   "diff": "筆記的外側、後面 2 隻半腳趾與皮節圖的足外側、小趾大致同一區；大腿段筆記寫外側、皮節圖畫在後側。肌力檢查（踮腳）一致。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "S2",
+   "area": "大腿後側中線與小腿後內側一條，往上到臀褶。",
+   "landmark": "膕窩中點。",
+   "course": "筆記 S2：繞回後側 → 腳趾末梢；S2–S5：肛門周圍擴散（k-nerve-test）。",
+   "diff": "「後側」一致；筆記寫到腳趾末梢，皮節圖止於小腿後側。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "S3",
+   "area": "臀部內側（臀褶內側）。",
+   "landmark": "坐骨結節／臀褶內側。",
+   "course": "筆記 S3：走鼠蹊，腳腫脹；S2–S5 肛門周圍擴散；筆記另把 S3 當骨盆（薦椎）軸。",
+   "diff": "皮節圖 S3 在臀內側；筆記寫鼠蹊，屬課堂分布說法，保留。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "S4",
+   "area": "肛門周圍（與 S5 同心圓排列）、會陰。",
+   "landmark": "肛門外圍約 1 cm。",
+   "course": "筆記 S4：走前側、偏內 45°；S2–S5 肛門周圍擴散。",
+   "diff": "「肛門周圍」一致。這一區麻木是馬尾警訊，立即就醫。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  },
+  {
+   "seg": "S5",
+   "area": "肛門口周圍最內圈。",
+   "landmark": "肛門皮膚黏膜交界外 1 cm 內。",
+   "course": "筆記 S5：走前側、偏外 45°；Co（尾骨）出問題：痔瘡、肛門痛、很怕痛。",
+   "diff": "同 S4；會陰麻木、大小便異常立即就醫。",
+   "src": "皮節圖（附註資料 10/28）；課堂筆記（k-nerve-c／k-nerve-t／k-nerve-ls／k-nerve-test）；ISNCSCI 檢查點"
+  }
+ ],
+ "myotomes": [
+  {
+   "seg": "C1",
+   "action": "點頭（上頸屈曲，下巴往內收）",
+   "test": "筆記：「C1、C2：點頭」。坐姿，請客人收下巴點頭，你手放額頭給輕阻力，比較力量與有沒有痛。",
+   "muscles": [
+    "subocc"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "C2",
+   "action": "點頭、頸屈曲",
+   "test": "筆記：「C1、C2：點頭」。同上；頸屈曲輕阻力。",
+   "muscles": [
+    "subocc",
+    "scm"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "C3",
+   "action": "頸側彎",
+   "test": "筆記：「C3：側彎」。手放頭側，請客人往同側側彎對抗，比較兩側。",
+   "muscles": [
+    "scm",
+    "scalene",
+    "levator",
+    "trap_u"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "C4",
+   "action": "聳肩（肩胛上提）；橫膈",
+   "test": "筆記：「C4：聳肩」。雙手壓在客人兩肩上方，請他用力聳肩，比較兩側。",
+   "muscles": [
+    "trap_u",
+    "levator",
+    "diaphragm"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "C5",
+   "action": "肩外展（另：屈肘）",
+   "test": "筆記：「C5：肩外展」。手臂外展約 45–90°，你在上臂外側往下壓；主流另加屈肘（掌心朝上）。",
+   "muscles": [
+    "deltoid",
+    "supraspinatus",
+    "infraspinatus",
+    "biceps",
+    "brachialis",
+    "rhomboid"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "C6",
+   "action": "屈肘、伸腕",
+   "test": "筆記：「C6：橈神經區」。主流：前臂旋前位握拳伸腕抗阻，或屈肘抗阻；同時比較拇指、食指感覺。",
+   "muscles": [
+    "biceps",
+    "brachiorad",
+    "forearm_ext",
+    "supinator",
+    "serratus",
+    "pronator"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "C7",
+   "action": "伸肘、屈腕、伸指",
+   "test": "筆記：「C7：正中神經區」。主流：伸肘抗阻（從屈肘位往外推），屈腕抗阻；同時比較中指感覺。",
+   "muscles": [
+    "triceps",
+    "forearm_flex",
+    "forearm_ext",
+    "lat",
+    "pronator"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "C8",
+   "action": "屈指（握拳）、伸拇",
+   "test": "筆記：「C8：尺神經區」。主流：勾住客人四指請他屈指對抗，或握力比較；同時比較小指感覺。",
+   "muscles": [
+    "forearm_flex",
+    "forearm_ext",
+    "pec_minor"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "T1",
+   "action": "手指張開（外展）、併攏",
+   "test": "請客人五指張開，你從兩側夾攏；或夾紙比較。網站沒有手內在肌條目。",
+   "muscles": [
+    "pec_major",
+    "pec_minor"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "L2",
+   "action": "屈髖",
+   "test": "坐姿，大腿抬離床面，你壓膝上方往下；比較兩側。",
+   "muscles": [
+    "iliopsoas",
+    "sartorius",
+    "adductors"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "L3",
+   "action": "伸膝（另：內收）",
+   "test": "筆記：「L3：膝」。坐姿膝屈約 90°，請客人伸膝，你在小腿前方給阻力。",
+   "muscles": [
+    "rectus_fem",
+    "vastus_lat",
+    "vastus_med",
+    "vastus_int",
+    "adductors"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "L4",
+   "action": "踝背屈（腳背往上勾）、內翻",
+   "test": "筆記：「L4：內側」。主流：請客人腳背上勾，你壓足背；或請他用腳跟走路。",
+   "muscles": [
+    "tib_ant",
+    "tib_post",
+    "vastus_med"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "L5",
+   "action": "伸拇趾；髖外展",
+   "test": "筆記：「L5：外展」（主流的髖外展 L4–S1 以 L5 為主）。另測伸拇趾抗阻（壓拇趾背）；側臥外展抗阻；腳跟走路。",
+   "muscles": [
+    "toe_ext",
+    "glute_med",
+    "glute_min",
+    "tfl_itb",
+    "peroneus",
+    "tib_post"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "S1",
+   "action": "蹠屈（踮腳）、外翻、伸髖",
+   "test": "筆記：「S1：足跟向上（踮腳）」。單腳踮腳 10 次比較兩側（徒手壓力不夠，要用體重測）；外翻抗阻。",
+   "muscles": [
+    "gastroc",
+    "soleus",
+    "peroneus",
+    "glute_max",
+    "hamstrings"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  },
+  {
+   "seg": "S2",
+   "action": "屈膝；腳趾屈曲",
+   "test": "俯臥屈膝約 45° 對抗；腳趾抓地比較。筆記：「S2–S5：肛門周圍擴散」（感覺）。",
+   "muscles": [
+    "hamstrings",
+    "gastroc",
+    "glute_max",
+    "piriformis",
+    "plantar"
+   ],
+   "src": "課堂筆記（k-nerve-test）為檢查動作；主流肌節：LITFL、ISNCSCI"
+  }
+ ],
+ "reflexes": [
+  {
+   "name": "肱二頭肌反射",
+   "seg": "C5–C6（C5 為主）",
+   "how": "客人手臂放鬆、肘微屈放在你前臂上，你拇指壓在肘窩的肱二頭肌腱上，用反射槌（或手指）敲自己的拇指；看肘輕微屈曲。兩側比較。",
+   "meaning": "減弱或消失：C5–C6 神經根或肌皮神經；兩側都特別強：上運動神經元（轉介）。",
+   "src": "主流神經學檢查（ISNCSCI、Geeky Medics Hoffmann’s sign）；推拿師只用於篩檢與轉介判斷"
+  },
+  {
+   "name": "肱橈肌反射",
+   "seg": "C5–C6（C6 為主）",
+   "how": "前臂半旋前放在客人大腿上，敲橈骨下端外側（腕上約 3–5 cm，肱橈肌腱）；看肘屈、前臂旋後。",
+   "meaning": "減弱：C6 或橈神經；敲時手指反而屈曲（反轉）提示 C5–C6 脊髓受壓，轉介。",
+   "src": "主流神經學檢查（ISNCSCI、Geeky Medics Hoffmann’s sign）；推拿師只用於篩檢與轉介判斷"
+  },
+  {
+   "name": "肱三頭肌反射",
+   "seg": "C6–C8（C7 為主）",
+   "how": "客人上臂外展托住、前臂自然下垂，敲鷹嘴上方的三頭肌腱；看伸肘。",
+   "meaning": "減弱：C7 神經根或橈神經高位。",
+   "src": "主流神經學檢查（ISNCSCI、Geeky Medics Hoffmann’s sign）；推拿師只用於篩檢與轉介判斷"
+  },
+  {
+   "name": "膝反射（髕腱反射）",
+   "seg": "L2–L4（L4 為主）",
+   "how": "坐床邊小腿自然垂下，敲髕骨下緣的髕腱；看伸膝。反應小時請客人雙手勾住用力往外拉（Jendrassik 增強）。",
+   "meaning": "減弱：L3–L4 神經根或股神經；兩側亢進合併 Babinski：上運動神經元，轉介。",
+   "src": "主流神經學檢查（ISNCSCI、Geeky Medics Hoffmann’s sign）；推拿師只用於篩檢與轉介判斷"
+  },
+  {
+   "name": "跟腱反射（踝反射）",
+   "seg": "S1–S2（S1 為主）",
+   "how": "客人跪在椅上或俯臥屈膝 90°，你輕推腳掌讓踝稍背屈，敲跟腱；看蹠屈。",
+   "meaning": "減弱或消失：S1 神經根、脛神經或周邊神經病變（糖尿病、高齡也會兩側減弱）。其他說法（參考）：《脊椎手療法圖解》p.216 L5 也用跟腱反射，一般以 S1 為主。",
+   "src": "主流神經學檢查（ISNCSCI、Geeky Medics Hoffmann’s sign）；推拿師只用於篩檢與轉介判斷"
+  },
+  {
+   "name": "Hoffmann 徵象",
+   "seg": "上運動神經元（頸髓）",
+   "how": "托住客人中指，用拇指快速彈中指指甲往下；看拇指與食指是否不自主屈曲（對掌）。",
+   "meaning": "陽性（尤其單側或合併兩手笨拙、步態不穩）提示頸部脊髓受壓 → 轉介，不做頸部手法。少數正常人兩側輕微陽性。",
+   "src": "主流神經學檢查（ISNCSCI、Geeky Medics Hoffmann’s sign）；推拿師只用於篩檢與轉介判斷"
+  },
+  {
+   "name": "Babinski 徵象（足底反射）",
+   "seg": "上運動神經元（腦、脊髓）",
+   "how": "用鈍物（筆蓋）從腳跟外側沿足底外緣往前劃，再橫過蹠骨頭往拇趾；正常是腳趾往下屈。",
+   "meaning": "拇趾往上翹、其他趾扇形張開＝陽性 → 中樞神經問題，轉介（兩歲以下嬰兒正常可陽性）。",
+   "src": "主流神經學檢查（ISNCSCI、Geeky Medics Hoffmann’s sign）；推拿師只用於篩檢與轉介判斷"
+  },
+  {
+   "name": "踝陣攣（Clonus）",
+   "seg": "上運動神經元",
+   "how": "客人仰臥屈膝，你快速把腳掌往上推並維持；看踝是否連續規律抽動。",
+   "meaning": "持續 3 下以上＝陽性 → 轉介。",
+   "src": "主流神經學檢查（ISNCSCI、Geeky Medics Hoffmann’s sign）；推拿師只用於篩檢與轉介判斷"
+  }
+ ],
+ "tests": [
+  {
+   "id": "nt-spurling",
+   "name": "Spurling 測試（椎間孔擠壓）",
+   "how": "坐姿，客人頭往患側側彎並稍後仰，你雙手疊放頭頂，緩慢輕輕往下壓（不衝擊）。",
+   "positive": "手臂出現沿皮節的放射痛或麻 → 頸神經根受壓可能性高（特異度高，但陰性不能排除）；只有頸部局部痛不算。",
+   "caution": "不做快速壓或旋轉；有頭暈、視線模糊（椎動脈警訊）、外傷、骨鬆者不做。陽性即轉介，不做頸部扳動，只做肩背周邊放鬆。",
+   "src": "Univ. of Pittsburgh：Spurling’s test"
+  },
+  {
+   "id": "nt-ultt1",
+   "name": "ULTT1（正中神經張力測試）",
+   "how": "仰臥靠床邊。依序：肩胛下壓 → 肩外展約 110° → 外轉、肘屈 90° → 前臂旋後 → 腕與手指伸直 → 慢慢伸肘。出現症狀時停在那裡，請客人頭往對側側彎（加重）或同側側彎（減輕）做結構鑑別。",
+   "positive": "重現客人原本的手麻或痛，而且會隨頭部或腕部的位置改變 → 神經組織參與（正中神經、C5–C7）。兩側比較，伸肘角度差 10° 以上有意義。",
+   "caution": "慢慢做、到症狀出現就停；正常人也會有前臂掌側或拇指到中指的拉緊感，不算陽性。",
+   "src": "Physiopedia：Upper Limb Tension Tests"
+  },
+  {
+   "id": "nt-ultt2b",
+   "name": "ULTT2b（橈神經張力測試）",
+   "how": "仰臥肩在床邊。肩胛下壓 → 肩外展 10–30° → 整條手臂內轉 → 前臂旋前 → 握拳（拇指在內）並屈腕、尺偏 → 伸肘。再以頭側彎做結構鑑別。",
+   "positive": "重現手背橈側、前臂外側或外上髁下方的症狀並隨結構鑑別改變 → 橈神經參與（與單純伸肌群拉緊的網球肘區分）。",
+   "caution": "同 ULTT1；網球肘急性期動作要更輕。",
+   "src": "Physiopedia：Upper Limb Tension Tests"
+  },
+  {
+   "id": "nt-ultt3",
+   "name": "ULTT3（尺神經張力測試）",
+   "how": "仰臥。肩胛下壓 → 肩外展約 110° 並外轉 → 前臂旋前 → 腕與手指伸直 → 屈肘（手掌朝向耳朵，像戴面具）。",
+   "positive": "重現小指、無名指或肘內側的麻 → 尺神經或 C8–T1 參與。",
+   "caution": "肘關節活動受限或手術後者不做；慢慢做。",
+   "src": "Physiopedia：Upper Limb Tension Tests"
+  },
+  {
+   "id": "nt-tinel-carpal",
+   "name": "Tinel 徵象（腕部，正中神經）",
+   "how": "腕伸直放鬆，用手指輕敲腕橫紋中央（大陵）一帶，敲 4–6 下。",
+   "positive": "拇指到中指出現電麻感往手指放射 → 腕隧道正中神經受刺激。",
+   "caution": "輕敲即可，不用力；只作為線索，要配合夜間手麻問診與 Phalen。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  },
+  {
+   "id": "nt-phalen",
+   "name": "Phalen 測試",
+   "how": "雙手手背相貼、手指朝下、腕屈曲約 90°，維持 60 秒。",
+   "positive": "60 秒內拇指到中指麻刺出現或加重 → 腕隧道症候群可能性高。",
+   "caution": "手腕急性腫痛、骨折後不做；只有手腕背側痛不算陽性。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  },
+  {
+   "id": "nt-tinel-cubital",
+   "name": "Tinel 徵象（肘部尺神經溝）＋屈肘測試",
+   "how": "肘微屈，輕敲內上髁與鷹嘴之間的尺神經溝（小海一帶）；屈肘測試：肘全屈、腕伸直維持 60 秒。",
+   "positive": "小指、無名指電麻或麻刺 → 肘隧道尺神經受刺激。",
+   "caution": "尺神經溝本來就敏感（麻筋），兩側比較；不在溝內按壓或彈撥。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  },
+  {
+   "id": "nt-froment",
+   "name": "Froment 徵象",
+   "how": "請客人用拇指與食指側面夾住一張紙（拇指伸直），你往外拉，兩手比較。",
+   "positive": "患側拇指末節會彎曲（用屈拇長肌代償拇收肌）→ 尺神經支配的拇收肌無力。",
+   "caution": "屬肌力無力徵象，陽性要轉介。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  },
+  {
+   "id": "nt-adson",
+   "name": "Adson 測試（斜角肌）",
+   "how": "坐姿，摸住患側橈動脈脈搏，手臂稍外展伸直，請客人頭轉向患側並稍後仰、深吸一口氣憋住。",
+   "positive": "脈搏明顯變弱並重現手麻 → 胸廓出口（斜角肌間）參與。偽陽性多，只當線索。",
+   "caution": "頭暈、心血管疾病者不做或縮短時間；憋氣不超過 10 秒。",
+   "src": "Univ. of Brighton：TOS clinical tests"
+  },
+  {
+   "id": "nt-roos",
+   "name": "Roos 測試（舉手 3 分鐘）",
+   "how": "坐或站，雙臂外展 90°、外轉、肘屈 90°（投降姿勢），肩稍往後，持續慢慢開握拳 3 分鐘。",
+   "positive": "提早放下手、手沉重、麻刺、蒼白 → 胸廓出口（肋鎖間隙、胸小肌下）受壓可能。",
+   "caution": "肩痛急性期可縮短時間；症狀出現即可停止。",
+   "src": "Univ. of Brighton：TOS clinical tests"
+  },
+  {
+   "id": "nt-slr",
+   "name": "直腿抬高（SLR，課堂判讀）",
+   "how": "仰臥，客人腿伸直、放鬆，你托住腳跟慢慢抬高，記錄開始痛的角度與痛的位置。",
+   "positive": "課堂（0810）：45° 後開始痛、60–70° 最痛、超過 70° 反而不痛 → 梨狀肌（假性坐骨神經痛）；很低的角度就放射到小腿、腳或伴麻木無力 → 神經根，轉介（k-slr）。另一般臨床：只有大腿後側拉緊感屬膕繩肌，不算陽性。",
+   "caution": "急性劇痛者不硬抬；對側腿抬高時患側也痛（交叉 SLR）提示較大的椎間盤問題，轉介。",
+   "src": "課堂 0810（k-slr）；Brookbush Institute"
+  },
+  {
+   "id": "nt-bragard",
+   "name": "Bragard 測試（SLR 加背屈）",
+   "how": "直腿抬高到出現症狀，往下放 5–10° 到症狀消失，再把踝快速背屈（或屈頸）。",
+   "positive": "原本的放射痛再出現 → 神經張力（坐骨神經或神經根）；不再出現 → 偏向膕繩肌。",
+   "caution": "背屈動作輕，不要突然用力。",
+   "src": "Physiopedia：Slump Test；Brookbush Institute：Lower Body Neurodynamic Tests"
+  },
+  {
+   "id": "nt-slump",
+   "name": "Slump 測試（坐姿神經張力）",
+   "how": "坐床邊雙手放背後，依序：胸腰駝背 → 屈頸（下巴貼胸）→ 伸直一側膝 → 踝背屈。有症狀時請客人抬頭（減少張力），看症狀是否減輕。",
+   "positive": "重現臀腿症狀，抬頭後減輕 → 神經組織（腰薦神經根、坐骨神經、硬膜）參與。",
+   "caution": "慢慢加一個步驟就問一次；急性劇痛、馬尾警訊時不做。",
+   "src": "Physiopedia：Slump Test；Brookbush Institute：Lower Body Neurodynamic Tests"
+  },
+  {
+   "id": "nt-fnst",
+   "name": "股神經牽拉測試（俯臥屈膝）",
+   "how": "俯臥，穩住骨盆，把患側膝慢慢屈曲讓腳跟靠近臀部（可再加伸髖）。",
+   "positive": "大腿前側出現放射痛或麻（不是單純股四頭肌拉緊）→ L2–L4 神經根或股神經；加屈頸會更明顯。",
+   "caution": "要和股直肌緊（Thomas 測試）區分；膝關節疾病者不做到底；骨盆不要被拉成前傾代償。",
+   "src": "Physiopedia：Slump Test；Brookbush Institute：Lower Body Neurodynamic Tests"
+  },
+  {
+   "id": "nt-tinel-fibular",
+   "name": "Tinel 徵象（腓骨頭）",
+   "how": "在腓骨頭下方、腓骨頸外側（陽陵泉後下）輕敲 4–6 下。",
+   "positive": "小腿外側、足背出現電麻 → 腓總神經受刺激；合併背屈、伸拇無力 → 轉介。",
+   "caution": "只輕敲，不按壓、不彈撥這一點（u-peroneal）。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  },
+  {
+   "id": "nt-tinel-tarsal",
+   "name": "Tinel 徵象（跗骨隧道）",
+   "how": "內踝後下方、內踝與跟腱之間偏下（太谿、照海一帶）輕敲；可加背屈外翻並伸趾維持 5–10 秒。",
+   "positive": "足底、腳趾電麻 → 脛神經（跗骨隧道）受刺激。",
+   "caution": "輕敲即可；足底麻兩側同時出現，要想到糖尿病等全身性周邊神經病變，轉介。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  },
+  {
+   "id": "nt-fair",
+   "name": "FAIR 測試（梨狀肌）",
+   "how": "側臥，患側在上，屈髖約 60°、屈膝 90°，你一手穩住骨盆，另一手把膝往下壓（髖內收、內轉）。",
+   "positive": "臀部深處痛或沿坐骨神經放射 → 梨狀肌刺激坐骨神經（拉長型）。",
+   "caution": "髖關節置換術後不做；壓膝力道漸進。",
+   "src": "Physiopedia：Slump Test；Brookbush Institute：Lower Body Neurodynamic Tests"
+  },
+  {
+   "id": "nt-hoffmann",
+   "name": "Hoffmann 徵象",
+   "how": "見反射表：彈中指指甲，看拇指、食指是否屈曲。",
+   "positive": "陽性提示頸部脊髓或腦（上運動神經元）問題 → 轉介。",
+   "caution": "有陽性就不做頸部手法、牽引。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  },
+  {
+   "id": "nt-babinski",
+   "name": "Babinski 徵象",
+   "how": "見反射表：沿足底外緣劃到拇趾根部。",
+   "positive": "拇趾上翹、他趾張開 → 中樞神經問題 → 轉介。",
+   "caution": "劃的力道適中，不用尖銳物。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  },
+  {
+   "id": "nt-wall-push",
+   "name": "推牆測試（翼狀肩胛）",
+   "how": "客人站在牆前，雙手平舉推牆做幾下伏地挺身，你從後面看肩胛骨。",
+   "positive": "肩胛內緣與下角翹起 → 前鋸肌無力（胸長神經）；肩胛往外下翻、聳肩無力 → 斜方肌（副神經）；內緣下角離脊椎較遠 → 菱形肌（肩胛背神經）。",
+   "caution": "肩痛急性期改用手臂前舉觀察。",
+   "src": "主流神經學檢查（StatPearls、Geeky Medics）"
+  }
+ ],
+ "muscleNerve": {
+  "scm": {
+   "nerve": "副神經（CN XI）＋C2–C3 本體感覺",
+   "roots": "CN XI；C2–C3",
+   "nerveId": "n-accessory",
+   "link": "副神經在胸鎖乳突肌後緣中點穿出到頸後三角，這裡很淺；胸鎖乳突肌緊也會擠壓從同一點穿出的頸神經叢皮支（耳後、下頜角麻）。"
+  },
+  "scalene": {
+   "nerve": "頸神經前支（直接肌支）",
+   "roots": "C3–C8",
+   "nerveId": "n-plexus",
+   "link": "臂神經叢與鎖骨下動脈從前、中斜角肌之間穿出，斜角肌緊是胸廓出口手麻的第一站；中斜角肌另有肩胛背、胸長神經穿過。"
+  },
+  "trap_u": {
+   "nerve": "副神經（筆記：副）",
+   "roots": "CN XI；C3–C4",
+   "nerveId": "n-accessory",
+   "link": "副神經受損時上斜方肌萎縮、肩下垂；頸後三角處理上斜方前緣時不要用指尖深壓。"
+  },
+  "trap_m": {
+   "nerve": "副神經（筆記：副）",
+   "roots": "CN XI；C3–C4",
+   "nerveId": "n-accessory",
+   "link": "副神經受損會讓中斜方肌無力，肩胛外移、外展舉手困難。"
+  },
+  "trap_l": {
+   "nerve": "副神經（筆記：副）",
+   "roots": "CN XI；C3–C4",
+   "nerveId": "n-accessory",
+   "link": "下斜方無力時肩胛上旋與下壓不足；若一側明顯萎縮，往上查副神經。"
+  },
+  "levator": {
+   "nerve": "肩胛背神經（筆記：肩胛背）＋頸神經叢",
+   "roots": "C3–C5",
+   "nerveId": "n-dorsalscap",
+   "link": "肩胛背神經在提肩胛肌深面下行，提肩胛肌與中斜角肌緊會讓肩胛內緣出現深層灼痛。"
+  },
+  "splenius": {
+   "nerve": "頸神經後支（外側支）",
+   "roots": "C2–C6",
+   "nerveId": "n-dorsal-rami",
+   "link": "夾肌與頭半棘肌緊，會擠壓穿過它們上緣附近的枕大神經，引起後頭往頭頂的刺痛。"
+  },
+  "subocc": {
+   "nerve": "枕下神經",
+   "roots": "C1（後支）",
+   "nerveId": "n-suboccipital",
+   "link": "枕下肌群緊與枕大神經頭痛常一起出現；枕下三角深處有椎動脈，只做上托放鬆。"
+  },
+  "masseter": {
+   "nerve": "三叉神經下頜支（咬肌神經）",
+   "roots": "CN V3",
+   "nerveId": "n-trigeminal-v3",
+   "link": "咬肌、顳肌緊與耳顳神經刺激（耳前到太陽穴刺痛）常並存；臉部感覺屬三叉神經。"
+  },
+  "temporalis": {
+   "nerve": "三叉神經下頜支（顳深神經）",
+   "roots": "CN V3",
+   "nerveId": "n-trigeminal-v3",
+   "link": "顳肌緊會讓耳顳神經走的耳前、顳部出現刺痛或灼熱。"
+  },
+  "rhomboid": {
+   "nerve": "肩胛背神經（筆記：肩胛背）",
+   "roots": "C4–C5",
+   "nerveId": "n-dorsalscap",
+   "link": "菱形肌放鬆後肩胛間痛很快回來時，要往上放鬆中斜角肌（肩胛背神經穿過處）。"
+  },
+  "supraspinatus": {
+   "nerve": "肩胛上神經（筆記：肩胛上）",
+   "roots": "C5–C6",
+   "nerveId": "n-suprascap",
+   "link": "肩胛上神經在肩胛上切跡受壓時棘上肌萎縮、外展起始無力，與旋轉肌袖撕裂相似，要轉介確認。"
+  },
+  "infraspinatus": {
+   "nerve": "肩胛上神經（筆記：肩胛上）",
+   "roots": "C5–C6",
+   "nerveId": "n-suprascap",
+   "link": "只有棘下窩凹陷、外轉無力而不太痛 → 想到棘盂切跡的肩胛上神經卡壓。"
+  },
+  "teres_minor": {
+   "nerve": "腋神經（筆記：腋）",
+   "roots": "C5–C6",
+   "nerveId": "n-axillary",
+   "link": "小圓肌、大圓肌與三頭肌長頭圍成四邊孔，緊繃會壓腋神經，造成肩後外側深痛與三角肌無力。"
+  },
+  "teres_major": {
+   "nerve": "下肩胛下神經（筆記：肩胛下）",
+   "roots": "C5–C7",
+   "nerveId": "n-subscapular",
+   "link": "大圓肌是四邊孔的下緣，緊時可擠壓腋神經。"
+  },
+  "subscap": {
+   "nerve": "上、下肩胛下神經（筆記：肩胛下）",
+   "roots": "C5–C7",
+   "nerveId": "n-subscapular",
+   "link": "肩胛下肌位於腋窩後壁，臂神經叢後束與分支貼在它前面；腋窩處理時輕觸。"
+  },
+  "lat": {
+   "nerve": "胸背神經（筆記：胸背）",
+   "roots": "C6–C8",
+   "nerveId": "n-thoracodorsal",
+   "link": "胸背神經沿腋窩後壁進入闊背肌；單純闊背肌無力少見，多見於腋下手術後。"
+  },
+  "serratus": {
+   "nerve": "胸長神經（筆記：長胸）",
+   "roots": "C5–C7",
+   "nerveId": "n-longthor",
+   "link": "胸長神經受損 → 前鋸肌無力 → 翼狀肩胛；長期揹重物、側睡壓胸壁外側都可能拉傷。"
+  },
+  "pec_major": {
+   "nerve": "胸內、外側神經（筆記：胸）",
+   "roots": "C5–T1",
+   "nerveId": "n-pectoral",
+   "link": "胸大肌與胸小肌兩層一起緊，加重肋鎖間隙與喙突下的臂神經叢擠壓。"
+  },
+  "pec_minor": {
+   "nerve": "胸內側神經（筆記：胸）",
+   "roots": "C8–T1",
+   "nerveId": "n-pectoral",
+   "link": "胸小肌縮短（圓肩）會在喙突下壓住臂神經叢三束與腋動脈，手舉過頭時手麻加重。"
+  },
+  "deltoid": {
+   "nerve": "腋神經（筆記：腋）",
+   "roots": "C5–C6",
+   "nerveId": "n-axillary",
+   "link": "腋神經受損時三角肌萎縮、肩外側變平、外展無力，三角肌下外側皮膚麻（C5 皮節同區）。"
+  },
+  "biceps": {
+   "nerve": "肌皮神經（筆記：肌皮）",
+   "roots": "C5–C6",
+   "nerveId": "n-musculocut",
+   "link": "肌皮神經在肱二頭肌與肱肌之間下行；二頭肌反射減弱提示 C5–C6 或肌皮神經。正中神經沿二頭肌內緣走，筆記把肱二頭肌列為正中神經卡壓的一站。"
+  },
+  "triceps": {
+   "nerve": "橈神經（筆記：橈）",
+   "roots": "C6–C8",
+   "nerveId": "n-radial",
+   "link": "三頭肌反射代表 C7；橈神經在三頭肌外側頭與內側頭之間的橈神經溝繞行，上臂後外側不要長時間定點深壓。"
+  },
+  "brachiorad": {
+   "nerve": "橈神經",
+   "roots": "C5–C6",
+   "nerveId": "n-radial",
+   "link": "橈神經淺支在肱橈肌深面下行，肱橈肌緊會刺激淺支（手背虎口麻）；肱橈肌反射代表 C6。"
+  },
+  "forearm_ext": {
+   "nerve": "橈神經／後骨間神經",
+   "roots": "C6–C8",
+   "nerveId": "n-radial",
+   "link": "伸肌群與旋後肌緊會壓後骨間神經（橈隧道），痛點在外上髁下方 3–4 指，容易被當成網球肘；伸指無力則是神經問題。"
+  },
+  "forearm_flex": {
+   "nerve": "正中神經、尺神經",
+   "roots": "C6–T1",
+   "nerveId": "n-median",
+   "link": "屈指淺肌纖維弓壓正中神經、尺側屈腕肌兩頭之間壓尺神經；屈肌群放鬆是腕隧道、肘隧道處理的一部分。"
+  },
+  "erector": {
+   "nerve": "脊神經後支",
+   "roots": "各節段",
+   "nerveId": "n-dorsal-rami",
+   "link": "豎脊肌外緣與胸腰筋膜緊，會擠壓越過髂嵴的臀上皮神經（n-cluneal），造成腰臀痛。"
+  },
+  "multifidus": {
+   "nerve": "脊神經後支（內側支）",
+   "roots": "各節段",
+   "nerveId": "n-dorsal-rami",
+   "link": "多裂肌由同一節的後支內側支支配，神經根受壓時同節多裂肌常萎縮或保護性緊繃，可用來找節段。"
+  },
+  "ql": {
+   "nerve": "腰神經叢前支（T12–L4）",
+   "roots": "T12–L4",
+   "nerveId": "n-lumbarplex",
+   "link": "髂腹下、髂腹股溝神經斜過腰方肌前面；腰方肌外緣與髂嵴上緣緊也與臀上皮神經卡壓有關。"
+  },
+  "rectus_abd": {
+   "nerve": "肋間神經",
+   "roots": "T7–T12",
+   "nerveId": "n-intercostal",
+   "link": "肋間神經前皮支從腹直肌外緣穿出，腹肌緊時可出現一指寬的腹壁刺痛（繃腹時加重）。"
+  },
+  "ext_oblique": {
+   "nerve": "肋間神經、肋下神經",
+   "roots": "T7–T12",
+   "nerveId": "n-intercostal",
+   "link": "下段肋間神經在腹斜肌之間往前走；側腹沿肋走的帶狀痛要先排除帶狀皰疹與內臟問題。"
+  },
+  "diaphragm": {
+   "nerve": "膈神經（筆記：膈神經 → 胃脹、打嗝）",
+   "roots": "C3–C5",
+   "nerveId": "n-phrenic",
+   "link": "膈神經貼著前斜角肌前面下行，橫膈受刺激時痛會轉到肩上（C4）；呼吸淺與斜角肌過度使用互為因果。"
+  },
+  "iliopsoas": {
+   "nerve": "腰神經叢前支（腰大肌）、股神經（髂肌）",
+   "roots": "L1–L3",
+   "nerveId": "n-lumbarplex",
+   "link": "腰神經叢在腰大肌肌腹內組成，腰大肌緊可刺激股神經、股外側皮神經與生殖股神經（鼠蹊、大腿前側痠麻）。"
+  },
+  "glute_max": {
+   "nerve": "臀下神經",
+   "roots": "L5–S2",
+   "nerveId": "n-infglut",
+   "link": "臀下神經從梨狀肌下孔出來立即進入臀大肌；伸髖無力、起身困難而不痛時屬神經，轉介。"
+  },
+  "glute_med": {
+   "nerve": "臀上神經",
+   "roots": "L4–S1",
+   "nerveId": "n-supglut",
+   "link": "臀上神經受損 → Trendelenburg（對側骨盆下掉）；筆記「L5：外展」即在測這組肌肉。"
+  },
+  "glute_min": {
+   "nerve": "臀上神經",
+   "roots": "L4–S1",
+   "nerveId": "n-supglut",
+   "link": "臀小肌轉移痛會沿大腿外側、小腿外側下行，常被誤認為 L5 或坐骨神經痛，用 SLR 與肌力、感覺檢查區分。"
+  },
+  "piriformis": {
+   "nerve": "梨狀肌神經",
+   "roots": "S1–S2",
+   "nerveId": "n-sacral-short",
+   "link": "坐骨神經多從梨狀肌下緣出來（少數穿過肌腹）：梨狀肌縮短或被拉長繃緊都可能刺激它（課堂直腿抬高 45–70° 型）。"
+  },
+  "deep_rot": {
+   "nerve": "閉孔內肌神經、股方肌神經；閉孔外肌為閉孔神經",
+   "roots": "L4–S2",
+   "nerveId": "n-sacral-short",
+   "link": "坐骨神經在閉孔內肌、孖肌、股方肌後面往下走，這些外旋肌緊同樣會讓坐骨神經受擠。"
+  },
+  "brachialis": {
+   "nerve": "肌皮神經（外側部另有橈神經）",
+   "roots": "C5–C6",
+   "nerveId": "n-musculocut",
+   "link": "橈神經在肱肌與肱橈肌之間穿到前面，肱肌外緣緊時處理要輕。"
+  },
+  "pronator": {
+   "nerve": "正中神經（筆記：正中神經會穿過旋前圓肌）",
+   "roots": "C6–C7",
+   "nerveId": "n-median",
+   "link": "旋前圓肌症候群：正中神經在兩頭之間受壓，拇指到中指麻且手掌心也麻，夜間麻較少，與腕隧道不同。"
+  },
+  "supinator": {
+   "nerve": "橈神經深支（後骨間神經）（筆記：橈神經經過旋後肌）",
+   "roots": "C5–C6",
+   "nerveId": "n-radial",
+   "link": "後骨間神經從 Frohse 弓鑽入旋後肌，旋後肌緊是橈隧道症候群與伸指無力的主要原因。"
+  },
+  "int_oblique": {
+   "nerve": "肋間神經、髂腹下、髂腹股溝神經",
+   "roots": "T7–L1",
+   "nerveId": "n-iliohypogastric",
+   "link": "髂腹下、髂腹股溝神經在髂前上棘內側穿出腹內斜肌；這裡緊或術後疤痕可造成鼠蹊、陰阜前方灼痛。"
+  },
+  "vastus_int": {
+   "nerve": "股神經",
+   "roots": "L2–L4",
+   "nerveId": "n-femoral",
+   "link": "股神經或 L3–L4 神經根受壓時股四頭肌無力、膝反射減弱，上下樓梯膝軟。"
+  },
+  "popliteus": {
+   "nerve": "脛神經",
+   "roots": "L4–S1",
+   "nerveId": "n-tibial",
+   "link": "脛神經在膕窩中央最淺層，膕肌與膕窩處理時只輕壓，避開膕動靜脈。"
+  },
+  "toe_ext": {
+   "nerve": "腓深神經",
+   "roots": "L5–S1",
+   "nerveId": "n-peroneal",
+   "link": "伸拇長肌、伸趾長肌無力是 L5 神經根或腓深神經的指標（筆記：L5 沿小腿外側到足背）。"
+  },
+  "tfl_itb": {
+   "nerve": "臀上神經",
+   "roots": "L4–S1",
+   "nerveId": "n-supglut",
+   "link": "闊筋膜張肌附近（髂前上棘下外方）有股外側皮神經穿出，放鬆時大腿前外側若出現燒灼麻要減力。"
+  },
+  "rectus_fem": {
+   "nerve": "股神經",
+   "roots": "L2–L4",
+   "nerveId": "n-femoral",
+   "link": "股神經牽拉測試會同時拉到股直肌，要分清楚是大腿前側肌肉拉緊還是放射痛麻。"
+  },
+  "vastus_lat": {
+   "nerve": "股神經",
+   "roots": "L2–L4",
+   "nerveId": "n-femoral",
+   "link": "大腿外側麻但股外側肌有力 → 想到股外側皮神經（感覺異常性股痛），不是股神經。"
+  },
+  "vastus_med": {
+   "nerve": "股神經",
+   "roots": "L2–L4",
+   "nerveId": "n-femoral",
+   "link": "隱神經在股內側肌與縫匠肌之間的內收肌管下行，這裡緊會造成膝內側到小腿內側灼熱。"
+  },
+  "adductors": {
+   "nerve": "閉孔神經（內收大肌後部：坐骨神經；恥骨肌：股神經為主）",
+   "roots": "L2–L4",
+   "nerveId": "n-obturator",
+   "link": "閉孔神經也管髖與膝的關節感覺：內收肌緊或閉孔神經受刺激時，髖的問題常以膝內側痛表現。"
+  },
+  "sartorius": {
+   "nerve": "股神經",
+   "roots": "L2–L3",
+   "nerveId": "n-femoral",
+   "link": "縫匠肌蓋住內收肌管（隱神經）；上端靠近股外側皮神經穿出處。"
+  },
+  "hamstrings": {
+   "nerve": "坐骨神經（脛神經部；股二頭肌短頭為腓總神經部）",
+   "roots": "L5–S2",
+   "nerveId": "n-sciatic",
+   "link": "坐骨神經在股二頭肌長頭深面下行；膕繩肌緊與坐骨神經張力常混在一起，用 Bragard（加背屈）區分。"
+  },
+  "gastroc": {
+   "nerve": "脛神經",
+   "roots": "S1–S2",
+   "nerveId": "n-tibial",
+   "link": "踮腳無力與跟腱反射減弱是 S1 的指標；腓腸神經走在腓腸肌兩頭之間。"
+  },
+  "soleus": {
+   "nerve": "脛神經",
+   "roots": "S1–S2",
+   "nerveId": "n-tibial",
+   "link": "脛神經從比目魚肌腱弓下方穿入深層，比目魚肌肥厚緊繃時可出現足底麻。"
+  },
+  "tib_ant": {
+   "nerve": "腓深神經",
+   "roots": "L4–L5",
+   "nerveId": "n-peroneal",
+   "link": "腓總神經在腓骨頸受壓 → 脛前肌無力 → 垂足；脛前肌也是 L4 肌節的代表。"
+  },
+  "peroneus": {
+   "nerve": "腓淺神經",
+   "roots": "L5–S1",
+   "nerveId": "n-peroneal",
+   "link": "腓總神經繞過腓骨頸後穿過腓骨長肌起點，這裡不深壓、不橫撥；腓淺神經在小腿下 1/3 前外側穿出筋膜。"
+  },
+  "tib_post": {
+   "nerve": "脛神經",
+   "roots": "L4–L5",
+   "nerveId": "n-tibial",
+   "link": "脛後肌無力與扁平足、跟骨外翻會拉扯跗骨隧道裡的脛神經，造成足底麻。"
+  },
+  "plantar": {
+   "nerve": "足底內、外側神經（脛神經分支）",
+   "roots": "S1–S3",
+   "nerveId": "n-tibial",
+   "link": "足底麻、足跟內側痛不一定是足底筋膜炎，要檢查跗骨隧道與足底內側神經。"
+  }
+ },
+ "findings": [
+  {
+   "id": "n_numb_thumb",
+   "label": "拇指、食指麻（C6／正中）",
+   "side": true,
+   "how": "請客人指出麻的手指與範圍，兩側輕觸比較。筆記：C6＝第 1、2 指與第 3 指一半。",
+   "seg": "C6；正中神經（掌側）；橈神經淺支（手背虎口）"
+  },
+  {
+   "id": "n_numb_middle",
+   "label": "中指麻（C7）",
+   "side": true,
+   "how": "中指背側近節輕觸比較。筆記：C7＝第 2、3、4 指。",
+   "seg": "C7；正中神經"
+  },
+  {
+   "id": "n_numb_little",
+   "label": "小指、無名指麻（C8／尺）",
+   "side": true,
+   "how": "小指背側近節輕觸比較；看手背尺側也麻（肘或頸）還是只有掌側（腕 Guyon 管）。筆記：C8＝第 4、5 指與第 3 指一半。",
+   "seg": "C8；尺神經"
+  },
+  {
+   "id": "n_numb_c5",
+   "label": "手臂陰面到掌心麻，或上臂外側麻（C5）",
+   "side": true,
+   "how": "筆記：C5 手臂陰面延伸至手掌心；皮節圖：上臂外側三角肌區。兩處都輕觸比較，並做肩外展肌力。",
+   "seg": "C5；腋神經（上臂外側）"
+  },
+  {
+   "id": "n_numb_armmed",
+   "label": "前臂內側、上臂內側麻（T1／C8）",
+   "side": true,
+   "how": "筆記：T1 肩峰 → 手肘內側 → 手腕內側。輕觸前臂、上臂內側比較兩側。",
+   "seg": "T1、C8；胸廓出口下幹"
+  },
+  {
+   "id": "n_numb_band",
+   "label": "軀幹一條帶狀痛或麻（肋間）",
+   "side": true,
+   "how": "沿肋骨或腹部水平帶，用 T4 乳頭、T8 肋弓、T10 肚臍、T12 鼠蹊（筆記）定位；看皮膚有沒有成簇水泡。",
+   "seg": "T1–T12；肋間神經"
+  },
+  {
+   "id": "n_numb_thigh_front",
+   "label": "大腿前內側到膝內側麻（L3）",
+   "side": true,
+   "how": "筆記：L2 大腿中間一段、L3 髕骨下緣一段；皮節圖 L3 到股骨內髁。配合伸膝肌力與膝反射。",
+   "seg": "L2–L3；股神經"
+  },
+  {
+   "id": "n_numb_thigh_lat",
+   "label": "大腿前外側一片燒灼或麻（無力）",
+   "side": true,
+   "how": "範圍約手掌大，不過膝、不過中線；站久加重、坐下減輕；肌力與膝反射正常。",
+   "seg": "股外側皮神經（L2–L3）"
+  },
+  {
+   "id": "n_numb_leg_med",
+   "label": "小腿內側到內踝麻（L4／隱神經）",
+   "side": true,
+   "how": "筆記：L4 大腿內側 → 小腿內側 → 前面 2 隻半腳趾。看是否合併背屈無力（L4）或只有麻（隱神經）。",
+   "seg": "L4；隱神經"
+  },
+  {
+   "id": "n_numb_dorsum",
+   "label": "小腿外側、足背、拇趾麻（L5／腓總）",
+   "side": true,
+   "how": "另一頁筆記：L5 沿小腿外側到足背；筆記 k-nerve-ls：L5 大腿、小腿後側 → 中間 3 趾。合併腰臀痛、髖外展無力偏 L5；只在膝以下、有翹腳習慣偏腓總神經。",
+   "seg": "L5；腓總神經"
+  },
+  {
+   "id": "n_numb_lat_foot",
+   "label": "足外側、小趾、腳跟麻（S1／腓腸）",
+   "side": true,
+   "how": "筆記：S1 大腿外側 → 小腿外側 → 後面 2 隻半腳趾；皮節圖：足外側、小趾、足跟。合併踮腳無力、跟腱反射減弱偏 S1。",
+   "seg": "S1；腓腸神經"
+  },
+  {
+   "id": "n_numb_sole",
+   "label": "足底、腳趾燒灼刺麻",
+   "side": true,
+   "how": "站久、走久或夜間加重；內踝後下方輕敲是否重現。兩腳同時、襪套狀分布要想到全身性周邊神經病變。",
+   "seg": "脛神經（跗骨隧道）；S1"
+  },
+  {
+   "id": "n_myo_weak",
+   "label": "某個動作肌力比對側弱（依肌節）",
+   "side": true,
+   "how": "依肌節表逐一對抗比較（筆記：C1–C2 點頭、C3 側彎、C4 聳肩、C5 肩外展、L3 膝、L4 內側、L5 外展、S1 踮腳）；無力但不痛 → 三分法的神經類。",
+   "seg": "依肌節（myotomes）"
+  },
+  {
+   "id": "n_reflex",
+   "label": "反射減弱或兩側不對稱",
+   "side": true,
+   "how": "二頭（C5）、肱橈（C6）、三頭（C7）、膝（L4）、跟腱（S1）兩側比較。",
+   "seg": "依反射表"
+  },
+  {
+   "id": "n_spurling",
+   "label": "Spurling 陽性（頸壓迫重現手臂放射）",
+   "side": true,
+   "how": "見 nt-spurling；只有頸部局部痛不算。",
+   "seg": "C5–C8 神經根"
+  },
+  {
+   "id": "n_ultt",
+   "label": "上肢神經張力測試重現手麻（ULTT）",
+   "side": true,
+   "how": "見 nt-ultt1／2b／3；症狀隨頭側彎改變才算。",
+   "seg": "正中／橈／尺神經；C5–T1"
+  },
+  {
+   "id": "n_tinel_wrist",
+   "label": "腕部 Tinel 或 Phalen 陽性",
+   "side": true,
+   "how": "見 nt-tinel-carpal、nt-phalen。",
+   "seg": "正中神經（腕隧道）"
+  },
+  {
+   "id": "n_night_hand",
+   "label": "夜間或清晨手麻醒來，甩手會好",
+   "side": true,
+   "how": "問診：睡覺時手麻醒、甩一甩就好，騎車或拿手機久了也麻。",
+   "seg": "正中神經（腕隧道）"
+  },
+  {
+   "id": "n_tinel_elbow",
+   "label": "肘部尺神經溝 Tinel／屈肘久了小指麻",
+   "side": true,
+   "how": "見 nt-tinel-cubital；講電話、睡覺屈肘時加重。",
+   "seg": "尺神經（肘隧道）"
+  },
+  {
+   "id": "n_froment",
+   "label": "Froment 陽性、手指張合無力或虎口背側凹陷",
+   "side": true,
+   "how": "見 nt-froment；手背第 1 骨間肌是否萎縮。",
+   "seg": "尺神經；C8–T1"
+  },
+  {
+   "id": "n_thenar",
+   "label": "大魚際萎縮、拇指捏力差",
+   "side": true,
+   "how": "比較兩側拇指根部肌肉飽滿度；拇指與小指對掌抗阻。",
+   "seg": "正中神經；T1"
+  },
+  {
+   "id": "n_wristdrop",
+   "label": "垂腕或伸指無力",
+   "side": true,
+   "how": "手臂前伸掌心朝下，手腕與手指能否伸直；伸指抗阻。",
+   "seg": "橈神經／後骨間神經；C7"
+  },
+  {
+   "id": "n_tinel_radial",
+   "label": "腕上橈側（列缺、陽谿附近）Tinel，手背虎口麻",
+   "side": true,
+   "how": "腕上橈側輕敲；腕屈加尺偏、前臂旋前時加重；手錶太緊？",
+   "seg": "橈神經淺支"
+  },
+  {
+   "id": "n_radtunnel",
+   "label": "外上髁下方 3–4 指深層壓痛（比外上髁本身明顯）",
+   "side": true,
+   "how": "手三里一帶深壓；中指伸直抗阻引發外上髁下方痛。",
+   "seg": "後骨間神經（橈隧道）"
+  },
+  {
+   "id": "n_arm_up",
+   "label": "手舉高過頭或提重物時手麻、手冷",
+   "side": true,
+   "how": "見 nt-roos、nt-adson；過頭動作 1–3 分鐘內出現。",
+   "seg": "臂神經叢（胸廓出口）"
+  },
+  {
+   "id": "n_occ_tender",
+   "label": "枕骨下方外側壓痛並往頭頂竄（枕大神經）",
+   "side": true,
+   "how": "枕外隆突外下 2–3 cm 處輕壓，是否重現後頭往頭頂的刺痛。",
+   "seg": "枕大神經（C2）"
+  },
+  {
+   "id": "n_slump",
+   "label": "Slump 或 Bragard 陽性",
+   "side": true,
+   "how": "見 nt-slump、nt-bragard；抬頭或放鬆背屈後減輕才算。",
+   "seg": "腰薦神經根、坐骨神經"
+  },
+  {
+   "id": "n_fnst",
+   "label": "股神經牽拉測試陽性（大腿前側放射）",
+   "side": true,
+   "how": "見 nt-fnst；與股直肌單純拉緊區分。",
+   "seg": "L2–L4；股神經"
+  },
+  {
+   "id": "n_fair",
+   "label": "FAIR 陽性（臀深處痛或沿坐骨神經放射）",
+   "side": true,
+   "how": "見 nt-fair。",
+   "seg": "坐骨神經（梨狀肌）"
+  },
+  {
+   "id": "n_tinel_fib",
+   "label": "腓骨頭下 Tinel 陽性、翹腳後腳背麻",
+   "side": true,
+   "how": "見 nt-tinel-fibular；問翹腳、蹲跪、緊護具。",
+   "seg": "腓總神經"
+  },
+  {
+   "id": "n_tinel_tarsal",
+   "label": "內踝後下方 Tinel 陽性",
+   "side": true,
+   "how": "見 nt-tinel-tarsal。",
+   "seg": "脛神經（跗骨隧道）"
+  },
+  {
+   "id": "n_footdrop",
+   "label": "垂足、走路拖腳或腳跟走不了",
+   "side": true,
+   "how": "請客人用腳跟走幾步；踝背屈、伸拇抗阻比較。",
+   "seg": "腓深神經；L4–L5"
+  },
+  {
+   "id": "n_tiptoe",
+   "label": "單腳踮腳次數或高度比對側差",
+   "side": true,
+   "how": "單腳踮腳 10 次比較。",
+   "seg": "S1；脛神經"
+  },
+  {
+   "id": "n_cluneal",
+   "label": "髂嵴上緣（中線旁約 7–8 cm）壓痛並重現臀痛",
+   "side": true,
+   "how": "沿髂嵴上緣由內往外滑找點；直腿抬高多陰性。",
+   "seg": "臀上皮神經（L1–L3 後支）"
+  },
+  {
+   "id": "n_wing",
+   "label": "推牆時肩胛內緣翹起（翼狀肩胛）",
+   "side": true,
+   "how": "見 nt-wall-push（站姿評估另有 o_wing，可一起勾）。",
+   "seg": "胸長神經；副神經；肩胛背神經"
+  },
+  {
+   "id": "n_bilateral",
+   "label": "兩側手或腳同時麻、上下肢同時麻、手笨拙或走路不穩（警訊）",
+   "side": false,
+   "how": "問：扣釦子、寫字變差？走路像踩棉花？兩手兩腳都麻？任何一項 → 想到脊髓或全身性問題，先轉介。",
+   "seg": "脊髓（頸髓／胸髓）、全身性周邊神經病變"
+  },
+  {
+   "id": "n_umn",
+   "label": "Hoffmann、Babinski 或陣攣陽性（警訊）",
+   "side": false,
+   "how": "見 nt-hoffmann、nt-babinski。陽性一律轉介，不做頸腰手法。",
+   "seg": "上運動神經元（腦、脊髓）"
+  },
+  {
+   "id": "n_claud",
+   "label": "走一段路兩腿痠麻，要坐下或彎腰才好",
+   "side": false,
+   "how": "問走路距離、休息姿勢；騎腳踏車可以騎很久、後仰加重 → 偏神經性（腰椎管狹窄）；站著休息就好、足背脈弱 → 偏血管性。",
+   "seg": "腰椎管狹窄（馬尾）；血管"
+  },
+  {
+   "id": "n_no_pain_weak",
+   "label": "無力但不痛、肌肉萎縮（三分法神經型）",
+   "side": true,
+   "how": "主動做不到、被動可動、沒有痛；看肌肉是否變小（三角肌、棘下窩、大魚際、骨間肌、小腿）。",
+   "seg": "周邊神經或神經根（k-three）"
+  }
+ ],
+ "patterns": [
+  {
+   "id": "p_n_c5",
+   "name": "疑似 C5 神經根（肩外展無力、手臂麻）",
+   "region": [
+    "cspine",
+    "shoulder"
+   ],
+   "src": "課堂筆記（k-nerve-c、k-nerve-test）＋主流神經學",
+   "desc": "筆記：C5 手臂陰面延伸至手掌心，檢查肩外展；皮節圖 C5 在上臂外側。合併肩外展、屈肘無力與二頭肌反射減弱，偏神經根。與腋神經（只有三角肌、小圓肌）和旋轉肌袖撕裂（痛、特定角度）區分。",
+   "t": {
+    "n_numb_c5": 3,
+    "n_myo_weak": 2,
+    "n_reflex": 2,
+    "n_spurling": 3,
+    "c_arm_numb": 1,
+    "c_neck": 1,
+    "t_nerve": 2,
+    "n_no_pain_weak": 1,
+    "a_neck_ext": 2
+   },
+   "tight": [
+    [
+     "scalene",
+     "same",
+     2
+    ],
+    [
+     "trap_u",
+     "same",
+     1
+    ],
+    [
+     "levator",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "deltoid",
+     "same",
+     2
+    ],
+    [
+     "supraspinatus",
+     "same",
+     1
+    ],
+    [
+     "biceps",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "GB21",
+    "BL11",
+    "LI15",
+    "EX-B2"
+   ],
+   "refer": true,
+   "tech": "先轉介確認；推拿只做肩頸周邊放鬆（斜角肌輕柔、上斜方、提肩胛），不做頸部扳動、不重壓頸椎旁。往下查兄弟椎 L1（筆記 C5↔L1）。",
+   "confirm": [
+    "肩外展、屈肘抗阻比較",
+    "二頭肌反射",
+    "Spurling 是否重現上臂麻",
+    "三角肌區與手臂陰面感覺比較"
+   ]
+  },
+  {
+   "id": "p_n_c6",
+   "name": "疑似 C6 神經根（拇指食指麻）",
+   "region": [
+    "cspine",
+    "elbow",
+    "wrist"
+   ],
+   "src": "課堂筆記（k-nerve-c）＋主流神經學",
+   "desc": "筆記：C6 第 1、2 指與第 3 指一半，檢查「橈神經區」。合併頸痛、Spurling 陽性、屈肘與伸腕無力、肱橈肌反射減弱偏神經根；只有腕以下、夜間麻偏腕隧道（雙重擠壓時兩者並存）。",
+   "t": {
+    "n_numb_thumb": 3,
+    "n_spurling": 3,
+    "n_reflex": 2,
+    "n_myo_weak": 2,
+    "c_neck": 1,
+    "c_arm_numb": 1,
+    "a_neck_ext": 2,
+    "n_ultt": 1
+   },
+   "tight": [
+    [
+     "scalene",
+     "same",
+     2
+    ],
+    [
+     "trap_u",
+     "same",
+     1
+    ],
+    [
+     "brachiorad",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "forearm_ext",
+     "same",
+     1
+    ],
+    [
+     "biceps",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "GB21",
+    "BL11",
+    "LI11",
+    "LI4"
+   ],
+   "refer": true,
+   "tech": "先轉介；周邊放鬆斜角肌、胸小肌、前臂伸肌群，沿正中神經卡壓路線（筆記）一段一段檢查。不做頸部扳動。兄弟椎 C6 筆記沒有列（筆記兄弟椎到 C5↔L1）。",
+   "confirm": [
+    "伸腕、屈肘抗阻",
+    "肱橈肌、二頭肌反射",
+    "Phalen／腕 Tinel 是否也陽性（雙重擠壓）"
+   ]
+  },
+  {
+   "id": "p_n_c7",
+   "name": "疑似 C7 神經根（中指麻、伸肘無力）",
+   "region": [
+    "cspine",
+    "elbow"
+   ],
+   "src": "課堂筆記（k-nerve-c）＋主流神經學",
+   "desc": "筆記：C7 第 2、3、4 指，檢查「正中神經區」。C7 是最常見的頸神經根問題：中指麻、伸肘與屈腕無力、三頭肌反射減弱，常伴肩胛內緣痛。",
+   "t": {
+    "n_numb_middle": 3,
+    "n_spurling": 3,
+    "n_reflex": 2,
+    "n_myo_weak": 2,
+    "c_scap_between": 1,
+    "c_arm_numb": 1,
+    "a_neck_ext": 2,
+    "n_ultt": 1
+   },
+   "tight": [
+    [
+     "scalene",
+     "same",
+     2
+    ],
+    [
+     "levator",
+     "same",
+     1
+    ],
+    [
+     "rhomboid",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "triceps",
+     "same",
+     2
+    ],
+    [
+     "forearm_flex",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "GV14",
+    "BL11",
+    "TE10",
+    "PC6"
+   ],
+   "refer": true,
+   "tech": "先轉介；周邊放鬆肩胛內緣、斜角肌、提肩胛；不做頸部扳動與重壓。",
+   "confirm": [
+    "伸肘抗阻",
+    "三頭肌反射",
+    "Spurling 重現中指麻"
+   ]
+  },
+  {
+   "id": "p_n_c8",
+   "name": "疑似 C8 神經根（小指麻、握力差）",
+   "region": [
+    "cspine",
+    "elbow",
+    "wrist"
+   ],
+   "src": "課堂筆記（k-nerve-c）＋主流神經學",
+   "desc": "筆記：C8 從 C7 與 T1 之間出來，第 4、5 指與第 3 指一半，高爾夫球肘；檢查「尺神經區」。要與肘隧道（尺神經溝 Tinel 陽性、頸部檢查陰性）與胸廓出口下幹（手舉高加重）區分。",
+   "t": {
+    "n_numb_little": 3,
+    "n_numb_armmed": 2,
+    "n_spurling": 2,
+    "n_myo_weak": 2,
+    "n_froment": 1,
+    "c_elbow_med": 1,
+    "a_neck_ext": 2
+   },
+   "tight": [
+    [
+     "scalene",
+     "same",
+     2
+    ],
+    [
+     "pec_minor",
+     "same",
+     1
+    ],
+    [
+     "forearm_flex",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "forearm_flex",
+     "same",
+     2
+    ]
+   ],
+   "points": [
+    "GV14",
+    "SI3",
+    "HT7",
+    "SI8"
+   ],
+   "refer": true,
+   "tech": "先轉介；放鬆斜角肌、胸小肌、前臂屈肌（尺側），尺神經溝只輕撫。",
+   "confirm": [
+    "握力、屈指抗阻",
+    "前臂內側感覺",
+    "肘 Tinel 陰性而 Spurling 陽性 → 偏頸"
+   ]
+  },
+  {
+   "id": "p_n_l4",
+   "name": "疑似 L4 神經根（小腿內側麻、膝軟）",
+   "region": [
+    "lspine",
+    "knee"
+   ],
+   "src": "課堂筆記（k-nerve-ls、k-nerve-test）＋主流神經學",
+   "desc": "筆記：L4 大腿內側 → 小腿內側 → 前面 2 隻半腳趾，檢查「內側」；兩髂嵴最高點連線約平 L4。合併膝反射減弱、伸膝或背屈無力偏神經根；只有麻沒有無力，想到隱神經。",
+   "t": {
+    "n_numb_leg_med": 3,
+    "n_numb_thigh_front": 1,
+    "n_reflex": 2,
+    "n_myo_weak": 2,
+    "n_fnst": 2,
+    "c_lbp": 1,
+    "t_slr_low": 1,
+    "c_worse_cough": 1
+   },
+   "tight": [
+    [
+     "iliopsoas",
+     "same",
+     2
+    ],
+    [
+     "ql",
+     "same",
+     1
+    ],
+    [
+     "erector",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "tib_ant",
+     "same",
+     2
+    ],
+    [
+     "vastus_med",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "BL25",
+    "EX-B2",
+    "SP9",
+    "SP6"
+   ],
+   "refer": true,
+   "tech": "先轉介；腰旁、臀部、大腿周邊放鬆，溫和牽引；不做扭轉扳法與重壓（u-safety-spine-thrust）。兄弟椎 L4↔C2（筆記）。",
+   "confirm": [
+    "膝反射",
+    "腳跟走路、背屈抗阻",
+    "股神經牽拉測試"
+   ]
+  },
+  {
+   "id": "p_n_l5",
+   "name": "疑似 L5 神經根（足背、拇趾麻；伸拇無力）",
+   "region": [
+    "lspine",
+    "hip",
+    "ankle"
+   ],
+   "src": "課堂筆記（k-nerve-ls、k-nerve-test）＋主流神經學",
+   "desc": "筆記另一頁：L5 沿小腿外側到足背；k-nerve-ls 記 L5 大腿後側 → 小腿後側 → 中間 3 趾；檢查「外展」。伸拇、背屈、髖外展無力（臀中肌）都弱 → 偏 L5 根；只有背屈與外翻弱、髖外展正常 → 偏腓總神經。",
+   "t": {
+    "n_numb_dorsum": 3,
+    "n_myo_weak": 2,
+    "n_slump": 2,
+    "t_slr_low": 3,
+    "n_footdrop": 2,
+    "c_sciatic": 2,
+    "c_lbp": 1,
+    "c_worse_cough": 1,
+    "t_trend": 1
+   },
+   "tight": [
+    [
+     "ql",
+     "same",
+     1
+    ],
+    [
+     "erector",
+     "same",
+     1
+    ],
+    [
+     "piriformis",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "toe_ext",
+     "same",
+     2
+    ],
+    [
+     "glute_med",
+     "same",
+     2
+    ],
+    [
+     "tib_ant",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "BL25",
+    "BL26",
+    "GB30",
+    "GB34",
+    "ST36"
+   ],
+   "refer": true,
+   "tech": "先轉介；臀腿周邊放鬆，溫和牽引；避免扭轉、後仰頂腰。腓骨頸不深壓。兄弟椎 L5↔C1（筆記）。",
+   "confirm": [
+    "伸拇抗阻、腳跟走路",
+    "側臥髖外展抗阻",
+    "SLR 角度與放射到哪裡"
+   ]
+  },
+  {
+   "id": "p_n_s1",
+   "name": "疑似 S1 神經根（足外側麻、踮腳無力）",
+   "region": [
+    "lspine",
+    "sacrum",
+    "ankle",
+    "foot"
+   ],
+   "src": "課堂筆記（k-nerve-ls、k-nerve-test）＋主流神經學",
+   "desc": "筆記：S1 大腿外側 → 小腿外側 → 後面 2 隻半腳趾；檢查「足跟向上（踮腳）」。皮節圖 S1：足外側、小趾、足跟。合併跟腱反射減弱、踮腳無力偏神經根；只有足外側麻、無力反射正常可考慮腓腸神經。",
+   "t": {
+    "n_numb_lat_foot": 3,
+    "n_tiptoe": 2,
+    "n_reflex": 2,
+    "t_slr_low": 3,
+    "n_slump": 2,
+    "c_sciatic": 2,
+    "c_lbp": 1
+   },
+   "tight": [
+    [
+     "piriformis",
+     "same",
+     1
+    ],
+    [
+     "hamstrings",
+     "same",
+     1
+    ],
+    [
+     "gastroc",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "gastroc",
+     "same",
+     2
+    ],
+    [
+     "soleus",
+     "same",
+     1
+    ],
+    [
+     "glute_max",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "BL26",
+    "BL54",
+    "BL40",
+    "BL57",
+    "BL60"
+   ],
+   "refer": true,
+   "tech": "先轉介；周邊放鬆臀、膕繩肌、小腿後側；不做腰薦衝擊。",
+   "confirm": [
+    "單腳踮腳 10 次",
+    "跟腱反射",
+    "SLR 加背屈（Bragard）"
+   ]
+  },
+  {
+   "id": "p_n_tos",
+   "name": "胸廓出口（臂神經叢：斜角肌、肋鎖、胸小肌）",
+   "region": [
+    "cspine",
+    "shoulder",
+    "scap"
+   ],
+   "src": "課堂 1019-1、課堂 0727（k-tos）、筆記（k-elbow）",
+   "desc": "課堂：臂神經叢從頸椎出來，經前中斜角肌之間 → 鎖骨與第 1 肋之間 → 胸小肌下方 → 腋下到手臂。手舉高、提重物、頭轉向對側時手麻、手冷、沉重，多在尺側；頸部檢查（Spurling）多陰性。",
+   "t": {
+    "n_arm_up": 3,
+    "c_arm_numb": 2,
+    "t_scalene": 3,
+    "t_pecmin": 2,
+    "n_ultt": 2,
+    "o_round": 1,
+    "o_head_fwd": 1,
+    "n_numb_armmed": 1,
+    "n_numb_little": 1
+   },
+   "tight": [
+    [
+     "scalene",
+     "same",
+     3
+    ],
+    [
+     "pec_minor",
+     "same",
+     3
+    ],
+    [
+     "pec_major",
+     "same",
+     1
+    ],
+    [
+     "scm",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "trap_l",
+     "same",
+     1
+    ],
+    [
+     "serratus",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "ST12",
+    "LU1",
+    "LU2",
+    "HT1",
+    "PC6"
+   ],
+   "refer": false,
+   "tech": "輕柔放鬆斜角肌（不重壓缺盆）、胸小肌（喙突下）、胸大肌、鎖骨下方，配合腹式呼吸；改善圓肩與頭前傾，強化下斜方與前鋸。手部明顯萎縮或手變白、變紫轉介。",
+   "confirm": [
+    "Roos 3 分鐘",
+    "Adson",
+    "ULTT 重現且隨頭側彎改變",
+    "Spurling 陰性"
+   ]
+  },
+  {
+   "id": "p_n_cts",
+   "name": "腕隧道症候群（正中神經）",
+   "region": [
+    "wrist"
+   ],
+   "src": "主流神經學；課堂 0727 補充（k-tos）、筆記正中神經路線（k-elbow）",
+   "desc": "拇指、食指、中指（無名指一半）麻刺，夜間或清晨麻醒、甩手緩解，手掌心多半不麻。筆記提醒正中神經沿途都可能被卡，要一段一段往上找（雙重擠壓）。",
+   "t": {
+    "n_night_hand": 3,
+    "n_tinel_wrist": 3,
+    "n_numb_thumb": 2,
+    "n_numb_middle": 1,
+    "c_wrist": 1,
+    "n_thenar": 1,
+    "c_arm_numb": 1,
+    "o_pregnant": 1
+   },
+   "tight": [
+    [
+     "forearm_flex",
+     "same",
+     2
+    ],
+    [
+     "pronator",
+     "same",
+     2
+    ],
+    [
+     "pec_minor",
+     "same",
+     1
+    ],
+    [
+     "scalene",
+     "same",
+     1
+    ]
+   ],
+   "weak": [],
+   "points": [
+    "PC7",
+    "PC6",
+    "PC3",
+    "LI4"
+   ],
+   "refer": false,
+   "tech": "放鬆前臂屈肌、旋前圓肌，往上查胸小肌、斜角肌；腕隧道（大陵、內關一線）只輕揉，不重壓；建議夜間腕部維持中立。大魚際萎縮、持續麻木轉介。",
+   "confirm": [
+    "Phalen 60 秒",
+    "腕 Tinel",
+    "大魚際飽滿度與捏力",
+    "Spurling 陰性（排除 C6）"
+   ]
+  },
+  {
+   "id": "p_n_cubital",
+   "name": "肘隧道／尺神經溝（尺神經）",
+   "region": [
+    "elbow",
+    "wrist"
+   ],
+   "src": "主流神經學；筆記 C8 尺神經區（k-nerve-test）",
+   "desc": "小指、無名指麻，手背尺側也麻；屈肘久了（講電話、睡覺抱手、手肘靠桌）加重；久了手指不靈活、骨間肌萎縮。與 C8（頸部檢查陽性）和 Guyon 管（手背不麻）區分。",
+   "t": {
+    "n_tinel_elbow": 3,
+    "n_numb_little": 3,
+    "c_elbow_med": 1,
+    "n_froment": 2,
+    "n_ultt": 1
+   },
+   "tight": [
+    [
+     "forearm_flex",
+     "same",
+     2
+    ],
+    [
+     "triceps",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "forearm_flex",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "SI8",
+    "HT3",
+    "HT7",
+    "SI3"
+   ],
+   "refer": false,
+   "tech": "放鬆尺側屈腕肌與前臂屈肌、三頭肌內側頭；尺神經溝（小海）只輕撫，不按不撥；建議避免長時間屈肘。Froment 陽性、骨間肌萎縮轉介。",
+   "confirm": [
+    "肘 Tinel 與屈肘測試",
+    "Froment",
+    "ULTT3",
+    "手背尺側感覺"
+   ]
+  },
+  {
+   "id": "p_n_radial",
+   "name": "橈神經：淺支（手背虎口麻）或後骨間神經（橈隧道）",
+   "region": [
+    "elbow",
+    "wrist"
+   ],
+   "src": "筆記（k-elbow：橈神經穿過旋後肌、垂腕）＋主流神經學",
+   "desc": "橈神經淺支：手錶太緊、擰毛巾動作，手背橈側虎口麻，沒有無力。後骨間神經／橈隧道：外上髁下方 3–4 指深層痛（常當成網球肘），嚴重時伸指無力。筆記：橈神經會穿過旋後肌，損傷會垂腕。",
+   "t": {
+    "n_tinel_radial": 3,
+    "n_radtunnel": 3,
+    "c_elbow_lat": 2,
+    "n_wristdrop": 2,
+    "n_numb_thumb": 1,
+    "n_ultt": 1
+   },
+   "tight": [
+    [
+     "supinator",
+     "same",
+     3
+    ],
+    [
+     "forearm_ext",
+     "same",
+     2
+    ],
+    [
+     "brachiorad",
+     "same",
+     2
+    ]
+   ],
+   "weak": [
+    [
+     "forearm_ext",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "LI10",
+    "LI11",
+    "LU7",
+    "LI5",
+    "TE5"
+   ],
+   "refer": false,
+   "tech": "放鬆旋後肌、伸肌群、肱橈肌，由遠往近；不在橈骨頸處重力橫撥；淺支穿出點（列缺、陽谿）只輕撫，鬆開手錶手環。垂腕、伸指無力轉介。",
+   "confirm": [
+    "中指伸直抗阻引發外上髁下方痛",
+    "ULTT2b",
+    "腕上橈側 Tinel",
+    "伸指、伸腕肌力"
+   ]
+  },
+  {
+   "id": "p_n_piri",
+   "name": "梨狀肌下坐骨神經刺激（假性坐骨神經痛）",
+   "region": [
+    "hip",
+    "sacrum"
+   ],
+   "src": "課堂 0810（k-slr）、筆記（k-hip-rot、k-iliolumbar）、統一說法 u-piriformis",
+   "desc": "課堂：直腿抬高 45° 後痛、60–70° 最痛、超過 70° 不痛 → 梨狀肌。臀深痛往大腿後側放射，久坐加重，沒有明顯肌力、反射改變。梨狀肌縮短（髖外轉傾向）或被拉長繃緊（髖內轉傾向）都可能刺激坐骨神經。筆記另有「坐骨神經兩條線」：腰椎線與梨狀肌線。",
+   "t": {
+    "t_slr_mid": 4,
+    "n_fair": 3,
+    "p_piri_tender": 2,
+    "c_sciatic": 2,
+    "c_worse_sit": 1,
+    "q_foot_out": 1,
+    "n_slump": 1
+   },
+   "tight": [
+    [
+     "piriformis",
+     "same",
+     3
+    ],
+    [
+     "deep_rot",
+     "same",
+     2
+    ],
+    [
+     "glute_max",
+     "same",
+     1
+    ],
+    [
+     "hamstrings",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "glute_med",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "GB30",
+    "BL54",
+    "BL36",
+    "BL37",
+    "BL40"
+   ],
+   "refer": false,
+   "tech": "放鬆梨狀肌、臀後六肌、臀大肌，從大轉子往薦骨方向；壓下去腿麻立即減力。伸展用屈髖加外轉（4 字）。檢查骨盆 ② EX／IN 與薦結節韌帶。低角度 SLR、無力、反射改變轉介。",
+   "confirm": [
+    "SLR 角度（課堂判讀）",
+    "FAIR",
+    "梨狀肌壓痛重現",
+    "肌力、反射正常"
+   ]
+  },
+  {
+   "id": "p_n_peroneal",
+   "name": "腓總神經受壓（腓骨頭）",
+   "region": [
+    "knee",
+    "ankle",
+    "foot"
+   ],
+   "src": "統一說法 u-peroneal、《四肢手療法》p.239–240、主流神經學",
+   "desc": "翹腳、久蹲跪、護具太緊、膝外側被重壓或彈撥後，足背、小腿外側麻，背屈與外翻無力（垂足）。髖外展正常、沒有腰痛，與 L5 神經根區分。",
+   "t": {
+    "n_tinel_fib": 3,
+    "n_numb_dorsum": 2,
+    "n_footdrop": 3,
+    "c_knee_lat": 1,
+    "n_myo_weak": 1
+   },
+   "tight": [
+    [
+     "peroneus",
+     "same",
+     1
+    ],
+    [
+     "hamstrings",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "tib_ant",
+     "same",
+     2
+    ],
+    [
+     "toe_ext",
+     "same",
+     2
+    ],
+    [
+     "peroneus",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "GB34",
+    "BL39",
+    "ST36",
+    "GB39"
+   ],
+   "refer": true,
+   "tech": "有無力就轉介。腓骨頸後方不深壓、不橫撥；可放鬆股二頭肌、腓骨肌（避開腓骨頸）；請客人避免翹腳、久蹲。",
+   "confirm": [
+    "腳跟走路",
+    "伸拇、外翻抗阻",
+    "側臥髖外展正常（排除 L5）",
+    "腓骨頸 Tinel"
+   ]
+  },
+  {
+   "id": "p_n_lfcn",
+   "name": "股外側皮神經（感覺異常性股痛）",
+   "region": [
+    "hip",
+    "pelvis"
+   ],
+   "src": "主流神經學（StatPearls Meralgia Paresthetica）",
+   "desc": "大腿前外側一片燒灼、刺麻、怕碰，站久走久加重、坐下減輕；沒有無力、膝反射正常。腰帶、緊身褲、懷孕、骨盆前傾、髂前上棘內側緊是常見原因。",
+   "t": {
+    "n_numb_thigh_lat": 4,
+    "c_thigh_lat": 1,
+    "o_lordosis": 1,
+    "o_pregnant": 1,
+    "c_worse_stand": 1
+   },
+   "tight": [
+    [
+     "tfl_itb",
+     "same",
+     2
+    ],
+    [
+     "sartorius",
+     "same",
+     1
+    ],
+    [
+     "iliopsoas",
+     "same",
+     1
+    ]
+   ],
+   "weak": [],
+   "points": [
+    "ST31",
+    "GB28",
+    "GB31",
+    "ST32"
+   ],
+   "refer": false,
+   "tech": "鬆開腰帶，放鬆闊筋膜張肌、縫匠肌上端與髂肌周邊；髂前上棘內側只輕揉。合併伸膝無力、膝反射改變 → L2–L3 或股神經，轉介。",
+   "confirm": [
+    "髂前上棘內下方壓痛重現",
+    "伸膝肌力、膝反射正常",
+    "範圍不過膝"
+   ]
+  },
+  {
+   "id": "p_n_tarsal",
+   "name": "跗骨隧道（脛神經）",
+   "region": [
+    "ankle",
+    "foot"
+   ],
+   "src": "主流神經學（StatPearls Tarsal Tunnel Syndrome）",
+   "desc": "足底、腳趾燒灼刺麻，站久走久或夜間加重，腳跟內側痛常被當作足底筋膜炎；扁平足、跟骨外翻、踝扭傷後腫脹會增加隧道壓力。",
+   "t": {
+    "n_tinel_tarsal": 3,
+    "n_numb_sole": 3,
+    "c_heel": 1,
+    "o_flatfoot": 1,
+    "o_calc_valgus": 1,
+    "c_ankle": 1
+   },
+   "tight": [
+    [
+     "tib_post",
+     "same",
+     2
+    ],
+    [
+     "soleus",
+     "same",
+     1
+    ],
+    [
+     "plantar",
+     "same",
+     1
+    ]
+   ],
+   "weak": [
+    [
+     "tib_post",
+     "same",
+     1
+    ]
+   ],
+   "points": [
+    "KI3",
+    "KI6",
+    "KI2",
+    "SP6"
+   ],
+   "refer": false,
+   "tech": "放鬆脛後肌、屈趾長肌、小腿後側與足底；處理扁平足、跟骨外翻；太谿、照海附近只輕揉不深壓。兩腳同時、襪套狀麻 → 全身性問題，轉介。",
+   "confirm": [
+    "內踝後下方 Tinel",
+    "背屈外翻維持 5–10 秒重現",
+    "只有單側"
+   ]
+  },
+  {
+   "id": "p_n_gon",
+   "name": "枕大神經頭痛（枕神經痛）",
+   "region": [
+    "occ",
+    "head",
+    "cspine"
+   ],
+   "src": "主流神經學（StatPearls Occipital Nerves）；筆記 C1 頭頂（k-nerve-c）",
+   "desc": "後頭一側陣發性刺痛、電擊感，從後頭竄到頭頂，有時到眼眶後；按枕外隆突外下 2–3 cm 重現。頭前傾、低頭久、枕下與頭夾肌緊是常見原因。筆記 C1 對應頭頂痠痛麻。",
+   "t": {
+    "n_occ_tender": 4,
+    "c_head_back": 2,
+    "c_head_top": 1,
+    "q_subocc": 2,
+    "o_head_fwd": 1,
+    "c_neckstiff": 1
+   },
+   "tight": [
+    [
+     "subocc",
+     "same",
+     3
+    ],
+    [
+     "splenius",
+     "same",
+     2
+    ],
+    [
+     "trap_u",
+     "same",
+     2
+    ]
+   ],
+   "weak": [],
+   "points": [
+    "GB20",
+    "BL10",
+    "GV16",
+    "GB12"
+   ],
+   "refer": false,
+   "tech": "仰臥上托放鬆枕下肌群，放鬆頭夾肌、上斜方；穿出點不要用力點按或彈撥。突發劇烈頭痛、合併神經症狀、轉頭頭暈先就醫。",
+   "confirm": [
+    "穿出點壓痛重現放射",
+    "枕下肌緊",
+    "沒有警訊（r_headache、r_vasc）"
+   ]
+  },
+  {
+   "id": "p_n_cluneal",
+   "name": "臀上皮神經（髂嵴上緣）腰臀痛",
+   "region": [
+    "lspine",
+    "pelvis",
+    "hip"
+   ],
+   "src": "《四肢手療法（圖解）》p.167（b-sizhi-hip-nerves）、WikiMSK",
+   "desc": "單側下背到臀上外側痛，可延伸到大腿後外側但多停在膝以上；彎腰、坐站轉換加重；按髂嵴上緣中線旁約 7–8 cm 重現。直腿抬高多陰性、沒有麻木無力。",
+   "t": {
+    "n_cluneal": 4,
+    "c_lbp": 2,
+    "c_si": 1,
+    "p_ql_tender": 2,
+    "c_lbp_acute": 1,
+    "o_crest_high": 1
+   },
+   "tight": [
+    [
+     "ql",
+     "same",
+     2
+    ],
+    [
+     "erector",
+     "same",
+     2
+    ],
+    [
+     "glute_med",
+     "same",
+     1
+    ]
+   ],
+   "weak": [],
+   "points": [
+    "BL52",
+    "EX-B7",
+    "BL23",
+    "GB25"
+   ],
+   "refer": false,
+   "tech": "放鬆腰方肌、豎脊肌外緣與髂嵴上緣筋膜，由輕到中；痛點不長時間重壓；檢查骨盆高低（髂嵴）。",
+   "confirm": [
+    "髂嵴上緣壓痛點重現",
+    "SLR 陰性",
+    "沒有麻木無力"
+   ]
+  },
+  {
+   "id": "p_n_central",
+   "name": "中樞或脊髓警訊（兩側麻、手笨拙、步態不穩）",
+   "region": [
+    "cspine",
+    "tspine",
+    "lspine"
+   ],
+   "src": "課堂（k-redflag、k-three）＋主流神經學",
+   "desc": "兩手或兩腳同時麻、扣釦子寫字變差、走路像踩棉花、反射特別強或 Hoffmann／Babinski 陽性，或大小便異常、會陰麻木。這些不是推拿能處理的問題。",
+   "t": {
+    "n_bilateral": 4,
+    "n_umn": 4,
+    "r_saddle": 4,
+    "r_weak": 3,
+    "n_claud": 2,
+    "n_no_pain_weak": 2
+   },
+   "tight": [],
+   "weak": [],
+   "points": [],
+   "refer": true,
+   "tech": "立即轉介（大小便異常、會陰麻木送急診）；不做頸腰手法、牽引。",
+   "confirm": [
+    "Hoffmann、Babinski",
+    "兩側反射比較",
+    "走直線",
+    "問大小便與會陰感覺"
+   ]
+  }
+ ],
+ "articles": [
+  {
+   "id": "k-nv-overview",
+   "cat": "神經",
+   "src": "整合：課堂（k-three、k-triangle、k-viscera）＋主流神經學",
+   "title": "神經系統與推拿：中樞、神經根、神經叢、周邊神經",
+   "tags": [
+    "神經",
+    "中樞",
+    "周邊神經",
+    "神經根",
+    "神經叢",
+    "三分法"
+   ],
+   "muscles": [
+    "scalene",
+    "piriformis",
+    "pec_minor"
+   ],
+   "points": [],
+   "regions": [
+    "cspine",
+    "lspine"
+   ],
+   "body": "### 從腦到手指：四層\n|層級|在哪裡|出問題時的樣子|推拿的角色|\n|---|---|---|---|\n|中樞（腦、脊髓）|顱內、椎管內|兩側或上下肢一起麻、手笨拙、走路不穩、反射變強、大小便異常|只篩檢、立即轉介|\n|神經根|椎間孔（脊髓 → 出椎間孔那一段）|沿**皮節**麻痛、**肌節**無力、該節**反射**減弱，常伴頸或腰痛|轉介確認；只做周邊放鬆，不扳、不重壓|\n|神經叢|頸、臂、腰、薦神經叢（神經根重新混合）|範圍較大、跨好幾個皮節，例如胸廓出口的整隻手麻|放鬆擠壓它的肌肉（斜角肌、胸小肌、腰大肌）|\n|周邊神經|一條條有名字的神經|麻在**這條神經的皮膚範圍**、只有**它支配的肌肉**無力；按卡壓點 Tinel 陽性|推拿最能介入的一層：放鬆卡壓它的肌肉，卡壓點本身輕手|\n\n### 為什麼推拿師要懂神經\n- 課堂三分法把「主動不足、不痛」歸為神經（[[k:k-three]]）；整復三步驟第一步就是分清楚骨頭、軟組織還是神經（[[k:k-3steps]]）。\n- 老師說神經、肌肉、骨頭**互為因果**（[[k:k-triangle]]）：肌肉緊可以壓神經（[[m:piriformis]] → 坐骨神經、[[m:scalene]] → 臂神經叢），神經受壓也會讓肌肉無力或保護性緊繃。\n- 筆記：「**神經走短線，力學走長線**」（[[k:k-viscera]]）——神經影響靠近的節段，力學鏈會傳很遠。找神經時沿神經走（根 → 叢 → 周邊），找力學時沿骨架走（足 → 膝 → 骨盆 → 脊椎）。\n\n### 神經的三種功能，三種檢查\n|功能|受壓時|怎麼查|\n|---|---|---|\n|感覺|麻、刺、電、燒灼、感覺變鈍|皮節（根）或周邊神經的皮膚範圍輕觸比較|\n|運動|無力、萎縮、典型姿勢（垂腕、垂足、翼狀肩胛、爪形手）|肌節抗阻、看肌肉飽滿度|\n|反射|減弱（根、周邊）或亢進（中樞）|二頭、肱橈、三頭、膝、跟腱；Hoffmann、Babinski|\n\n### 推拿的界線\n- 周邊卡壓：放鬆壓迫它的肌肉，**卡壓點本身只輕撫**（腓骨頸、尺神經溝、缺盆、腋窩、膕窩、鼠蹊）。\n- 神經根：轉介確認，推拿只做周邊放鬆、溫和牽引（[[k:u-safety-spine-thrust]]）。\n- 中樞警訊：不做手法，立即轉介（[[k:k-nv-redflag]]）。\n\n> 本頁各條神經的走向、卡壓點與檢查，見「神經」資料庫（nerves）與 [[k:k-nv-3steps]]。資料來源：TeachMeAnatomy、Physiopedia、StatPearls（見各神經條目）。"
+  },
+  {
+   "id": "k-nv-3steps",
+   "cat": "神經",
+   "src": "整合：課堂筆記（k-nerve-c、k-nerve-ls、k-nerve-test）、課堂三分法＋主流神經學（ISNCSCI、LITFL）",
+   "title": "神經判斷三步驟：皮節、肌節、反射（根性、周邊、肌肉轉移痛、中樞）",
+   "tags": [
+    "神經",
+    "皮節",
+    "肌節",
+    "反射",
+    "鑑別",
+    "轉移痛",
+    "雙重擠壓"
+   ],
+   "muscles": [
+    "glute_min",
+    "scalene",
+    "infraspinatus",
+    "piriformis"
+   ],
+   "points": [],
+   "regions": [
+    "cspine",
+    "lspine"
+   ],
+   "body": "### 第 0 步：先篩警訊\n兩側同時麻、手笨拙、走路不穩、大小便異常、會陰麻木、進行性無力 → 停，轉介（[[k:k-nv-redflag]]）。\n\n### 第 1 步：皮節——麻在哪裡\n請客人**用一根手指畫出麻的範圍**，再輕觸比較兩側。\n- 手指：筆記 C6＝第 1、2 指（第 3 指一半）、C7＝第 2、3、4 指、C8＝第 4、5 指（第 3 指一半）（[[k:k-nerve-c]]）；皮節圖：拇指食指 C6、中指 C7、小指 C8。\n- 下肢：筆記 L1 大腿上段、L2 中段、L3 髕骨下緣、L4 大腿內側 → 小腿內側；L5、S1 筆記兩頁寫法不同，見 [[k:k-nv-derm]]。\n- 筆記的用法：皮節縮小範圍 → 椎旁觸診確認 → 三分法排除周邊卡壓，三者指向同一節才處理（[[k:u-dermatomes]]）。\n\n### 第 2 步：肌節——哪個動作沒力\n筆記的快速檢查（[[k:k-nerve-test]]）：C1、C2 點頭，C3 側彎，C4 聳肩，C5 肩外展，C6 橈神經區，C7 正中神經區，C8 尺神經區，L3 膝，L4 內側，L5 外展，S1 足跟向上（踮腳）。主流再補：C6 屈肘伸腕、C7 伸肘、C8 屈指、T1 手指張開、L2 屈髖、L4 背屈、L5 伸拇趾。\n\n### 第 3 步：反射\n二頭（C5）、肱橈（C6）、三頭（C7）、膝（L4）、跟腱（S1）。**減弱**＝根或周邊；**兩側都亢進＋Hoffmann／Babinski**＝中樞，轉介。\n\n### 第 4 步：把結果拼起來\n|型|麻的範圍|無力|反射|其他線索|\n|---|---|---|---|---|\n|**神經根**|沿一個皮節（跨關節、從近端一路往下）|同一節的幾條肌肉，**跨不同周邊神經**（例：L5 的伸拇〔腓深〕＋髖外展〔臀上〕）|該節減弱|頸或腰痛；咳嗽、打噴嚏加重；Spurling、SLR 低角度、Slump 陽性|\n|**周邊神經**|只在這條神經的皮膚範圍，界線清楚|只有**這條神經**支配的肌肉|通常正常（除非該反射弧就在這條神經）|卡壓點 Tinel 陽性；跟姿勢或局部壓迫有關（翹腳、屈肘、手錶）|\n|**肌肉轉移痛**|模糊的一片痠脹，不照皮節，**不麻或很少麻**|痛到不敢用力，休息後力量正常|正常|按到觸發點重現熟悉的痛（例：[[m:glute_min]] 痛到小腿外側、[[m:infraspinatus]] 痛到肩前、[[m:scalene]] 痛到手臂）|\n|**中樞**|兩側、上下肢、襪套手套狀|廣泛、手笨拙、步態不穩|亢進、Babinski 陽性|大小便異常 → 急診|\n\n### 兩個常見陷阱\n- **雙重擠壓**：同一條神經在上游被壓（例：C6 或斜角肌），下游（腕隧道）就更容易出症狀。筆記的正中神經路線要一段一段查（[[k:k-elbow]]），見 [[k:k-nv-entrap]]。\n- **倒推不成立**：C4 皮節痛不一定是 C4 錯位——皮節重疊、轉移痛、周邊卡壓都可能痛在同一區（《脊椎手療法圖解》p.4–6，[[k:b-jizhui-dermatome]]）。"
+  },
+  {
+   "id": "k-nv-derm",
+   "cat": "神經",
+   "src": "課堂筆記（k-nerve-c、k-nerve-t、k-nerve-ls、k-nerve-test）；皮節圖（附註資料 10/28）；ISNCSCI 檢查點",
+   "title": "皮節：課堂筆記與皮節圖怎麼一起用",
+   "tags": [
+    "皮節",
+    "dermatome",
+    "C5",
+    "L5",
+    "S1",
+    "筆記",
+    "神經"
+   ],
+   "muscles": [],
+   "points": [
+    "BL11",
+    "BL25",
+    "BL26"
+   ],
+   "regions": [
+    "cspine",
+    "lspine",
+    "sacrum"
+   ],
+   "body": "**皮節**＝一對脊神經根負責的皮膚區。**C1 沒有皮節**（多數人 C1 只有運動根）。課堂有兩種材料：老師的**筆記分布表**（往哪一節找），以及 10/28 附上的**皮節圖**（標準感覺檢查區）。兩者都是課程資料，評估時以筆記決定往哪一節找，用皮節圖的檢查點做兩側感覺比較。\n\n### 上肢\n|節段|筆記|皮節圖（檢查點）|\n|---|---|---|\n|C1|頭頂（痠痛麻）、高血壓、地中海禿、睡眠|無皮節|\n|C2|顏面（眼耳口鼻）|後腦勺（枕外隆突外 1 cm）|\n|C3|喉嚨|頸部（鎖骨上窩）|\n|C4|肩膀（流鼻血）|肩上、鎖骨一帶（肩鎖關節）|\n|C5|手臂陰面延伸至手掌心|上臂外側三角肌區（肘窩外側）|\n|C6|第 1、2 指，第 3 指一半|前臂外側到拇指、食指（拇指背側）|\n|C7|第 2、3、4 指|中指|\n|C8|第 4、5 指，第 3 指一半；高爾夫球肘|無名指、小指、前臂內側（小指背側）|\n|T1|肩峰 → 手肘內側 → 手腕內側|前臂近端內側、上臂內側（肘窩內側）|\n|T2|肩峰後 2 指、肩胛稜線下緣 → 肘尖 → 5 指同時麻|上臂內側近腋窩、上胸|\n|T3|腋下 → 肘窩（網球肘）→ 手腫脹|胸前第 3 肋間|\n\n### 軀幹（筆記與圖一致的定位點）\nT4 乳頭、T8 肋弓、T10 肚臍、T12 鼠蹊（[[k:k-nerve-test]]）；背側的帶狀略高於前側。\n\n### 下肢\n|節段|筆記|皮節圖（檢查點）|\n|---|---|---|\n|L1|大腿上面一段|鼠蹊|\n|L2|大腿中間一段|大腿前上（腹股溝到股骨內髁連線中點）|\n|L3|髕骨下緣一段（檢查：膝）|大腿前下到膝內側（股骨內髁）|\n|L4|大腿內側 → 小腿內側 → 前面 2 隻半腳趾（檢查：內側）|小腿內側到內踝、拇趾內側（內踝）|\n|L5|大腿後側 → 小腿後側 → 中間 3 隻腳趾；**另一頁**：小腿外側到足背（檢查：外展）|小腿前外側、足背、第 1–3 趾（第 3 蹠趾關節背面）|\n|S1|大腿外側 → 小腿外側 → 後面 2 隻半腳趾（檢查：踮腳）|足外側、小趾、足底外側、足跟（足跟外側）|\n|S2|繞回後側 → 腳趾末梢|大腿後側、小腿後內側一條（膕窩中點）|\n|S3|走鼠蹊、腳腫脹|臀部內側（坐骨結節）|\n|S4|走前側、偏內 45°|肛門周圍|\n|S5|走前側、偏外 45°|肛門口最內圈|\n|S2–S5|肛門周圍擴散|會陰、肛周（麻木＝馬尾警訊）|\n\n### 怎麼用\n1. 請客人畫出麻的範圍，先對筆記決定往哪一節找，再用皮節圖檢查點輕觸比較兩側。\n2. 到該節的椎旁、背俞穴（筆記 SHU：例 L4 → [[p:BL25]]、L5 → [[p:BL26]]）觸診確認。\n3. 用三分法、周邊神經卡壓點排除（例：足背麻 → L5 或腓總神經；大腿前外側麻 → 股外側皮神經）。\n4. 三者指向同一節才處理；有無力、反射改變先轉介。\n\n### 筆記之間、筆記與圖的差異（保留，待老師確認）\n- L5：筆記兩頁寫法不同（後側版、外側足背版）；皮節圖與「外側足背」那頁一致。\n- C5：筆記寫手臂陰面到掌心，皮節圖在上臂外側；肌力檢查（肩外展）一致。\n- T2、T3 的手部症狀、C2 的顏面屬課堂臨床觀點，皮節圖沒有對應。\n- 其他說法（參考）：《脊椎手療法圖解》p.216 把 L4 畫到大腿外側經踝到大拇趾、跟腱反射也用在 L5（[[k:b-jizhui-lumbar-tests]]）。\n- 皮節彼此重疊，個人差異大；**倒推不成立**（[[k:b-jizhui-dermatome]]）。"
+  },
+  {
+   "id": "k-nv-brachial",
+   "cat": "神經",
+   "src": "課堂 1019-1（錄音約 17:48–20:57）、課堂 0727（k-tos）、筆記（k-elbow）；TeachMeAnatomy、Kenhub Brachial plexus",
+   "title": "臂神經叢的走向與卡壓：斜角肌、鎖骨下、胸小肌、腋下",
+   "tags": [
+    "臂神經叢",
+    "胸廓出口",
+    "斜角肌",
+    "胸小肌",
+    "鎖骨下",
+    "腋下",
+    "手麻",
+    "1019"
+   ],
+   "muscles": [
+    "scalene",
+    "pec_minor",
+    "pec_major",
+    "subscap",
+    "teres_minor",
+    "teres_major",
+    "triceps",
+    "serratus",
+    "levator",
+    "rhomboid"
+   ],
+   "points": [
+    "ST12",
+    "LU1",
+    "LU2",
+    "HT1",
+    "SI9",
+    "PC6"
+   ],
+   "regions": [
+    "cspine",
+    "shoulder",
+    "scap"
+   ],
+   "body": "### 課堂說法（1019、0727）\n臂神經叢從頸椎出來 → 前、中斜角肌之間 → **鎖骨下方**穿出（鎖骨與第 1 肋之間）→ **胸小肌下方** → 從**腋下**出來繞到手臂。老師也提到醫院可用神經傳導檢查找出卡在胸廓出口哪一段。\n\n### 四個關卡\n|關卡|誰圍成|擠壓它的肌肉／姿勢|典型表現|檢查|\n|---|---|---|---|---|\n|① 斜角肌間隙|前斜角肌、中斜角肌、第 1 肋|[[m:scalene]] 緊（頭前傾、胸式呼吸、提重物）|整隻手或尺側麻，頭轉向對側加重|Adson、缺盆上方輕壓（[[p:ST12]]）|\n|② 肋鎖間隙|鎖骨、鎖骨下肌、第 1 肋|圓肩、肩下垂、背重背包、鎖骨下肌緊|手舉高、肩往後下時麻、冷|Roos 3 分鐘|\n|③ 胸小肌下（喙突下）|[[m:pec_minor]]、喙突|圓肩、肩胛前傾、睡覺手舉過頭|手舉過頭加重，喙突下壓痛|過度外展測試、[[p:LU1]] 一帶壓痛|\n|④ 腋下（四邊孔、腋窩）|小圓、大圓、三頭長頭、肱骨|[[m:teres_minor]]、[[m:teres_major]]、[[m:triceps]] 長頭緊|腋神經：肩後外側深痛、三角肌無力|四邊孔（[[p:SI9]]）壓痛|\n\n### 根部就分出去的分支（也會在斜角肌被壓）\n- **肩胛背神經**（C5）穿過中斜角肌 → [[m:levator]]、[[m:rhomboid]]：肩胛內緣深層灼痛。\n- **胸長神經**（C5–C7）穿過中斜角肌 → [[m:serratus]]：翼狀肩胛。\n- **膈神經**（C3–C5）在前斜角肌前面 → 打嗝、呼吸淺（筆記：膈神經 → 胃脹、打嗝）。\n\n### 處理思路\n1. 先排除頸神經根（Spurling 陰性、沒有單一皮節的無力反射改變）。\n2. 由近到遠：斜角肌（輕、不壓缺盆）→ 鎖骨下、胸大肌 → 胸小肌 → 腋後壁。腋窩（[[p:HT1]]）只輕觸。\n3. 配合腹式呼吸、改善圓肩頭前傾，強化下斜方與前鋸。\n4. 手部肌肉萎縮、手變白變紫、單側手腫 → 轉介（血管型胸廓出口）。\n- 筆記把正中神經的卡壓路線整理成：頸椎 → 前中斜角肌 → 鎖骨（鎖骨下肌）→ 肩關節 → 胸小肌 → 肱二頭肌 → 旋前圓肌 → 腕隧道（[[k:k-elbow]]），手麻要沿這條路一段一段找。\n- 前、中斜角肌止於第 1 肋、後斜角肌止於第 2 肋（[[k:u-scalene]]）。"
+  },
+  {
+   "id": "k-nv-upper3",
+   "cat": "神經",
+   "src": "筆記（k-elbow、k-gh、k-nerve-test）；《基礎肌動學》（b-kines-nerves）；TeachMeAnatomy；Physiopedia ULTT",
+   "title": "上肢三大神經：正中、尺、橈（附肌皮、腋神經）",
+   "tags": [
+    "正中神經",
+    "尺神經",
+    "橈神經",
+    "肌皮神經",
+    "腋神經",
+    "垂腕",
+    "爪形手",
+    "腕隧道",
+    "肘隧道"
+   ],
+   "muscles": [
+    "pronator",
+    "forearm_flex",
+    "forearm_ext",
+    "supinator",
+    "brachiorad",
+    "triceps",
+    "biceps",
+    "brachialis",
+    "deltoid",
+    "teres_minor"
+   ],
+   "points": [
+    "PC3",
+    "PC6",
+    "PC7",
+    "SI8",
+    "HT7",
+    "LI10",
+    "LU7",
+    "LI5",
+    "SI9"
+   ],
+   "regions": [
+    "elbow",
+    "wrist",
+    "shoulder"
+   ],
+   "body": "|神經|根|走在哪裡|常見卡壓點|麻在哪裡|無力／姿勢|\n|---|---|---|---|---|---|\n|**正中**|C5(6)–T1|上臂內側 → 肘窩內側（[[p:PC3]]）→ [[m:pronator]] 兩頭之間 → 前臂中線 → 腕隧道（[[p:PC7]]）|旋前圓肌、腕隧道|拇指、食指、中指（無名指一半）掌側|捏力差、大魚際萎縮（猿手）；高位：祝福手|\n|**尺**|C8–T1|上臂內側 → 肘後尺神經溝（[[p:SI8]]）→ 尺側屈腕肌兩頭之間 → Guyon 管（[[p:HT7]] 外下）|肘隧道、Guyon 管|小指、無名指尺側半|手指張合無力、骨間肌萎縮、爪形手、Froment 陽性|\n|**橈**|C5–T1|腋後 → 肱骨後面橈神經溝 → 肘外側 → 深支鑽入 [[m:supinator]]；淺支在 [[m:brachiorad]] 下|橈神經溝、旋後肌（橈隧道）、腕上橈側（淺支）|手背橈側、虎口|**垂腕**、伸指無力|\n|**肌皮**|C5–C7|穿過喙肱肌 → [[m:biceps]] 與 [[m:brachialis]] 之間|喙肱肌、肘窩外側|前臂外側|屈肘、旋後弱，二頭肌反射減弱|\n|**腋**|C5–C6|四邊孔 → 繞肱骨外科頸|四邊孔（[[p:SI9]]）|上臂外側一塊|三角肌萎縮、外展無力|\n\n### 筆記重點\n- 筆記肌肉與神經：三角肌、小圓肌（腋）；肱二頭肌、喙肱肌（肌皮）；三頭肌（橈）（[[k:k-gh]]）。\n- 「橈神經損傷會垂腕；橈神經會穿過旋後肌」（[[k:k-elbow]]）。\n- 檢查：C6 橈神經區、C7 正中神經區、C8 尺神經區（[[k:k-nerve-test]]）——也就是手的橈側、中間、尺側三區。\n\n### 怎麼分「頸」還是「手」\n- 頸神經根：麻從肩或上臂一路往下，頸部動作（Spurling）重現，無力跨兩條以上周邊神經。\n- 周邊神經：麻只在這條神經的範圍，卡壓點 Tinel 陽性，頸部檢查陰性。\n- 肘痛：肘內側痛＋小指麻 → 尺神經溝；肘外側下方 3–4 指深痛＋伸中指痛 → 橈隧道（不是典型網球肘）。筆記另提肘痛往上查 C8（高爾夫球肘）、T3（網球肘）（[[k:k-nerve-c]]、[[k:k-nerve-t]]）。\n\n### 推拿注意\n- 尺神經溝、腕隧道、腕上橈側淺支穿出處只輕撫，不按、不撥、不用指甲掐。\n- 推拿師自己：長時間用掌根推按會壓到自己的 Guyon 管，注意換手與姿勢。"
+  },
+  {
+   "id": "k-nv-lumbosacral",
+   "cat": "神經",
+   "src": "課堂（k-slr、k-nerve-ls）、筆記（k-iliolumbar、k-hip-rot）；《四肢手療法》p.166–167、172、239–240；《經筋手療法圖解》p.212；TeachMeAnatomy",
+   "title": "腰薦神經叢與下肢神經",
+   "tags": [
+    "腰神經叢",
+    "薦神經叢",
+    "股神經",
+    "閉孔神經",
+    "坐骨神經",
+    "脛神經",
+    "腓總神經",
+    "垂足",
+    "隱神經"
+   ],
+   "muscles": [
+    "iliopsoas",
+    "ql",
+    "rectus_fem",
+    "vastus_med",
+    "sartorius",
+    "adductors",
+    "glute_med",
+    "glute_max",
+    "piriformis",
+    "deep_rot",
+    "hamstrings",
+    "gastroc",
+    "soleus",
+    "tib_ant",
+    "peroneus",
+    "tib_post"
+   ],
+   "points": [
+    "ST31",
+    "SP12",
+    "SP11",
+    "GB30",
+    "BL54",
+    "BL36",
+    "BL40",
+    "GB34",
+    "BL60",
+    "KI3"
+   ],
+   "regions": [
+    "lspine",
+    "pelvis",
+    "hip",
+    "knee",
+    "ankle",
+    "foot"
+   ],
+   "body": "### 腰神經叢（L1–L4）：在腰大肌裡組成\n從 [[m:iliopsoas]]（腰大肌）的外緣、內緣、前面穿出：\n|神經|根|往哪裡|重點|\n|---|---|---|---|\n|髂腹下、髂腹股溝|L1|腹壁 → 髂前上棘內側 → 鼠蹊、陰阜|下腹手術後鼠蹊灼痛|\n|股外側皮|L2–L3|髂前上棘內側、腹股溝韌帶下（[[p:ST31]] 附近）|大腿前外側燒灼麻、不無力|\n|股|L2–L4|腹股溝韌帶中點外側、股動脈外側（[[p:SP12]] 附近）→ 股四頭肌；隱神經經內收肌管（[[p:SP11]]）到膝內側、小腿內側|伸膝無力、膝反射減弱；隱神經只有麻|\n|閉孔|L2–L4|閉孔管 → [[m:adductors]]|髖的問題常以膝痛表現（《經筋手療法圖解》p.212）|\n\n### 薦神經叢（L4–S4）：在梨狀肌前面組成\n|神經|根|從哪裡出骨盆|支配|\n|---|---|---|---|\n|臀上|L4–S1|梨狀肌**上**緣|[[m:glute_med]]、臀小肌、闊筋膜張肌 → Trendelenburg|\n|臀下|L5–S2|梨狀肌**下**緣|[[m:glute_max]] → 起身、爬坡無力|\n|坐骨|L4–S3|梨狀肌下緣（少數穿過）→ 坐骨結節與大轉子之間（[[p:GB30]] 深層）→ 大腿後側（[[p:BL36]]）|[[m:hamstrings]]，膝以下全部|\n|陰部|S2–S4|梨狀肌下 → 繞坐骨棘 → 陰部管|會陰、括約肌（醫療評估）|\n\n### 膝以下：坐骨神經的兩個分支\n- **脛神經**：膕窩正中（[[p:BL40]]）→ 比目魚肌腱弓 → 內踝後跗骨隧道（[[p:KI3]]）→ 足底。踮腳、屈趾、足底感覺。\n- **腓總神經**：沿股二頭肌腱內緣 → **繞腓骨頸**（[[p:GB34]] 後下，最淺、最容易受壓）→ 腓深（背屈、伸趾、第 1 趾蹼）＋腓淺（外翻、足背）。受壓 → **垂足**。\n- **腓腸神經**（感覺）：小腿後側中線 → 外踝後（[[p:BL60]]）→ 足外側、小趾。\n\n### 課堂與筆記\n- 坐骨神經由 L4、L5、S1–S3 合成，到膕窩分成脛神經與腓總神經；直腿抬高鑑別真假坐骨神經痛（[[k:k-slr]]）。\n- 筆記（師叔）坐骨神經的兩條線：**腰椎線**（股二頭肌 → 薦結節韌帶 → 副側韌帶 → 髂腰橫韌帶 → L4、L5）與**梨狀肌線**（骨盆）（[[k:k-iliolumbar]]）。\n- 觸摸坐骨神經：從大轉子出發、手指張開輕輕撥開找（[[k:k-hip-rot]]）。\n- 腓骨頸後方不持續深壓、不橫撥（[[k:u-peroneal]]）。\n\n### 足背麻：L5 還是腓總？\n|線索|L5 神經根|腓總神經|\n|---|---|---|\n|腰臀痛|常有|多沒有|\n|髖外展（臀中肌）|也弱（筆記：L5 外展）|正常|\n|脛後肌內翻|可能弱|正常（脛神經）|\n|腓骨頸 Tinel|陰性|陽性|\n|誘因|彎腰、咳嗽加重|翹腳、蹲跪、護具|"
+  },
+  {
+   "id": "k-nv-entrap",
+   "cat": "神經",
+   "src": "整合：課堂筆記（k-elbow）、《四肢手療法》p.166（神經鞘缺血）、《整脊醫學》p.26–30（b-zhengji-compression）；主流神經學",
+   "title": "神經卡壓總論：為什麼會卡、雙重擠壓、推拿怎麼介入",
+   "tags": [
+    "神經卡壓",
+    "雙重擠壓",
+    "Tinel",
+    "神經缺血",
+    "推拿安全"
+   ],
+   "muscles": [
+    "scalene",
+    "pec_minor",
+    "pronator",
+    "supinator",
+    "piriformis",
+    "forearm_flex"
+   ],
+   "points": [
+    "ST12",
+    "SI8",
+    "PC7",
+    "GB34",
+    "KI3",
+    "GB30"
+   ],
+   "regions": [
+    "cspine",
+    "elbow",
+    "wrist",
+    "hip",
+    "knee",
+    "ankle"
+   ],
+   "body": "### 神經在哪裡容易卡\n1. **穿過肌肉**：枕大神經穿頭半棘肌、肩胛背與胸長神經穿中斜角肌、正中神經穿 [[m:pronator]]、後骨間神經鑽 [[m:supinator]]、坐骨神經經 [[m:piriformis]]。\n2. **經過骨纖維管道**：腕隧道、肘隧道、Guyon 管、跗骨隧道、肩胛上切跡、臀上皮神經的髂嵴骨纖維管。\n3. **繞過骨頭、位置很淺**：腓骨頸（腓總）、肱骨橈神經溝（橈）、肘後尺神經溝（尺）。\n4. **轉彎處**：腹股溝韌帶下（股外側皮神經）、喙突下（臂神經叢）。\n\n### 卡了之後發生什麼\n- 輕壓先影響神經自己的小血管：神經鞘缺血、水腫 → 麻、刺（《四肢手療法》p.166 也談到梨狀肌前方小血管網）。\n- 壓久了：髓鞘受損 → 傳導變慢 → 無力；再嚴重：軸突受損 → 萎縮，恢復要幾個月。\n- 《整脊醫學》的分法：神經根硬膜套受壓有皮節痛；神經主幹受壓**不痛但麻**、力量變弱；小神經受壓界線分明（[[k:b-zhengji-compression]]）。\n\n### 雙重擠壓（double crush）\n同一條神經在上游被壓過，下游就更容易出症狀。例：C6 神經根＋斜角肌＋腕隧道同時輕度受壓，每一處單獨都不夠，加起來就手麻。筆記的正中神經路線（頸椎 → 斜角肌 → 鎖骨 → 肩 → 胸小肌 → 肱二頭肌 → 旋前圓肌 → 腕隧道）就是這個概念：**沿路一段一段找**（[[k:k-elbow]]）。\n\n### 推拿的介入原則\n|做|不做|\n|---|---|\n|放鬆壓迫神經的肌肉（斜角肌、胸小肌、旋前圓肌、旋後肌、梨狀肌、脛後肌）|在卡壓點本身深壓、彈撥、橫撥、用指甲掐|\n|改善造成卡壓的姿勢（圓肩、頭前傾、翹腳、屈肘睡、手錶太緊、扁平足）|按到放射麻還繼續加壓|\n|沿神經走向由近到遠逐段檢查|無力、萎縮時只靠推拿|\n|溫和的神經滑動（[[k:k-nv-neurodynamics]]）|神經張力姿勢下用力牽拉|\n\n### 按壓時的安全點\n缺盆（[[p:ST12]]）、腋窩、肘後尺神經溝（[[p:SI8]]）、腕前（[[p:PC7]]）、腹股溝、梨狀肌下緣（[[p:GB30]] 深層）、膕窩、腓骨頸（[[p:GB34]] 後下）、內踝後（[[p:KI3]]）。按下去出現**放射麻、電**立即減力或換位置。"
+  },
+  {
+   "id": "k-nv-neurodynamics",
+   "cat": "神經",
+   "src": "Physiopedia：Upper Limb Tension Tests、Slump Test；Brookbush Institute；課堂 0810（k-slr）",
+   "title": "神經張力與神經鬆動：只做溫和滑動",
+   "tags": [
+    "神經張力",
+    "神經鬆動",
+    "ULTT",
+    "Slump",
+    "SLR",
+    "滑動",
+    "結構鑑別"
+   ],
+   "muscles": [
+    "scalene",
+    "hamstrings",
+    "piriformis"
+   ],
+   "points": [],
+   "regions": [
+    "cspine",
+    "lspine",
+    "hip"
+   ],
+   "body": "### 神經也會「被拉」\n神經要能隨關節在周圍組織中滑動。手臂外展伸肘、彎腰抬腿時，神經被拉長、往某個方向滑；如果路上有卡（肌肉緊、沾黏、腫脹），就會在拉長姿勢下出現麻、電、痛。張力測試就是利用這點：**ULTT**（上肢）、**SLR／Bragard／Slump**（坐骨神經、腰薦神經根）、**股神經牽拉**（L2–L4）。\n\n### 結構鑑別：怎麼知道是神經不是肌肉\n在出現症狀的姿勢下，**動一個離痛點很遠、不會拉到那條肌肉的關節**：\n- 手麻 → 頭往對側側彎變重、同側側彎變輕 → 神經。\n- 大腿後側緊 → SLR 停在那裡，再背屈腳踝（Bragard）或屈頸：症狀變了 → 神經；沒變 → 膕繩肌。\n- Slump：抬頭後腿的症狀減輕 → 神經。\n\n### 滑動（glider）vs 拉緊（tensioner）\n|方式|做法|用在|\n|---|---|---|\n|**滑動**|一端拉長的同時另一端放鬆（例：伸腕時頭往同側側彎；伸膝時抬頭），神經只來回滑、總張力不增加|推拿可做：溫和、無痛、10–15 次|\n|拉緊|兩端同時拉長|容易激惹，推拿不做|\n\n### 推拿師可以做的\n1. 先放鬆沿路的卡壓肌肉，再做幾回溫和滑動。\n2. 只在「沒有症狀或症狀很輕」的範圍內，動作慢，不停在末端，不加壓。\n3. 做完症狀應該不變或變輕；變重、持續麻 → 停止。\n\n### 不做\n- 急性神經根、明顯無力或反射改變、馬尾或中樞警訊、剛受傷或術後。\n- 在張力姿勢下強力牽拉肌肉（例：直腿抬高到放射還硬拉膕繩肌）。\n\n> 課堂直腿抬高判讀：45° 後痛、60–70° 最痛、超過 70° 反而不痛 → 梨狀肌；低角度放射伴麻木無力 → 神經根，轉介（[[k:k-slr]]）。"
+  },
+  {
+   "id": "k-nv-meridian",
+   "cat": "神經",
+   "src": "整合：課堂筆記（SHU、k-family）、notes_round2《類經》經筋；主流神經解剖",
+   "title": "皮節、周邊神經與經絡、經筋：可以對照，不必等同",
+   "tags": [
+    "皮節",
+    "經絡",
+    "經筋",
+    "背俞穴",
+    "夾脊",
+    "神經"
+   ],
+   "muscles": [],
+   "points": [
+    "LU7",
+    "LI4",
+    "PC6",
+    "HT7",
+    "SI3",
+    "BL40",
+    "GB34",
+    "ST36",
+    "BL60",
+    "KI3",
+    "BL25"
+   ],
+   "regions": [
+    "cspine",
+    "lspine"
+   ],
+   "body": "經絡與神經是兩套不同的描述系統，路線有時剛好重疊，有時不同。對照的目的是**幫你記位置、找安全區**，不是說經絡就是神經。\n\n### 手：手三陰三陽與手指皮節\n|手指|皮節（筆記／皮節圖）|周邊神經|走到這指的經脈|\n|---|---|---|---|\n|拇指|C6|正中（掌）、橈淺支（背）|手太陰肺（[[p:LU11]]）|\n|食指|C6（筆記 C6、C7）|正中、橈淺支|手陽明大腸（[[p:LI1]]）|\n|中指|C7|正中|手厥陰心包（[[p:PC9]]）|\n|無名指|C7、C8（筆記 C7、C8）|正中＋尺|手少陽三焦（[[p:TE1]]）|\n|小指|C8|尺|手少陰心（[[p:HT9]]）、手太陽小腸（[[p:SI1]]）|\n- 手少陰心經、手太陽小腸經沿前臂尺側走，與尺神經、C8 範圍相近；[[p:SI8]] 小海正好在尺神經溝上，是要輕手的位置。\n- 手厥陰心包經沿前臂中線，和正中神經同路，[[p:PC6]] 內關、[[p:PC7]] 大陵就在正中神經上方。\n- 手太陰肺經的 [[p:LU7]] 列缺、手陽明的陽谿附近是橈神經淺支穿出處。\n\n### 下肢\n- 足太陽膀胱經走大腿後側、膕窩（[[p:BL40]]）、小腿後側、外踝後（[[p:BL60]]）到小趾——與坐骨神經、脛神經、腓腸神經、S1 皮節大致同一條線。\n- 足少陽膽經在小腿外側（[[p:GB34]] 陽陵泉在腓骨頭前下，腓總神經就在後下方）——與 L5、腓淺神經區相近。\n- 足陽明胃經在小腿前外側（[[p:ST36]]），下方是脛前肌與腓深神經。\n- 足三陰在小腿內側（[[p:KI3]] 太谿在脛神經旁）——與 L4、隱神經區相近。\n\n### 背：背俞穴、夾脊與節段\n筆記 SHU 把胸腰椎各節對到背俞穴（T1 大杼 … L4 [[p:BL25]]、L5 關元俞），夾脊與背俞穴位在脊神經後支分布的範圍，可以用來觸診找節段；但背俞穴的臟腑主治不是神經支配的結果（見 [[k:k-viscera]]）。\n\n### 經筋\n《類經》：「經筋聯綴百骸，故維絡周身，各有定位。」經筋講的是肌肉筋膜成片的連結，筆記也說「筋膜 → 延展成一個面 → 經筋；肌肉 → 單塊；神經 → 依循行控制肌肉」（[[k:k-three]]）。三者尺度不同：找麻、無力用神經；找成片緊繃用經筋；找單點用肌肉。"
+  },
+  {
+   "id": "k-nv-course",
+   "cat": "神經",
+   "src": "課堂筆記（k-nerve-c、k-nerve-t、k-nerve-ls、k-nerve-test、k-family、k-viscera；app.js NERVE／BROTHER／SHU）",
+   "title": "課堂神經筆記整理：C1–L5 對應、兄弟椎、父母椎、背俞穴",
+   "tags": [
+    "筆記",
+    "神經",
+    "兄弟椎",
+    "父母椎",
+    "背俞穴",
+    "C1",
+    "L5",
+    "臟腑"
+   ],
+   "muscles": [],
+   "points": [
+    "BL11",
+    "BL12",
+    "BL13",
+    "BL14",
+    "BL15",
+    "BL16",
+    "BL17",
+    "EX-B3",
+    "BL18",
+    "BL19",
+    "BL20",
+    "BL21",
+    "BL22",
+    "BL23",
+    "BL24",
+    "BL25",
+    "BL26"
+   ],
+   "regions": [
+    "cspine",
+    "tspine",
+    "lspine",
+    "sacrum"
+   ],
+   "body": "以下全部是**課堂筆記**內容（標準答案），整理在一起方便查。主流神經學的差異見 [[k:k-nv-derm]]。\n\n### 頸椎 8 對神經（7 節頸椎、8 對神經，C8 從 C7 與 T1 之間出來）\n|節段|筆記|檢查（筆記）|兄弟椎|\n|---|---|---|---|\n|C1|頭頂（痠痛麻）、高血壓、地中海禿、睡眠品質不好|點頭|L5|\n|C2|顏面（眼耳口鼻），頸椎造成的較少|點頭|L4|\n|C3|喉嚨|側彎|L3|\n|C4|肩膀（流鼻血）|聳肩|L2|\n|C5|手臂陰面延伸至手掌心|肩外展|L1|\n|C6|第 1、2 指，第 3 指一半|橈神經區|—|\n|C7|第 2、3、4 指|正中神經區|—|\n|C8|第 4、5 指，第 3 指一半；高爾夫球肘|尺神經區|—|\n- 找法：肩從肩窩開始，每 1 個指幅一對神經；腕從橈側開始，每一個面一對神經。\n- 會影響到手的有 **C5、C6、C7、C8 與 T1、T2、T3、T5**。\n\n### 胸椎\n|節段|筆記|背俞穴（SHU）|\n|---|---|---|\n|T1|肩峰 → 手肘內側 → 手腕內側；血壓|[[p:BL11]]|\n|T2|肩峰後 2 指、肩胛稜線下緣 → 肘尖 → 5 指同時麻；甲亢 T2–T4；肺（T2、T3）|[[p:BL12]]|\n|T3|腋下 → 肘窩（網球肘）→ 手腫脹；壓迫：躁鬱|[[p:BL13]]|\n|T4|乳頭水平線；最容易出狀況的節段之一；膽|[[p:BL14]]|\n|T5|半身痠麻、遊走性痠痛；壓迫：憂鬱；T5–T7 高血壓、糖尿病；肝|[[p:BL15]]|\n|T6|T5–T6：顏面、免疫、肝膽脾胃、健忘、內耳平衡；胃|[[p:BL16]]|\n|T7|兩肩胛下角連線約平 T7；胰、十二指腸|[[p:BL17]]|\n|T8|肋弓水平線；胃 T8–T10；皮膚、抗體|[[p:EX-B3]]|\n|T9|胃 T8–T10；腎、副腎|[[p:BL18]]|\n|T10|肚臍；造血 T10–T12|[[p:BL19]]|\n|T11|造血 T10–T12|[[p:BL20]]|\n|T12|鼠蹊；最容易出狀況的節段之一；膈肌角 T12–L1|[[p:BL21]]|\n- 老師觀點：「器官在哪，正後方就是它的主神經」、「神經走短線，力學走長線」（[[k:k-viscera]]）。這是往哪裡找的線索，不是醫學診斷；不同頁的對應不完全一致（例如肝在 T5 或 T9），以課堂講解為準。\n\n### 腰、薦、尾\n|節段|筆記|檢查|兄弟椎|背俞穴|\n|---|---|---|---|---|\n|L1|大腿上面一段|—|C5|[[p:BL22]]|\n|L2|大腿中間一段|—|C4|[[p:BL23]]|\n|L3|髕骨下緣一段|膝|C3|[[p:BL24]]|\n|L4|大腿內側 → 小腿內側 → 前面 2 隻半腳趾；兩髂嵴最高點連線約平 L4|內側|C2|[[p:BL25]]|\n|L5|大腿後側 → 小腿後側 → 中間 3 隻腳趾（另一頁：沿小腿外側到足背）|外展|C1|[[p:BL26]]|\n|S1|大腿外側 → 小腿外側 → 後面 2 隻半腳趾|足跟向上（踮腳）|||\n|S2|繞回後側 → 腳趾末梢|S2–S5 肛門周圍擴散|||\n|S3|走鼠蹊、腳腫脹||||\n|S4／S5|走前側、偏內 45°／偏外 45°||||\n|Co|痔瘡、肛門痛、很怕痛；管轄底部、擺尾、平衡||||\n\n### 兄弟椎與父母椎（課堂力學模型）\n- **兄弟椎**：C1↔L5、C2↔L4、C3↔L3、C4↔L2、C5↔L1（起在下、止在上）。頸部問題可以往下找它的兄弟（[[k:k-family]]）。\n- **父母椎**：Co1 娶 S1–S5，神經方面一個媽媽管 5 個孩子：S1↔C1–C5、S2↔C6–T2、S3↔T3–T7、S4↔T8–T12、S5↔L1–L5。\n- 其他說法（參考）：主流神經解剖沒有兄弟椎、父母椎的神經連結；可理解為頸椎與腰椎前凸、骨盆與上面脊椎的力學代償關係。課堂以筆記為準。\n\n### 其他筆記\n- 膈神經：胃脹、打嗝；另記喉返神經、迷走神經。肋間神經（筆記：C2、T1–T3）。\n- 正中神經卡壓路線、橈神經垂腕與旋後肌（[[k:k-elbow]]）；肩胛胸廓與盂肱關節各肌肉的神經（[[k:k-st-nerves]]、[[k:k-gh]]）。"
+  },
+  {
+   "id": "k-nv-redflag",
+   "cat": "神經",
+   "src": "課堂（k-redflag、k-three）＋主流神經學（StatPearls Cervical Myelopathy、Geeky Medics Hoffmann’s sign）",
+   "title": "神經的紅旗與轉介：什麼情況推拿師不處理",
+   "tags": [
+    "紅旗",
+    "轉介",
+    "馬尾",
+    "脊髓",
+    "中風",
+    "Hoffmann",
+    "Babinski",
+    "安全"
+   ],
+   "muscles": [],
+   "points": [],
+   "regions": [
+    "cspine",
+    "lspine",
+    "sacrum",
+    "head"
+   ],
+   "body": "### 立即就醫（急診）\n- **大小便失禁或解不出來、會陰（鞍區）麻木、兩腿突然無力** → 馬尾症候群（[[k:k-redflag]]）。\n- **突發劇烈頭痛、口齒不清、單側臉或手腳無力、視線突然模糊** → 中風。\n- 外傷後頸痛合併手腳麻或無力 → 頸椎骨折或脊髓損傷，不要移動頸部。\n\n### 盡快轉介（停手法）\n- 兩手或兩腳同時麻、手笨拙（扣釦子、寫字變差）、走路不穩像踩棉花 → 脊髓受壓。\n- Hoffmann、Babinski、陣攣陽性，反射兩側特別強。\n- **進行性無力、肌肉萎縮**（三角肌、大魚際、骨間肌、小腿），垂腕、垂足、翼狀肩胛新出現。\n- 「**主動動不了但不痛**」（三分法神經型，[[k:k-three]]）。\n- 神經根徵象：放射到手指或腳趾、肌節無力、反射減弱、Spurling 陽性、SLR 低角度就放射。\n- 麻的範圍越來越大、夜間痛、發燒、體重減輕、癌症病史。\n- 兩腳襪套狀麻（糖尿病等全身性周邊神經病變）。\n- 皮膚帶狀刺痛後出現成簇水泡（帶狀皰疹）。\n\n### 轉介後推拿能做的\n- 醫師排除嚴重問題、確認是周邊卡壓或輕度神經根刺激後，可做周邊肌肉放鬆、姿勢調整、溫和神經滑動。\n- 仍然不做：頸部高速旋轉扳動；疑似神經根受壓節段的衝擊、扭轉扳法與重壓；腳踩；在卡壓點深壓（[[k:u-safety-spine-thrust]]）。\n\n### 和客人怎麼說\n「這個麻／沒力的情形，看起來跟神經比較有關，我先幫你放鬆旁邊的肌肉，但建議你先給神經科或復健科檢查，確定沒問題我們再繼續。」不說診斷名稱、不保證療效。"
+  }
+ ]
+}

@@ -226,7 +226,7 @@ if (NVJ) {
       + '\n\n### 肌節（肌力測試）\n|節段|動作|怎麼測|\n|---|---|---|\n' + info.myotomes.map((d) => '|' + [d.seg, d.action, d.test].map((x) => String(x || '').replace(/\|/g, '／')).join('|') + '|').join('\n')
       + '\n\n### 反射\n|反射|節段|做法|\n|---|---|---|\n' + info.reflexes.map((d) => '|' + [d.name, d.seg, d.how].map((x) => String(x || '').replace(/\|/g, '／')).join('|') + '|').join('\n')
       + '\n\n### 神經測試\n|測試|做法|陽性代表|注意|\n|---|---|---|---|\n' + info.tests.map((d) => '|' + [d.name, d.how, d.positive, d.caution].map((x) => link(String(x || '')).replace(/\|/g, '／').replace(/\n/g, ' ')).join('|') + '|').join('\n') });
-  (NVJ.articles || []).forEach((a) => items.push({ id: a.id, cat: '神經', src: '補充：神經整理', title: a.title, tags: (a.tags || []).concat(['神經']), muscles: (a.muscles || []).filter((m) => MU[m]), points: (a.points || []).filter((p) => PT[p]), regions: a.regions || [], body: link(a.body) }));
+  (NVJ.articles || []).forEach((a) => items.push({ id: a.id, cat: '神經', src: a.src || '補充：神經整理', title: a.title, tags: (a.tags || []).concat(['神經']), muscles: (a.muscles || []).filter((m) => MU[m]), points: (a.points || []).filter((p) => PT[p]), regions: a.regions || [], body: link(a.body) }));
   // 評估：神經站
   const fsx = NVJ.findings || [];
   const sens = fsx.filter((f) => /麻|感覺|皮節|刺痛|觸覺/.test(f.label)); const rest = fsx.filter((f) => !sens.includes(f));
@@ -240,6 +240,8 @@ if (NVJ) {
     + '  const P = ' + JSON.stringify(pats) + '; const have = new Set(window.PATTERNS.map((p) => p.id)); P.forEach((p) => { if (!have.has(p.id)) window.PATTERNS.push(p); }); })();\n';
 }
 fs.writeFileSync(SRC + 'data_nerves.js', nvOut);
+const LX = (o) => { Object.values(o).forEach((r) => Object.keys(r).forEach((k) => { if (typeof r[k] === 'string') r[k] = link(r[k]); else if (Array.isArray(r[k])) r[k] = r[k].map((x) => (typeof x === 'string' ? link(x) : x)); })); };
+LX(MX); LX(BX); LX(SX);
 const out = '/* 詳解與手法目錄（由 tools/details/gen_details.js 產生；內容為依參考書與課堂自行整理的摘要並標註頁碼） */\n'
   + 'window.DETAIL = ' + JSON.stringify({ pt: DPT, mu: DMU, bn: DBN, sn: DSN, snOverview, mx: MX, bx: BX, sx: SX }) + ';\n'
   + 'window.TECHS = ' + JSON.stringify(TECHS) + ';\n'
