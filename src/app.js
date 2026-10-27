@@ -1505,7 +1505,7 @@
       if (sp === 'sub') { SubUI.renderDetail(D, this.selId); return; }
       const it = this.all().find((x) => x.id === this.selId);
       if (!it) {
-        D.ap(h('div', { class: 'eyebrow' }, '知識庫'), h('h3', null, '從左邊選一則來看'), h('p', { class: 'small' }, '收錄課堂筆記（經筋、薦椎、骨盆三角度、頭痛分類）與課堂錄音整理出的重點，另以肌動學、整脊與經穴的通識補充（標示「補充」）。「逐字稿」可以依堂次、部位、知識點瀏覽各堂課錄音的原始逐字稿；「參考書」收錄老師推薦書籍的重點整理（自己的話＋頁碼）與和課堂理論的比對；「整合說明」是課堂與各書說法不一致處的統一結論；「詳解」為每個穴位、肌肉、骨骼、經筋依參考書整理的完整說明；「手法」收錄各種推拿、整復、整脊手法的步驟與禁忌。'),
+        D.ap(h('div', { class: 'eyebrow' }, '知識庫'), h('h3', null, '從左邊選一則來看'), h('p', { class: 'small' }, '收錄課堂筆記（經筋、薦椎、骨盆三角度、頭痛分類）與課堂錄音整理出的重點，另以肌動學、整脊與經穴的通識補充（標示「補充」）。「逐字稿」可以依堂次、部位、知識點瀏覽各堂課錄音的原始逐字稿；「參考書」收錄老師推薦書籍的重點整理（自己的話＋頁碼）與和課堂理論的比對；「整合說明」是課堂與各書說法不一致處的整理（以課堂筆記為準）；「詳解」為每個穴位、肌肉、骨骼、經筋依參考書整理的完整說明；「手法」收錄各種推拿、整復、整脊手法的步驟與禁忌。'),
           h('p', { class: 'small' }, '搜尋時也會找到肌肉、穴位與經筋資料；沒有搜尋時只列知識條目。'),
           h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '快速入口'), h('div', { class: 'chips', style: { marginTop: '6px' } }, ['薦椎', '三個角度', '被拉長', '膝', '經筋', '頭痛', '梨狀肌', '手法'].map((t) => h('button', { class: 'chip', onclick: () => this.openSearch(t) }, t)), (window.KB_BOOKS || []).length ? h('button', { class: 'chip on', onclick: () => this.open('b-overview') }, '參考書與課程比對') : null, this.has('u-overview') ? h('button', { class: 'chip on', onclick: () => this.open('u-overview') }, '統一說法總表') : null, h('button', { class: 'chip on', onclick: () => this.openSource('手法') }, '手法目錄'), h('button', { class: 'chip on', onclick: () => this.openSource('詳解') }, '穴位・肌肉・骨骼・經筋詳解')),
           h('div', { class: 'eyebrow', style: { marginTop: '12px' } }, '新增知識的方式'),
