@@ -46,7 +46,7 @@
     const d2 = new THREE.DirectionalLight(0xffffff, 0.42); d2.position.set(-1.8, 1.4, -2.4); scene.add(d2);
     const d3 = new THREE.DirectionalLight(0xffffff, 0.18); d3.position.set(0, -1, 1); scene.add(d3);
 
-    const groups = { skin: new THREE.Group(), bone: new THREE.Group(), muscle: new THREE.Group(), meridian: new THREE.Group(), sinew: new THREE.Group(), point: new THREE.Group() };
+    const groups = { skin: new THREE.Group(), bone: new THREE.Group(), muscle: new THREE.Group(), meridian: new THREE.Group(), sinew: new THREE.Group(), point: new THREE.Group(), nerve: new THREE.Group() };
     Object.values(groups).forEach((g) => scene.add(g));
     const C = opts.colors || {};
     const matSkin = new THREE.MeshStandardMaterial({ color: C.skin || 0xd9b9a0, roughness: 0.75, metalness: 0, transparent: true, opacity: 0.18, depthWrite: false, side: THREE.DoubleSide });
@@ -56,8 +56,8 @@
     const matBoneDim = new THREE.MeshStandardMaterial({ color: 0xe9dfc8, roughness: 0.62, transparent: true, opacity: 0.22, depthWrite: false });
     const MUSCLE_BASE = new THREE.Color(C.muscle || 0xb04b42);
 
-    const state = { sel: null, muscleStates: {}, ready: false, pending: [], layers: {} };
-    const muscleMeshes = {}, boneMeshes = {}, merMeshes = {}, sinewMeshes = {}, pointMeshes = {}, pointPos = {}; const partInfo = {};
+    const state = { sel: null, muscleStates: {}, ready: false, pending: [], layers: {}, cmp: [], derm: null };
+    const muscleMeshes = {}, boneMeshes = {}, merMeshes = {}, sinewMeshes = {}, pointMeshes = {}, pointPos = {}, nerveMeshes = {}; const partInfo = {}; let skinDeform = null;
 
     // ---- 載入提示 ----
     const loader = document.createElement('div'); loader.className = 'b3-loading';
@@ -214,7 +214,7 @@
         for (let i = 0; i < p.nv * 3; i++) { const a = i % 3; P[i] = mn[a] + pos[p.v * 3 + i] * st[a]; }
         const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(P, 3)); g.setIndex(new THREE.BufferAttribute(idx.slice(p.i, p.i + p.ni), 1)); g.computeVertexNormals(); g.computeBoundingSphere();
         const side = p.side === 'L' ? 1 : p.side === 'R' ? -1 : 0;
-        if (p.kind === 'skin') { const m = new THREE.Mesh(g, matSkin); m.userData = { kind: 'skin' }; m.renderOrder = 5; groups.skin.add(m); addDeform(m, p, man, buf); return; }
+        if (p.kind === 'skin') { const m = new THREE.Mesh(g, matSkin); m.userData = { kind: 'skin' }; m.renderOrder = 5; groups.skin.add(m); addDeform(m, p, man, buf); skinDeform = deform[deform.length - 1] || null; if (skinDeform && skinDeform.mesh !== m) skinDeform = null; return; }
         if (p.kind === 'muscle') {
           const mat = new THREE.MeshStandardMaterial({ color: MUSCLE_BASE.clone(), roughness: 0.58, metalness: 0, transparent: true, opacity: 1 });
           const m = new THREE.Mesh(g, mat); const id = p.group || ('m_' + p.fid);
@@ -248,6 +248,15 @@
           (pointMeshes[pt.id] = pointMeshes[pt.id] || []).push(m); (pointPos[pt.id] = pointPos[pt.id] || []).push(m.position.clone()); groups.point.add(m);
         });
       });
+      // 神經（示意走向）：左側資料，右側鏡像；中線（脊髓）不鏡像
+      Object.entries(data.nerves || {}).forEach(([id, nv]) => {
+        const mat = new THREE.MeshStandardMaterial({ color: nv.color || 0xf3d36b, emissive: nv.color || 0xf3d36b, emissiveIntensity: 0.25, roughness: 0.45, transparent: true, opacity: 0.95 });
+        const mid = nv.paths.every((L) => L.every((v, i) => i % 3 !== 0 || Math.abs(v) < 0.001));
+        (mid ? [1] : [1, -1]).forEach((sx) => nv.paths.forEach((L) => {
+          const pts = polyFromFlat(L).map((p) => new THREE.Vector3(p.x * sx, p.y, p.z)); const g = tubeGeo(pts, id === 'n-cord' ? 0.0042 : 0.0023, 7); if (!g) return;
+          const m = new THREE.Mesh(g, mat.clone()); m.userData = { kind: 'nerve', id, side: sx }; m.renderOrder = 6; (nerveMeshes[id] = nerveMeshes[id] || []).push(m); groups.nerve.add(m);
+        }));
+      });
       // 資料集中沒有的闊筋膜張肌／髂脛束：以示意管狀補上
       Object.entries(G.fib || {}).forEach(([id, sides]) => {
         if (muscleMeshes[id]) return;
@@ -280,6 +289,72 @@
       Object.entries(pointMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const on = anySel && sel.kind === 'point' && sel.ids.includes(id); m.scale.setScalar(on ? 1.9 : 1); m.material.emissiveIntensity = on ? 1.3 : 0.55; }));
       const boneSel = anySel && sel.kind === 'bone';
       Object.entries(boneMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { m.material = boneSel ? (sel.ids.includes(id) ? matBoneHi : (m.userData.base === matCart ? matCart : matBone)) : m.userData.base; }));
+      Object.entries(nerveMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const on = anySel && sel.kind === 'nerve' && sel.ids.includes(id); m.material.opacity = !anySel || on || sel.kind !== 'nerve' ? 0.95 : 0.12; m.material.emissiveIntensity = on ? 0.9 : 0.25; }));
+      // 多選比較：每個項目一種顏色，其餘淡化
+      const cmp = state.cmp || []; if (!cmp.length) return;
+      const byK = {}; cmp.forEach((c) => { [].concat(c.ids || c.id).forEach((id) => { (byK[c.kind] = byK[c.kind] || {})[id] = new THREE.Color(c.color); }); });
+      Object.entries(muscleMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.muscle && byK.muscle[id]; m.material.color.copy(c || COL.dim); m.material.opacity = c ? 1 : 0.08; m.material.emissive.copy(c || COL.dim).multiplyScalar(c ? 0.25 : 0); m.material.transparent = !c; m.material.depthWrite = !!c; m.renderOrder = c ? 2 : 1; m.material.needsUpdate = true; }));
+      Object.entries(boneMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.bone && byK.bone[id]; if (c) { m.material = (cmpMat[id] = cmpMat[id] || new THREE.MeshStandardMaterial({ roughness: 0.5 })); m.material.color.copy(c); m.material.emissive = c.clone().multiplyScalar(0.25); } else m.material = byK.bone ? matBoneDim : m.userData.base; }));
+      Object.entries(sinewMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.sinew && byK.sinew[id]; m.material.opacity = c ? (m.userData.knot ? 0.95 : 0.7) : 0.05; if (c) m.material.color.copy(c); }));
+      Object.entries(nerveMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.nerve && byK.nerve[id]; m.material.opacity = c ? 1 : 0.1; if (c) { m.material.color.copy(c); m.material.emissive.copy(c); m.material.emissiveIntensity = 0.6; } }));
+      Object.entries(pointMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.point && byK.point[id]; m.scale.setScalar(c ? 2.1 : 1); if (c) { m.material.emissive.copy(c); m.material.emissiveIntensity = 1.2; } }));
+      Object.entries(merMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { m.material.opacity = 0.1; }));
+    }
+    const cmpMat = {};
+    function setCompare(list, opt = {}) {
+      state.cmp = list || []; state.sel = null;
+      // 還原經筋／神經／穴位原色
+      Object.entries(sinewMeshes).forEach(([id, meshes]) => { const sw = (data.sinews || []).find((s) => s.id === id); meshes.forEach((m) => sw && m.material.color.setHex(sw.color)); });
+      Object.entries(nerveMeshes).forEach(([id, meshes]) => { const nv = (data.nerves || {})[id]; meshes.forEach((m) => { if (nv) { m.material.color.setHex(nv.color); m.material.emissive.setHex(nv.color); } }); });
+      Object.entries(pointMeshes).forEach(([id, meshes]) => { const pt = (data.points || []).find((x) => x.id === id); const mer = pt && (data.meridians || []).find((x) => x.id === pt.mer); meshes.forEach((m) => m.material.emissive.setHex(mer ? mer.color : 0x333333)); });
+      refresh();
+      const lab = []; const all = [];
+      (state.cmp || []).forEach((c) => {
+        const pool = c.kind === 'muscle' ? muscleMeshes : c.kind === 'bone' ? boneMeshes : c.kind === 'sinew' ? sinewMeshes : c.kind === 'nerve' ? nerveMeshes : c.kind === 'point' ? pointMeshes : null; if (!pool) return;
+        let ms = []; [].concat(c.ids || c.id).forEach((id) => { if (pool[id]) ms = ms.concat(pool[id]); }); if (!ms.length) return; const left = ms.filter((m) => (m.userData.side != null ? m.userData.side >= 0 : true)); if (left.length) ms = left;
+        all.push(...ms); lab.push({ text: c.label || c.id, pos: c.kind === 'point' ? ms[0].position.clone() : centroid(ms), cls: 'mu cmp' });
+      });
+      setLabels(lab);
+      if (all.length && opt.focus !== false) { const c = centroid(all); const box = new THREE.Box3(); all.forEach((m) => box.expandByObject(m)); const size = box.getSize(new THREE.Vector3()).length(); focusOn(c, Math.min(3.4, Math.max(0.6, size * 1.5)), viewDirFor(c, 'muscle')); }
+    }
+    // ===== 皮節（示意）：依皮膚頂點最近的骨頭與位置分區 =====
+    const DERM = ['V', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12', 'L1', 'L2', 'L3', 'L4', 'L5', 'S1', 'S2', 'S3', 'S4'];
+    const DCOL = { V: 0xb0bec5, C2: 0xe57373, C3: 0xf48fb1, C4: 0xce93d8, C5: 0x9575cd, C6: 0x5c6bc0, C7: 0x42a5f5, C8: 0x26c6da, T1: 0x26a69a, L1: 0xcddc39, L2: 0xffeb3b, L3: 0xffb74d, L4: 0xff7043, L5: 0xec407a, S1: 0xab47bc, S2: 0x8d6e63, S3: 0xcfcfcf, S4: 0x9e9e9e };
+    for (let i = 2; i <= 12; i++) DCOL['T' + i] = i % 2 ? 0x43a047 : 0xa5d6a7;
+    function dermOf(x, y, z, key) {
+      const ax = Math.abs(x); const k = String(key || '').replace(/_[LR]$/, ''); const lerp = (a, b, t) => a + (b - a) * Math.max(0, Math.min(1, t));
+      if (k === 'hand') { const rel = ax - 0.262; return rel > 0.012 ? 'C6' : rel < -0.012 ? 'C8' : 'C7'; }
+      if (k === 'radius' || k === 'ulna') { const t = (1.05 - y) / 0.23; const dx = ax - lerp(0.21, 0.256, t), dz = z - lerp(-0.017, 0.029, t); if (dz < -0.006 && Math.abs(dx) < 0.013) return 'C7'; return dx >= 0 ? 'C6' : (y > 0.99 ? 'T1' : 'C8'); }
+      if (k === 'humerus') { const t = (1.325 - y) / 0.27; const dx = ax - lerp(0.164, 0.21, t); return dx >= -0.004 ? 'C5' : (y > 1.2 ? 'T2' : 'T1'); }
+      if (k === 'femur' || k === 'patella') { const t = (0.84 - y) / 0.42; const dz = z - lerp(-0.003, -0.015, t), dx = ax - 0.076; if (dz < -0.022 && dx < 0.03) return 'S2'; if (k === 'patella') return 'L3'; return t < 0.12 ? 'L1' : t < 0.55 ? 'L2' : 'L3'; }
+      if (k === 'tibia' || k === 'fibula') { const dx = ax - 0.073, dz = z + 0.02; if (dz >= -0.012) return dx < -0.006 ? 'L4' : 'L5'; if (dx > 0.004) return 'S1'; return y > 0.22 ? 'S2' : (dx < -0.02 ? 'L4' : 'S1'); }
+      if (k === 'talus' || k === 'foot') { if (z < -0.035) return 'S1'; if (y < 0.006) return ax > 0.085 ? 'S1' : 'L5'; if (ax < 0.068) return 'L4'; if (ax > 0.112) return 'S1'; return 'L5'; }
+      if (y > 1.455) { if (z > 0.004 && y < 1.66) return 'V'; if (y > 1.5 || z < -0.01) return 'C2'; }
+      if (y > 1.44) return 'C3';
+      if (y > 1.37 || (ax > 0.13 && y > 1.32 && k !== 'humerus')) return ax > 0.15 && y < 1.36 ? 'C5' : 'C4';
+      const post = z < -0.02;
+      if (y < 0.93 && (k === 'hip' || k === 'other' || /^L|^S/.test(k))) { if (post) { if (ax < 0.03) return y < 0.84 ? 'S4' : 'S3'; return y > 0.87 ? 'L2' : (ax < 0.065 ? 'S3' : 'S2'); } return 'L1'; }
+      const seg = 2 + Math.floor((1.33 + (post ? 0.03 : 0) - y) / 0.039);
+      if (seg <= 1) return 'T2'; if (seg <= 12) return 'T' + seg; return post ? 'L' + Math.min(3, seg - 12) : 'L1';
+    }
+    let dermIdx = null;
+    function dermClassify() {
+      if (dermIdx || !skinDeform) return dermIdx;
+      const d = skinDeform; const O = d.orig; const sk = d.sk; const n = O.length / 3; dermIdx = new Uint8Array(n);
+      for (let i = 0; i < n; i++) { const w = sk[i * 3 + 2] / 255; const bi = w >= 0.5 ? sk[i * 3] : sk[i * 3 + 1]; const key = (boneList[bi] || {}).key; dermIdx[i] = DERM.indexOf(dermOf(O[i * 3], O[i * 3 + 1], O[i * 3 + 2], key)); }
+      return dermIdx;
+    }
+    function setDermatome(segs) {
+      const go = () => {
+        const mesh = skinDeform && skinDeform.mesh; if (!mesh) return;
+        if (!segs) { matSkin.color.setHex(C.skin || 0xd9b9a0); matSkin.vertexColors = false; mesh.geometry.deleteAttribute && mesh.geometry.deleteAttribute('color'); state.derm = null; matSkin.needsUpdate = true; skinMode(); return; }
+        const idx = dermClassify(); const n = idx.length; const col = new Float32Array(n * 3); const base = new THREE.Color(C.skin || 0xd9b9a0); const tmp = new THREE.Color();
+        const all = segs === 'all'; const set = new Set(all ? DERM : [].concat(segs));
+        for (let i = 0; i < n; i++) { const s = DERM[idx[i]]; let c = base; if (set.has(s)) { const h = DCOL[s] != null ? DCOL[s] : 0x9aa0a6; c = tmp.setHex(h); } col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b; }
+        mesh.geometry.setAttribute('color', new THREE.BufferAttribute(col, 3)); matSkin.color.setHex(0xffffff); matSkin.vertexColors = true; state.derm = segs;
+        groups.skin.visible = true; state.layers.skin = true; matSkin.opacity = 0.96; matSkin.transparent = false; matSkin.depthWrite = true; matSkin.needsUpdate = true; groups.skin.children.forEach((m) => { m.renderOrder = 0; });
+      };
+      if (!state.ready) state.pending.push(go); else go();
     }
     function centroid(meshes) { const box = new THREE.Box3(); meshes.forEach((m) => box.expandByObject(m)); const c = new THREE.Vector3(); box.getCenter(c); return c; }
     const MER_VIEW = { GB: [1, 0.05, 0.25], TE: [1, 0.05, -0.2], LI: [1, 0.05, 0.35], SI: [0.5, 0.05, -1], BL: [0, 0.05, -1], GV: [0, 0.05, -1] };
@@ -298,24 +373,25 @@
       state.sel = ids.length ? { kind, ids } : null; refresh();
       const lab = [];
       if (state.sel) {
-        const pool = kind === 'muscle' ? muscleMeshes : kind === 'meridian' ? merMeshes : kind === 'sinew' ? sinewMeshes : kind === 'point' ? pointMeshes : boneMeshes;
+        const pool = kind === 'muscle' ? muscleMeshes : kind === 'meridian' ? merMeshes : kind === 'sinew' ? sinewMeshes : kind === 'point' ? pointMeshes : kind === 'nerve' ? nerveMeshes : boneMeshes;
         let meshes = []; ids.forEach((id) => { if (pool[id]) meshes = meshes.concat(pool[id]); });
         if (kind === 'point') ids.forEach((id) => (pointPos[id] || []).forEach((p, i) => { if (i === 0 || opt.bothLabels) lab.push({ text: ((data.points || []).find((x) => x.id === id) || {}).name || id, pos: p, cls: 'pt' }); }));
         else if (kind === 'muscle') ids.forEach((id) => { const ms = (muscleMeshes[id] || []).filter((m) => m.userData.side >= 0); if (ms.length) { const m = (data.muscles || []).find((x) => x.id === id); lab.push({ text: m ? m.name : id, pos: centroid(ms), cls: 'mu' }); } });
         else if (kind === 'bone') ids.forEach((id) => { if (boneMeshes[id]) lab.push({ text: (partInfo[id] || {}).zh || id, pos: centroid(boneMeshes[id]), cls: 'mu' }); });
+        else if (kind === 'nerve') ids.forEach((id) => { const ms = (nerveMeshes[id] || []).filter((m) => m.userData.side > 0); if (ms.length) lab.push({ text: ((data.nerves || {})[id] || {}).name || id, pos: centroid(ms), cls: 'mu' }); });
         if (meshes.length && opt.focus !== false) {
           let focusMeshes = meshes;
-          if (kind === 'point' || kind === 'muscle') { const left = meshes.filter((m) => (m.userData.side != null ? m.userData.side >= 0 : m.position.x >= -0.001)); if (left.length) focusMeshes = left; }
+          if (kind === 'point' || kind === 'muscle' || kind === 'nerve') { const left = meshes.filter((m) => (m.userData.side != null ? m.userData.side >= 0 : m.position.x >= -0.001)); if (left.length) focusMeshes = left; }
           if (kind === 'point') focusMeshes = focusMeshes.slice(0, 1);
           const c = centroid(focusMeshes); const box = new THREE.Box3(); focusMeshes.forEach((m) => box.expandByObject(m)); const size = box.getSize(new THREE.Vector3()).length();
-          const dist = opt.dist || (kind === 'meridian' || kind === 'sinew' ? Math.min(3.2, Math.max(1.2, size * 1.6)) : Math.min(1.8, Math.max(0.55, size * 2.2)));
+          const dist = opt.dist || (kind === 'meridian' || kind === 'sinew' || kind === 'nerve' ? Math.min(3.2, Math.max(1.2, size * 1.6)) : Math.min(1.8, Math.max(0.55, size * 2.2)));
           focusOn(c, dist, viewDirFor(c, kind, ids[0]));
         }
       }
       if (opt.labels) opt.labels.forEach((l) => lab.push(l));
       setLabels(lab);
     }
-    function select(kind, ids, opt) { if (!state.ready) { state.pending.push(() => doSelect(kind, ids, opt)); return; } doSelect(kind, ids, opt); }
+    function select(kind, ids, opt) { state.cmp = []; if (!state.ready) { state.pending.push(() => doSelect(kind, ids, opt)); return; } doSelect(kind, ids, opt); }
     let anim = null;
     function tween(camTo, tgtTo) { const cf = camera.position.clone(), tf = controls.target.clone(); const t0 = performance.now(); anim = (now) => { const t = Math.min(1, (now - t0) / 550); const e = t * t * (3 - 2 * t); camera.position.lerpVectors(cf, camTo, e); controls.target.lerpVectors(tf, tgtTo, e); if (t >= 1) anim = null; }; }
     function focusOn(c, dist, dirIn) { const dir = dirIn ? dirIn.clone() : camera.position.clone().sub(controls.target).normalize(); tween(c.clone().add(dir.multiplyScalar(dist || 1.2)), c.clone()); }
@@ -326,7 +402,8 @@
     }
     function reset() { tween(HOME.cam.clone(), HOME.tgt.clone()); }
     function skinMode() {
-      const see = groups.muscle.visible || groups.bone.visible;
+      if (state.derm) return;
+      const see = groups.muscle.visible || groups.bone.visible || groups.nerve.visible;
       matSkin.opacity = see ? 0.16 : 1; matSkin.depthWrite = !see; matSkin.transparent = see; matSkin.needsUpdate = true;
       groups.skin.children.forEach((m) => { m.renderOrder = see ? 5 : 0; });
     }
@@ -339,12 +416,12 @@
       if (!state.ready || !down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5) return;
       const r = renderer.domElement.getBoundingClientRect();
       mouse.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(mouse, camera);
-      const objs = []; ['point', 'meridian', 'sinew', 'muscle', 'bone', 'skin'].forEach((g) => { if (!groups[g].visible) return; if (g === 'skin' && matSkin.transparent) return; groups[g].children.forEach((o) => { if (o.isMesh && (g === 'skin' || o.material.opacity > 0.15)) objs.push(o); }); });
+      const objs = []; ['point', 'nerve', 'meridian', 'sinew', 'muscle', 'bone', 'skin'].forEach((g) => { if (!groups[g].visible) return; if (g === 'skin' && (matSkin.transparent || !state.derm)) return; groups[g].children.forEach((o) => { if (o.isMesh && (g === 'skin' || o.material.opacity > 0.15)) objs.push(o); }); });
       const hits = ray.intersectObjects(objs, false);
       if (!hits.length) { opts.onPick && opts.onPick(null); return; }
       const near = (k, tol) => hits.find((h) => h.object.userData.kind === k && h.distance - hits[0].distance < tol);
-      const h = near('point', 0.03) || near('meridian', 0.012) || near('sinew', 0.015) || hits[0];
-      if (h.object.userData.kind === 'skin') { opts.onPick && opts.onPick(null); return; }
+      const h = near('point', 0.03) || near('nerve', 0.012) || near('meridian', 0.012) || near('sinew', 0.015) || hits[0];
+      if (h.object.userData.kind === 'skin') { if (state.derm) { const f = h.face; const idx = dermClassify(); const s = f && idx ? DERM[idx[f.a]] : null; opts.onPick && opts.onPick(s ? { kind: 'derm', id: s } : null); return; } opts.onPick && opts.onPick(null); return; }
       opts.onPick && opts.onPick(h.object.userData);
     });
 
@@ -373,9 +450,11 @@
     });
 
     return {
-      select, view, reset, setLayer, refresh,
+      select, view, reset, setLayer, refresh, setCompare, setDermatome, dermList: DERM, dermColors: DCOL,
+      clearCompare() { setCompare([]); },
+      boneParts() { return Object.keys(boneMeshes).map((fid) => ({ fid, zh: (partInfo[fid] || {}).zh || '', kind: (partInfo[fid] || {}).kind })); },
       setMuscleStates(ms) { state.muscleStates = ms || {}; refresh(); },
-      clear() { state.sel = null; refresh(); setLabels([]); },
+      clear() { state.sel = null; state.cmp = []; refresh(); setLabels([]); },
       partName(fid) { return partInfo[fid] || null; },
       startMotion, stopMotion, setMotionT, showPelvisPose,
       motionState() { return { id: motion.def && motion.def.id, side: motion.side, t: motion.t, playing: motion.playing }; },

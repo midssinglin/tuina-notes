@@ -415,3 +415,19 @@ details.det[open] summary { margin-bottom: 6px; }
 details.det .prose p { margin: 4px 0; }
 @media (max-width: 640px) { .as-fig { grid-template-columns: 1fr 1fr; } .as-step { min-width: 92px; } }
 .as-pick[hidden] { display: none; }
+
+/* ---------- 多選比較、神經、皮節 ---------- */
+.cmp-bar .x { border: 0; background: none; padding: 0 0 0 4px; color: var(--ink3); font-size: 14px; line-height: 1; }
+.cmp-chip { gap: 5px; }
+.cmp-box { margin-top: 14px; }
+.cmp-wrap { overflow-x: auto; margin-bottom: 10px; }
+.cmp-tbl { border-collapse: collapse; font-size: 13px; min-width: 100%; }
+.cmp-tbl th, .cmp-tbl td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: top; text-align: left; }
+.cmp-tbl tr:first-child th { background: var(--surface2); white-space: nowrap; }
+.cmp-tbl th[scope=row] { background: var(--surface2); white-space: nowrap; font-weight: 600; color: var(--ink2); }
+.cmp-tbl td { min-width: 180px; max-width: 320px; }
+.sim-cmp { margin-top: 16px; }
+.b3-label.cmp { font-weight: 700; }
+.confirm { margin-top: 8px; border-top: 1px dashed var(--line); padding-top: 6px; }
+.confirm ul { margin: 4px 0 0; padding-left: 18px; font-size: 13px; display: grid; gap: 4px; }
+.confirm li .badge { font-size: 10.5px; }

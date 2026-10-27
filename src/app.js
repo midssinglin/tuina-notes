@@ -343,7 +343,7 @@
   }
 
   const Assess = {
-    sel: store.get('assess', null) || Object.assign({}, EXAMPLE_ASSESS), example: !store.get('assess', null), q: '', st: store.get('assess_st', 'cc'), vas: store.get('assess_vas', null), showHow: store.get('assess_how', false), recTab: 'mu', hover: null,
+    sel: (function (s) { const A = window.FINDING_ALIASES || {}; const o = {}; Object.entries(s || {}).forEach(([k, v]) => { o[A[k] || k] = v; }); return o; })(store.get('assess', null) || Object.assign({}, EXAMPLE_ASSESS)), example: !store.get('assess', null), q: '', st: store.get('assess_st', 'cc'), vas: store.get('assess_vas', null), showHow: store.get('assess_how', false), recTab: 'mu', hover: null,
     build(root) {
       const left = h('div', { class: 'card pad as-left' });
       const right = h('div', { class: 'stack', id: 'as-res' });
@@ -394,6 +394,10 @@
       const st = this.station();
       G.ap(h('div', { class: 'as-intro' }, h('h3', null, st.name + (st.sub ? '：' + st.sub : '')), h('p', { class: 'small' }, st.intro)));
       if (st.id === 'cc') G.ap(this.vasBox());
+      if (st.id === 'nerve') {
+        const segs = []; st.groups.forEach((g) => g.items.forEach((f) => { if (this.sel[f.id]) String(f.seg || '').split(/[、,，\s–-]+/).forEach((s) => { if (/^[CTLS]\d{1,2}$/.test(s) && !segs.includes(s)) segs.push(s); }); }));
+        G.ap(h('div', { class: 'row', style: { margin: '0 0 12px' } }, h('button', { class: 'btn sm', onclick: () => V3.showDerm(segs) }, segs.length ? '在 3D 標出皮節：' + segs.join('、') : '在 3D 看皮節圖'), KB.has('nv-tables') ? h('button', { class: 'btn sm', onclick: () => KB.open('nv-tables') }, '皮節、肌節、反射總表') : null, KB.has('k-nv-derm') ? h('button', { class: 'link small', onclick: () => KB.open('k-nv-derm') }, '神經判斷怎麼做 →') : null));
+      }
       if (st.pose) G.ap(this.figure(st));
       st.groups.forEach((g) => G.ap(this.groupBox(g, g.items)));
       const i = STN.indexOf(st);
@@ -542,6 +546,10 @@
           h('p', { class: 'small', style: { margin: '6px 0' } }, p.desc),
           h('div', { class: 'chips', style: { gap: '4px' } }, hits.map((k) => FIND[k] ? h('span', { class: 'chip sm ev' }, h('span', { class: 'muted' }, (FIND[k].stName || '') + '・'), FIND[k].label, sel[k] && FIND[k].side && sel[k] !== 'B' ? '（' + sideTxt(sel[k]) + '）' : '') : null)),
           p.tech ? h('p', { class: 'small', style: { margin: '6px 0 0' } }, h('b', null, '處理思路：'), p.tech) : null,
+          (p.confirm || []).length ? h('div', { class: 'confirm' }, h('div', { class: 'eyebrow' }, '再確認（表徵與輔助檢查）'), h('ul', null, p.confirm.map((c) => { const f = c.f && FIND[c.f]; const on = f && sel[c.f];
+            return h('li', null, h('span', { class: 'badge ' + ({ muscle: 't', bone: 'y', nerve: 'w', sinew: 'j' }[c.kind] || '') }, { muscle: '肌肉', bone: '骨頭', test: '測試', nerve: '神經', sinew: '經筋' }[c.kind] || '檢查'), ' ', c.text.replace(/^再確認：/, ''),
+              f ? h('button', { class: 'chip sm' + (on ? ' on' : ''), style: { marginLeft: '6px' }, title: on ? '已記錄' : '點一下把這個結果記到評估', onclick: () => this.toggle(f) }, on ? '✓ 已記錄' : '＋ 記錄結果') : null); }))) : null,
+          p.diff ? h('p', { class: 'small muted', style: { margin: '6px 0 0' } }, h('b', null, '和相似模式的差別：'), p.diff) : null,
           h('div', { class: 'row', style: { marginTop: '6px' } }, h('span', { class: 'badge' }, p.src), h('span', { class: 'sp' }), h('button', { class: 'link small', onclick: () => KB.openSearch(p.name.replace(/（.*?）/g, '').split('／')[0]) }, '查相關知識')))))));
       // 處理建議（分頁）
       const tabs = [['mu', '肌肉', res.tight.length + res.weak.length], ['sn', '經筋', res.sinews.length], ['pt', '穴位', res.pts.length], ['bn', '骨頭／關節', res.bones.length], ['tq', '手法', res.techs.length]];
@@ -726,7 +734,22 @@
         h('p', { class: 'lead' }, '骨盆採課堂的三個角度：第一角度 A/P（前傾／後傾，繞 S2；A 長腳、P 短腿）、第二角度 EX/IN（髂後上棘同高、離 S2 遠／近，造成脊椎旋轉）、第三角度（沿耳狀面 EX 外展＝又高又遠，對應 A＋EX；IN 內收＝又低又近，對應 P＋IN；造成側彎）。圖是示意，數值越大偏移越多。'));
       this.ctl = h('div', { class: 'card' }); this.views = h('div', { class: 'card pad' }); this.res = h('div', { class: 'card pad sim-res' });
       root.ap(h('div', { class: 'sim-wrap' }, this.ctl, this.views, this.res));
-      this.renderCtl(); this.update();
+      this.cmpEl = h('div', { class: 'card pad sim-cmp' }); root.ap(this.cmpEl);
+      Compare.listeners.push(() => this.renderCmp());
+      this.renderCtl(); this.update(); this.renderCmp();
+    },
+    renderCmp() {
+      if (!this.cmpEl) return; const E = this.cmpEl;
+      const quick = () => {
+        const out = []; Object.entries(this.p.m || {}).forEach(([id, o]) => { if ((o.L || o.R) && MU[id]) out.push(['muscle', id, MU[id].name]); });
+        const p = this.p; if (p.aL || p.aR) out.push(['muscle', 'rectus_fem', '股直肌'], ['muscle', 'iliopsoas', '髂腰肌'], ['muscle', 'hamstrings', '膕繩肌']);
+        if (p.xL || p.xR) out.push(['muscle', 'glute_med', '臀中肌'], ['muscle', 'tfl_itb', '闊筋膜張肌／髂脛束'], ['muscle', 'deep_rot', '臀後六肌'], ['muscle', 'piriformis', '梨狀肌']);
+        if (p.uL || p.uR) out.push(['muscle', 'adductors', '內收肌群'], ['muscle', 'glute_min', '臀小肌']);
+        out.push(['bone', 'bn-hip', '髖骨（無名骨）'], ['bone', 'bn-sacrum', '薦椎'], ['bone', 'bn-lspine', '腰椎'], ['bone', 'bn-femur', '股骨'], ['sinew', 'BL', '足太陽經筋'], ['sinew', 'GB', '足少陽經筋'], ['sinew', 'ST', '足陽明經筋']);
+        const seen = new Set(); return out.filter(([k, id]) => { const key = k + id; if (seen.has(key)) return false; seen.add(key); return true; }).slice(0, 18);
+      };
+      clear(E).ap(h('div', { class: 'res-h' }, h('h3', null, '多選比較：肌肉、骨頭、經筋、神經'), h('span', { class: 'muted small' }, '　從模擬中相關的項目快速加入，或搜尋；加入後可並排比較、在 3D 分色顯示')));
+      const box = h('div'); E.ap(box); Compare.tray(box, { picker: true, table: true, quick });
     },
     set(k, v) { this.p[k] = v; this.example = false; store.set('sim', this.p); this.update(); },
     renderCtl() {
@@ -853,7 +876,7 @@
       const cs = []; if (E.head > 0.3) cs.push('頭前傾 → 上頸過伸、枕下肌群縮短（後頭痛、頭暈）'); if (Math.abs(D.headTilt) > 0.3) cs.push('頭側傾（代償眼睛水平）'); push('cspine', E.head * 0.9 + Math.abs(D.headTilt) * 0.7, cs.join('；'));
       const sc = []; if (Math.abs(D.shDiff) > 0.3) sc.push((D.shDiff > 0 ? '左' : '右') + '肩較高'); if (E.round > 0.3) sc.push('圓肩：肩胛前傾外展，肩峰下空間變小（肩夾擠）'); push('scap', Math.abs(D.shDiff) + E.round * 0.8, sc.join('；'));
       if (E.round > 1 || E.head > 1.5) push('shoulder', E.round * 0.6 + E.head * 0.3, '肩夾擠、旋轉肌袖受力增加；胸小肌下方神經血管受壓可能手麻。');
-      const hip = []; ['L', 'R'].forEach((s) => { if (E['x' + s] >= 0.5) hip.push((s === 'L' ? '左' : '右') + '② EX：大轉子較厚、屈膝小腿往外倒＝髖內轉傾向（臀中、臀小、闊筋膜張肌緊）'); if (E['x' + s] <= -0.5) hip.push((s === 'L' ? '左' : '右') + '② IN：大轉子較薄尖、屈膝小腿往內倒＝髖外轉傾向（臀後六肌緊，梨狀肌下方坐骨神經可能受壓）'); });
+      const hip = []; ['L', 'R'].forEach((s) => { if (E['x' + s] >= 0.5) hip.push((s === 'L' ? '左' : '右') + '② EX：大轉子較厚、俯臥屈膝 90° 較外轉、足跟偏外（筆記；臀中、臀小、闊筋膜張肌）'); if (E['x' + s] <= -0.5) hip.push((s === 'L' ? '左' : '右') + '② IN：大轉子較薄尖、俯臥屈膝 90° 較內轉（筆記；臀後六肌緊，梨狀肌下方坐骨神經可能受壓）'); });
       push('hip', Math.max(Math.abs(E.xL), Math.abs(E.xR)) * 1.1, hip.join('；'));
       const kn = []; if (Math.abs(D.legDiff) > 0.3) kn.push('功能性長短腳：' + (D.legDiff > 0 ? '右' : '左') + '腳較短，兩膝受力不均'); ['L', 'R'].forEach((s) => { const k = E['knee' + s]; if (Math.abs(k) >= 0.5) kn.push((s === 'L' ? '左' : '右') + (k > 0 ? '膝內翻（O 型）：外側髂脛束、內側半月板受壓' : '膝外翻（X 型）：內側鵝足、髕骨外移')); if (Math.abs(E['x' + s]) >= 1) kn.push((s === 'L' ? '左' : '右') + '股骨旋轉改變髂脛束經過膝外側的角度（跑者膝）'); if (E['spr' + s]) kn.push((s === 'L' ? '左' : '右') + '踝角度不足 → 膝用旋轉代償（膝是受害者）'); });
       push('knee', Math.abs(D.legDiff) + Math.max(Math.abs(E.kneeL), Math.abs(E.kneeR)) * 0.8 + (E.sprL || E.sprR ? 1 : 0) + (Math.max(Math.abs(E.xL), Math.abs(E.xR)) >= 1 ? 0.8 : 0), kn.join('；'));
@@ -957,7 +980,7 @@
         const arch = E['arch' + s]; const tiltA = -sg * arch * 6;
         g(S('ellipse', { cx: heel[0], cy: heel[1], rx: 9, ry: 7, class: 'bone', transform: `rotate(${tiltA} ${heel[0]} ${heel[1]})` }));
         if (E['spr' + s]) g(S('circle', { cx: heel[0], cy: heel[1] - 14, r: 9, class: 'warn' }));
-        if (Math.abs(E['x' + s]) >= 0.5) g(S('text', { x: heel[0] + sg * 14 - (sg < 0 ? 22 : 0), y: heel[1] + 18 }, E['x' + s] > 0 ? '偏內八' : '偏外八'));
+        if (Math.abs(E['x' + s]) >= 0.5) g(S('text', { x: heel[0] + sg * 14 - (sg < 0 ? 22 : 0), y: heel[1] + 18 }, E['x' + s] > 0 ? '外轉' : '內轉'));
       });
       const hL = 498 + crestH.L * 0.5, hR = 498 + crestH.R * 0.5;
       g(S('line', { x1: cx - 50, y1: hL - 8, x2: cx + 50, y2: hR - 8, class: 'ref' }));
@@ -1013,7 +1036,7 @@
   // 點選骨骼時的筆記摘要
   const NERVE = { C1: '頭頂（痠痛麻）、高血壓、地中海禿、睡眠品質不好', C2: '顏面（眼耳口鼻），頸椎造成的較少', C3: '喉嚨', C4: '肩膀（筆記：流鼻血）', C5: '手臂陰面延伸至手掌心', C6: '第 1、2 指，第 3 指一半', C7: '第 2、3、4 指（C8 從 C7 與 T1 之間出來：第 4、5 指與第 3 指一半，高爾夫球肘）',
     T1: '肩峰 → 手肘內側 → 手腕內側', T2: '肩峰後 2 指、肩胛稜線下緣 → 肘尖 → 五指同時麻；甲亢 T2–T4', T3: '腋下 → 肘窩（網球肘）→ 手腫脹；壓迫：躁鬱', T4: '最容易出狀況的節段之一；甲亢 T2–T4', T5: '半身痠麻、遊走性痠痛；壓迫：憂鬱；T5–T7 高血壓、糖尿病', T6: 'T5–T6：顏面、免疫、肝膽脾胃、健忘、內耳平衡', T7: 'T5–T7：高血壓、糖尿病；兩肩胛下角連線約平 T7', T8: '胃 T8–T10', T9: '胃 T8–T10', T10: '胃 T8–T10', T12: '最容易出狀況的節段之一；膈肌角（T12–L1）',
-    L1: '大腿上面一段', L2: '大腿中間一段', L3: '髕骨下緣一段', L4: '大腿內側 → 小腿內側 → 前面 2 隻半腳趾；兩髂嵴最高點連線約平 L4', L5: '大腿後側 → 小腿後側 → 中間 3 隻腳趾（主流皮節：小腿外側 → 足背 → 大拇趾，待確認）' };
+    L1: '大腿上面一段', L2: '大腿中間一段', L3: '髕骨下緣一段', L4: '大腿內側 → 小腿內側 → 前面 2 隻半腳趾；兩髂嵴最高點連線約平 L4', L5: '大腿後側 → 小腿後側 → 中間 3 隻腳趾（另一頁筆記：沿小腿外側到足背）' };
   const BROTHER = { C1: 'L5', C2: 'L4', C3: 'L3', C4: 'L2', C5: 'L1', L5: 'C1', L4: 'C2', L3: 'C3', L2: 'C4', L1: 'C5' };
   const SHU = { T1: 'BL11', T2: 'BL12', T3: 'BL13', T4: 'BL14', T5: 'BL15', T6: 'BL16', T7: 'BL17', T8: 'EX-B3', T9: 'BL18', T10: 'BL19', T11: 'BL20', T12: 'BL21', L1: 'BL22', L2: 'BL23', L3: 'BL24', L4: 'BL25', L5: 'BL26' };
   function boneNote(zh, en) {
@@ -1029,10 +1052,10 @@
     if (/椎間盤/.test(zh)) return '- 椎間盤（慢性）分肩上型、肩下型，外觀「痛側在上」；急性腰閃傷則「痛側在下」。';
     if (/薦椎/.test(b)) return '- **S1 呼吸軸、S2 重心（質量中心）、S3 骨盆（薦椎）軸**。\n- 父母椎：Co1 與 S1–S5 對應上面各段脊椎（S1≈C1–C5、S2≈C6–T2、S3≈T3–T7、S4≈T8–T12、S5≈L1–L5）。\n- 薦椎是腰椎的底座；可卡在 10 種狀態（見知識庫「薦椎」）。薦椎跟著枕骨走。';
     if (/髖骨/.test(b)) return '- 無名骨＝髂骨＋坐骨＋恥骨；與薦椎在耳狀面形成薦髂關節。\n- 三個角度：① A／P（繞 S2）② EX／IN（離 S2 遠／近）③ 沿耳狀面 EX（又高又遠）／IN（又低又近）。\n- A：髂後上棘較高、坐骨結節較高、長腳；P：較低、短腿。';
-    if (/距骨|跟骨|舟狀骨（足）|骰骨|楔狀骨|蹠骨|趾骨/.test(b)) return '- 足的分區（主流解剖）：**後足＝距骨＋跟骨；中足＝舟狀骨、骰骨、楔狀骨；前足＝蹠骨＋趾骨**（筆記另把距骨歸中足、楔骨歸前足）。\n- 踝＝脛骨、腓骨、距骨。檢查由下往上：前中足 → 足跟 → 距骨 → 脛腓 → 股骨 → 骨盆。' + (/跟骨/.test(b) ? '\n- 足太陽經筋「結於踵」；跟骨腫痛為足太陽經筋病。' : '');
-    if (/脛骨/.test(b)) return '- 脛骨下端＝內踝；三角韌帶（扇形韌帶）：脛舟（脾經）、脛跟（腎經）、脛距（前：肝經；後：膀胱經）。\n- 膝伸直最後 30° 時脛骨外轉約 10°（關節面造成的鎖膝；[[m:popliteus]] 作用相反，負責屈膝初期內轉解鎖）。';
+    if (/距骨|跟骨|舟狀骨（足）|骰骨|楔狀骨|蹠骨|趾骨/.test(b)) return '- 足的分區（筆記）：**後足＝跟骨；中足＝距骨、舟狀骨、骰骨；前足＝楔形骨、蹠骨**（其他說法（參考）：解剖書把距骨歸後足、楔狀骨歸中足）。\n- 踝＝脛骨、腓骨、距骨。檢查由下往上：前中足 → 足跟 → 距骨 → 脛腓 → 股骨 → 骨盆。' + (/跟骨/.test(b) ? '\n- 足太陽經筋「結於踵」；跟骨腫痛為足太陽經筋病。' : '');
+    if (/脛骨/.test(b)) return '- 脛骨下端＝內踝；三角韌帶（扇形韌帶）：脛舟（脾經）、脛跟（腎經）、脛距（前：肝經；後：膀胱經）。\n- 膝伸直最後 30° 時脛骨外轉約 10°（鎖住膝；筆記與 [[m:popliteus]] 同列）。';
     if (/腓骨/.test(b)) return '- 腓骨下端＝外踝；外踝韌帶：前距腓、跟腓、後距腓（距跟）。\n- 骨性對應：鎖骨 → 恥骨 → 腓骨 → 顴骨。';
-    if (/股骨/.test(b)) return '- 股骨頸約 125°；股骨與脛骨夾角約 170–175°（正常 170–175°；< 約 170° X 型，> 約 180° O 型）。\n- 大轉子厚＝第二角度 EX、薄尖＝IN。';
+    if (/股骨/.test(b)) return '- 股骨頸約 125°；股骨與脛骨夾角約 170–175°（< 175° X 型，> 175° O 型；筆記）。\n- 大轉子厚＝第二角度 EX、薄尖＝IN。';
     if (/髕骨/.test(b)) return '- 人體最大的種子骨；髕骨不在滑軌上會造成膝交鎖、膝前痛。';
     if (/肩胛骨/.test(b)) return '- 肩胛胸廓關節是平面關節，唯一沒有關節面。\n- 上提：上斜方、提肩胛（菱形）；下壓：下斜方、闊背、鎖骨下、胸小；前突：前鋸；後縮：中斜方、菱形；上旋：上下斜方、前鋸；下旋：菱形、胸小。\n- 坐姿轉臥姿肩胛位置會變 → 跟骨盆有關。膏肓：右氣不足、左血不足；肩胛內緣右對肝、左對心。';
     if (/鎖骨/.test(b)) return '- 胸鎖關節＝馬鞍關節；肩鎖、喙鎖關節。\n- 骨性對應：鎖骨 → 恥骨 → 腓骨 → 顴骨。';
@@ -1041,38 +1064,123 @@
     if (/顴骨/.test(b)) return '- 骨性對應：鎖骨 → 恥骨 → 腓骨 → 顴骨。臉跟著結構走。';
     if (/枕骨/.test(b)) return '- 薦椎跟著枕骨走；枕下是最容易出狀況的地方之一。\n- 足少陰經筋、足太陽經筋都結於枕骨。';
     if (/頂骨|額骨|顳骨|蝶骨/.test(b)) return '- 頭骨網狀力學（筆記）：鱗狀縫 → 身體側邊；冠狀縫 → 對側邊；矢狀縫、人字縫 → 背側邊。\n- 頭顱骨跟薦尾對脊柱一樣：薦尾是源頭、脊椎是末梢；髮穴多為身體的問題點（尾骨居多）。';
-    if (/肋骨|肋軟骨|胸骨|劍突/.test(b)) return '- 呼吸：後下鋸肌（下段）、後上鋸肌（上段）；前、中斜角肌拉第 1 肋、後斜角肌拉第 2 肋。\n- 肋骨隨胸椎旋轉時，斜角肌一緊一鬆，可把頸椎拉歪。';
+    if (/肋骨|肋軟骨|胸骨|劍突/.test(b)) return '- 呼吸：後下鋸肌（下段）、後上鋸肌（上段）；鎖骨下、第 2 肋骨一帶以前斜角肌最多（筆記）；前、中斜角肌拉第 1 肋、後斜角肌拉第 2 肋（錄音 0928-2）。\n- 肋骨隨胸椎旋轉時，斜角肌一緊一鬆，可把頸椎拉歪。';
     return '';
   }
 
+  // =====================================================================
+  //  多選比較（肌肉／骨頭／經筋／神經／穴位）
+  // =====================================================================
+  const CMP_COLORS = ['#e8590c', '#1c7ed6', '#2b8a3e', '#ae3ec9', '#f59f00', '#0ca678', '#d6336c', '#5c7cfa'];
+  const CMP_KIND = { muscle: '肌肉', bone: '骨頭', sinew: '經筋', nerve: '神經', point: '穴位' };
+  const NV = () => window.NERVE_DATA || {};
+  const cut = (s, n) => { s = String(s || '').replace(/\[\[[a-z]+:([\w-]+)\]\]/g, (m0, id) => (MU[id] || PT[id] || SIN[id] || {}).name || id).replace(/[#*]/g, '').replace(/\s+/g, ' ').trim(); n = n || 140; return s.length > n ? s.slice(0, n) + '…' : s; };
+  const Compare = {
+    items: store.get('cmp', []), listeners: [],
+    key(kind, id) { return kind + ':' + id; },
+    has(kind, id) { return this.items.some((x) => x.kind === kind && x.id === id); },
+    label(kind, id) {
+      if (kind === 'muscle') return (MU[id] || {}).name || id;
+      if (kind === 'bone') return ((DET.bn || {})[id] || {}).name || id;
+      if (kind === 'sinew') return (SIN[id] || {}).name || id;
+      if (kind === 'nerve') return (NV()[id] || (window.NERVES3D || {})[id] || {}).name || id;
+      if (kind === 'point') return PT[id] ? PT[id].name + ' ' + id : id;
+      return id;
+    },
+    color(i) { return CMP_COLORS[i % CMP_COLORS.length]; },
+    toggle(kind, id) { if (this.has(kind, id)) this.remove(kind, id); else this.add(kind, id); },
+    add(kind, id) { if (!id || this.has(kind, id)) return; if (this.items.length >= 8) { toast('最多比較 8 項'); return; } this.items.push({ kind, id }); this.changed(); toast('已加入比較：' + this.label(kind, id)); },
+    remove(kind, id) { this.items = this.items.filter((x) => !(x.kind === kind && x.id === id)); this.changed(); },
+    clear() { this.items = []; this.changed(); },
+    changed() { store.set('cmp', this.items); this.listeners.forEach((f) => f()); },
+    // 3D：骨頭用骨骼詳解 id，換成模型零件
+    show3D() {
+      showTab('v3d'); V3.ensure();
+      const kinds = new Set(this.items.map((x) => x.kind));
+      V3.setLayers({ muscle: kinds.has('muscle') || !kinds.size, bone: true, sinew: kinds.has('sinew'), nerve: kinds.has('nerve'), point: kinds.has('point'), meridian: false, skin: kinds.has('point') });
+      const go = () => {
+        const parts = V3.inst.boneParts ? V3.inst.boneParts() : [];
+        const list = this.items.map((x, i) => { const c = { kind: x.kind, id: x.id, color: this.color(i), label: this.label(x.kind, x.id) }; if (x.kind === 'bone') c.ids = parts.filter((p) => window.boneIdOf && window.boneIdOf(p.zh) === x.id).map((p) => p.fid); return c; });
+        V3.inst.setCompare(list); V3.cmpOn = true; V3.renderCmpBar();
+      };
+      V3.whenReady(go); if (V3.inst && V3.inst.isReady && V3.inst.isReady()) go();
+    },
+    rows(kind) {
+      const mx = (id) => (DET.mx || {})[id] || {}; const bx = (id) => (DET.bx || {})[id] || {}; const sx = (id) => (DET.sx || {})[id] || {};
+      if (kind === 'muscle') return [['起點', (id) => MU[id].origin], ['止點', (id) => MU[id].insertion], ['作用', (id) => MU[id].action], ['神經', (id) => mx(id).nerve || MU[id].nerve], ['經筋', (id) => (MU[id].sinew || []).map((s) => (SIN[s] || {}).name).filter(Boolean).join('、')],
+        ['縮短／過緊', (id) => mx(id).short], ['被拉長／無力', (id) => mx(id).long], ['常見症狀', (id) => (mx(id).symptoms || MU[id].symptoms || []).join('、')], ['骨頭移位的影響', (id) => mx(id).boneEffect], ['代償', (id) => mx(id).compensation], ['觸診表徵', (id) => mx(id).palpSigns || MU[id].palpation], ['放鬆', (id) => MU[id].release]];
+      if (kind === 'bone') return [['位置', (id) => bx(id).where], ['骨性標誌', (id) => bx(id).landmarks], ['關節', (id) => bx(id).joints], ['附著肌', (id) => bx(id).attach], ['課堂重點', (id) => bx(id).course], ['常見錯位', (id) => bx(id).dysfunction], ['移位時的影響', (id) => bx(id).displace], ['整復要點', (id) => bx(id).adjust]];
+      if (kind === 'sinew') return [['起點', (id) => sx(id).start], ['經過的肌肉', (id) => sx(id).muscleChain || (DET.sn[id] || {}).muscles && DET.sn[id].muscles.map((m) => (MU[m] || {}).name).join('、')], ['結', (id) => ((DET.sn[id] || {}).knots || []).join('、')], ['功用', (id) => sx(id).function], ['病候', (id) => sx(id).sick || SIN[id].sick], ['表徵', (id) => (sx(id).signs || []).join('；')]];
+      if (kind === 'nerve') return [['神經根', (id) => (NV()[id] || {}).roots], ['走向', (id) => (NV()[id] || {}).course], ['支配肌肉', (id) => (NV()[id] || {}).motorText || ((NV()[id] || {}).motor || []).map((m) => (MU[m] || {}).name).join('、')], ['感覺區', (id) => (NV()[id] || {}).sensory], ['卡壓點', (id) => ((NV()[id] || {}).entrap || []).map((e) => e.site).join('、')], ['受損表現', (id) => (NV()[id] || {}).lesion]];
+      return [['定位', (id) => PT[id].loc], ['主治', (id) => PT[id].ind], ['推拿', (id) => PT[id].tn]];
+    },
+    table(box) {
+      clear(box);
+      if (!this.items.length) { box.ap(h('p', { class: 'small muted' }, '還沒有比較項目。在 3D 圖譜點選肌肉、骨頭、經筋、神經或穴位後按「＋ 比較」，或在下面搜尋加入。')); return; }
+      const byKind = {}; this.items.forEach((x, i) => (byKind[x.kind] = byKind[x.kind] || []).push(Object.assign({ i }, x)));
+      Object.entries(byKind).forEach(([kind, arr]) => {
+        const rows = this.rows(kind);
+        const tbl = h('table', { class: 'cmp-tbl' }, h('tr', null, h('th', null, CMP_KIND[kind]), arr.map((x) => h('th', null, h('span', { class: 'dot', style: { background: this.color(x.i) } }), ' ', this.label(kind, x.id)))),
+          rows.map(([lab, f]) => h('tr', null, h('th', { scope: 'row' }, lab), arr.map((x) => { let v = ''; try { v = f(x.id) || ''; } catch (e) { v = ''; } return h('td', null, cut(v, 160) || '—'); }))));
+        box.ap(h('div', { class: 'tblwrap cmp-wrap' }, tbl));
+      });
+      const ms = this.items.filter((x) => x.kind === 'muscle').map((x) => x.id);
+      if (ms.length > 1) {
+        const sn = {}; ms.forEach((m) => (MU[m].sinew || []).forEach((s) => (sn[s] = (sn[s] || 0) + 1))); const shared = Object.entries(sn).filter(([, n]) => n > 1).map(([s]) => (SIN[s] || {}).name).filter(Boolean);
+        const pts = {}; ms.forEach((m) => (MU[m].points || []).forEach((p) => (pts[p] = (pts[p] || 0) + 1))); const sp = Object.entries(pts).filter(([, n]) => n > 1).map(([p]) => (PT[p] || {}).name).filter(Boolean);
+        box.ap(h('p', { class: 'small' }, h('b', null, '共同點：'), shared.length ? '同屬 ' + shared.join('、') + '；' : '沒有共同經筋；', sp.length ? '共同穴位 ' + sp.join('、') + '。' : '沒有共同穴位。'));
+      }
+    },
+    picker(box, opt) {
+      const q = h('input', { class: 'fsearch', placeholder: '搜尋要加入比較的肌肉、骨頭、經筋、神經或穴位…', style: { margin: '0 0 6px' } }); const res = h('div', { class: 'chips' });
+      const all = () => [].concat(window.MUSCLES.map((m) => ['muscle', m.id, m.name]), Object.entries(DET.bn || {}).map(([id, b]) => ['bone', id, b.name]), window.SINEWS.map((s) => ['sinew', s.id, s.name]), Object.entries(NV()).length ? Object.entries(NV()).map(([id, n]) => ['nerve', id, n.name]) : Object.entries(window.NERVES3D || {}).map(([id, n]) => ['nerve', id, n.name]), window.POINTS.map((p) => ['point', p.id, p.name + ' ' + p.id]));
+      const draw = () => { const t = q.value.trim(); clear(res); if (!t) { (opt && opt.quick ? opt.quick() : []).forEach(([k, id, n]) => res.ap(h('button', { class: 'chip sm' + (this.has(k, id) ? ' on' : ''), onclick: () => { this.toggle(k, id); draw(); } }, (this.has(k, id) ? '✓ ' : '＋ ') + n))); return; }
+        all().filter(([, id, n]) => n.includes(t) || id.toLowerCase().includes(t.toLowerCase())).slice(0, 24).forEach(([k, id, n]) => res.ap(h('button', { class: 'chip sm' + (this.has(k, id) ? ' on' : ''), onclick: () => { this.toggle(k, id); draw(); } }, h('span', { class: 'muted' }, CMP_KIND[k] + '・'), (this.has(k, id) ? '✓ ' : '＋ ') + n))); };
+      q.addEventListener('input', draw); box.ap(q, res); draw();
+    },
+    tray(box, opt) {
+      clear(box);
+      box.ap(h('div', { class: 'row' }, h('b', null, '比較'), h('span', { class: 'muted small' }, this.items.length + ' / 8 項'), h('span', { class: 'sp' }),
+        this.items.length ? h('button', { class: 'btn sm pri', onclick: () => this.show3D() }, '在 3D 分色顯示') : null,
+        this.items.length ? h('button', { class: 'btn sm', onclick: () => { this.clear(); if (V3.inst) V3.inst.clearCompare(); } }, '清除') : null));
+      if (this.items.length) box.ap(h('div', { class: 'chips', style: { marginTop: '6px' } }, this.items.map((x, i) => h('span', { class: 'chip sm cmp-chip' }, h('span', { class: 'dot', style: { background: this.color(i) } }), h('span', { class: 'muted' }, CMP_KIND[x.kind] + '・'), this.label(x.kind, x.id), h('button', { class: 'x', 'aria-label': '移除', onclick: () => this.remove(x.kind, x.id) }, '×')))));
+      if (opt && opt.picker) { const pk = h('div', { style: { marginTop: '8px' } }); box.ap(pk); this.picker(pk, opt); }
+      if (opt && opt.table) { const tb = h('div', { style: { marginTop: '10px' } }); box.ap(tb); this.table(tb); }
+    },
+  };
+  const cmpBtn = (kind, id) => h('button', { class: 'btn sm' + (Compare.has(kind, id) ? ' on' : ''), title: '加入或移出多選比較', onclick: (e) => { Compare.toggle(kind, id); e.currentTarget.classList.toggle('on', Compare.has(kind, id)); e.currentTarget.textContent = Compare.has(kind, id) ? '✓ 已加入比較' : '＋ 比較'; } }, Compare.has(kind, id) ? '✓ 已加入比較' : '＋ 比較');
+
   const V3 = {
-    inst: null, layers: { skin: false, bone: true, muscle: true, meridian: false, sinew: false, point: false }, sel: null, tension: null, q: '', mode: 'muscle',
+    inst: null, layers: { skin: false, bone: true, muscle: true, meridian: false, sinew: false, point: false, nerve: false }, sel: null, tension: null, q: '', mode: 'muscle',
     build(root) {
       root.ap(h('div', { class: 'sec-h' }, h('h2', null, '3D 骨骼・肌肉・經絡'), h('span', { class: 'muted small' }, '拖曳旋轉、雙指或滾輪縮放；點選肌肉、經絡或穴位看說明')));
       this.stage = h('div', { class: 'v3-stage', id: 'v3-stage' }, h('div', { class: 'v3-hint' }, '骨骼、肌肉為真實比例模型；經絡與穴位依骨性標誌推算，取穴仍以實際觸摸為準'));
       const tools = h('div', { class: 'v3-tools' });
-      const lay = [['skin', '皮膚'], ['bone', '骨骼'], ['muscle', '肌肉'], ['meridian', '經脈'], ['sinew', '經筋'], ['point', '穴位']];
+      const lay = [['skin', '皮膚'], ['bone', '骨骼'], ['muscle', '肌肉'], ['meridian', '經脈'], ['sinew', '經筋'], ['point', '穴位'], ['nerve', '神經']];
       lay.forEach(([k, n]) => tools.ap(h('button', { class: 'btn sm' + (this.layers[k] ? ' on' : ''), 'data-layer': k, 'aria-pressed': String(this.layers[k]), onclick: (e) => this.toggleLayer(k, e.currentTarget) }, n)));
       tools.ap(h('span', { class: 'sp' }));
       [['front', '前'], ['back', '後'], ['left', '左'], ['right', '右']].forEach(([v, n]) => tools.ap(h('button', { class: 'btn sm', onclick: () => this.inst && this.inst.view(v) }, n)));
-      tools.ap(h('button', { class: 'btn sm', onclick: () => { if (this.inst) { this.inst.reset(); this.inst.clear(); this.sel = null; this.renderInfo(); this.renderList(); } } }, '重置'));
+      tools.ap(h('button', { class: 'btn sm', onclick: () => { if (this.inst) { this.inst.reset(); this.inst.clear(); this.inst.setDermatome(null); this.dermSel = []; this.cmpOn = false; this.sel = null; this.renderInfo(); this.renderList(); this.renderCmpBar(); } } }, '重置'));
       this.stage.ap(tools);
       this.tbar = h('div', { class: 'card pad', hidden: true });
       this.side = h('div', { class: 'v3-side' });
       this.listBox = h('div', { class: 'card v3-list' });
       this.info = h('div', { class: 'card pad v3-info' });
-      const modeBtns = h('div', { class: 'row' }, [['muscle', '肌肉'], ['meridian', '經脈'], ['sinew', '經筋'], ['point', '穴位'], ['motion', '動作']].map(([k, n]) => h('button', { class: 'chip' + (this.mode === k ? ' on' : ''), 'data-mode': k, onclick: () => { this.mode = k; this.side.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('on', b.dataset.mode === k)); this.renderList(); } }, n)));
+      const modeBtns = h('div', { class: 'row' }, [['muscle', '肌肉'], ['meridian', '經脈'], ['sinew', '經筋'], ['point', '穴位'], ['nerve', '神經'], ['derm', '皮節'], ['motion', '動作'], ['cmp', '比較']].map(([k, n]) => h('button', { class: 'chip' + (this.mode === k ? ' on' : ''), 'data-mode': k, onclick: () => this.setMode(k) }, n)));
       const search = h('input', { class: 'fsearch', placeholder: '搜尋：例如 梨狀肌、膽經、風池', style: { margin: 0 }, oninput: (e) => { this.q = e.target.value.trim(); this.renderList(); } });
-      this.side.ap(this.tbar, h('div', { class: 'stack', style: { gap: '8px' } }, modeBtns, search), this.listBox, this.info);
-      root.ap(h('div', { class: 'v3-wrap' }, this.stage, this.side));
-      this.renderList(); this.renderInfo();
+      this.cmpBar = h('div', { class: 'card pad cmp-bar', hidden: true });
+      this.side.ap(this.tbar, this.cmpBar, h('div', { class: 'stack', style: { gap: '8px' } }, modeBtns, search), this.listBox, this.info);
+      this.cmpBox = h('div', { class: 'card pad cmp-box', hidden: true });
+      root.ap(h('div', { class: 'v3-wrap' }, this.stage, this.side), this.cmpBox);
+      Compare.listeners.push(() => { this.renderCmpBar(); if (this.mode === 'cmp') this.renderList(); if (this.cmpOn && this.inst) Compare.show3D(); });
+      this.renderList(); this.renderInfo(); this.renderCmpBar();
     },
     ensure() {
       if (this.inst) return;
       if (!window.THREE || !THREE.OrbitControls) { this.stage.ap(h('div', { class: 'empty', style: { margin: '60px 20px' } }, '3D 元件載入失敗，請確認網路後重新整理頁面。')); return; }
       try {
         const cs = getComputedStyle(document.documentElement);
-        this.inst = Body3D.create(this.stage, { muscles: window.MUSCLES, meridians: window.MERIDIANS, points: window.POINTS, sinews: window.SINEWS }, {
+        this.inst = Body3D.create(this.stage, { muscles: window.MUSCLES, meridians: window.MERIDIANS, points: window.POINTS, sinews: window.SINEWS, nerves: window.NERVES3D || {} }, {
           colors: { skin: new THREE.Color(cs.getPropertyValue('--skin3d').trim() || '#d2b8a3').getHex() },
           onPick: (u) => { if (!u) return; this.pick(u.kind, u.id); },
           base: window.ASSET_BASE || '',
@@ -1082,12 +1190,31 @@
       } catch (e) { this.stage.ap(h('div', { class: 'empty', style: { margin: '60px 20px' } }, '這個裝置無法顯示 3D（WebGL 不可用）。仍可使用右側清單查閱肌肉與穴位說明。')); }
     },
     whenReady(f) { if (this.inst) f(); else this.pending = f; },
+    setMode(k) {
+      this.mode = k; this.side.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('on', b.dataset.mode === k));
+      if (k === 'nerve') { this.setLayers({ nerve: true, bone: true, muscle: false, skin: false }); this.ensure(); }
+      if (k === 'derm') { this.ensure(); this.whenReady(() => this.inst.setDermatome(this.dermSel && this.dermSel.length ? this.dermSel : 'all')); this.sel = { kind: 'derm', id: null }; this.renderInfo(); }
+      else if (this.inst && this.inst.setDermatome) { this.inst.setDermatome(null); }
+      this.renderList(); this.renderCmpBar();
+    },
+    renderCmpBar() {
+      if (!this.cmpBar) return; const show = Compare.items.length > 0 || this.mode === 'cmp';
+      this.cmpBar.hidden = !show; this.cmpBox.hidden = !(Compare.items.length > 0 && this.cmpTable);
+      if (!show) return;
+      Compare.tray(this.cmpBar);
+      this.cmpBar.ap(h('div', { class: 'row', style: { marginTop: '6px' } }, h('label', { class: 'small row', style: { gap: '4px' } }, h('input', { type: 'checkbox', checked: !!this.cmpMode, onchange: (e) => { this.cmpMode = e.target.checked; } }), '比較模式：點選即加入'), h('span', { class: 'sp' }),
+        Compare.items.length ? h('button', { class: 'btn sm', onclick: () => { this.cmpTable = !this.cmpTable; this.renderCmpBar(); if (this.cmpTable) this.cmpBox.scrollIntoView({ behavior: 'smooth' }); } }, this.cmpTable ? '收起比較表' : '看比較表') : null,
+        this.cmpOn ? h('button', { class: 'btn sm', onclick: () => { this.cmpOn = false; if (this.inst) this.inst.clearCompare(); this.renderCmpBar(); } }, '結束 3D 比較') : null));
+      if (!this.cmpBox.hidden) { clear(this.cmpBox).ap(h('div', { class: 'res-h' }, h('h3', null, '比較表'), h('span', { class: 'sp' }), h('button', { class: 'btn sm', onclick: () => Compare.show3D() }, '在 3D 分色顯示'))); const tb = h('div'); this.cmpBox.ap(tb); Compare.table(tb); }
+    },
     toggleLayer(k, btn) { this.layers[k] = !this.layers[k]; if (btn) { btn.classList.toggle('on', this.layers[k]); btn.setAttribute('aria-pressed', String(this.layers[k])); } if (this.inst) this.inst.setLayer(k, this.layers[k]); },
     setLayers(o) { Object.assign(this.layers, o); this.stage.querySelectorAll('[data-layer]').forEach((b) => { const k = b.dataset.layer; b.classList.toggle('on', this.layers[k]); b.setAttribute('aria-pressed', String(this.layers[k])); }); if (this.inst) Object.entries(this.layers).forEach(([k, v]) => this.inst.setLayer(k, v)); },
     pick(kind, id) {
+      if (kind === 'derm') { this.mode = 'derm'; const s = this.dermSel || (this.dermSel = []); const i = s.indexOf(id); if (i >= 0) s.splice(i, 1); else s.push(id); if (this.inst) this.inst.setDermatome(s.length ? s.slice() : 'all'); this.sel = { kind: 'derm', id }; this.side.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('on', b.dataset.mode === 'derm')); this.renderInfo(); this.renderList(); return; }
+      if (this.cmpMode && ['muscle', 'bone', 'sinew', 'nerve', 'point'].includes(kind)) { let cid = id; if (kind === 'bone') { const info = this.inst && this.inst.partName(id); cid = info && window.boneIdOf ? window.boneIdOf(info.zh) : null; } if (cid) Compare.toggle(kind, cid); return; }
       if (this.sel && this.sel.kind === 'motion' && this.inst) { if (kind === 'muscle') { this.renderInfoMuscleOnly = true; } else { this.inst.stopMotion(); } }
       this.sel = { kind, id };
-      if (kind === 'meridian' || kind === 'point' || kind === 'sinew' || kind === 'muscle') this.mode = kind;
+      if (kind === 'meridian' || kind === 'point' || kind === 'sinew' || kind === 'muscle' || kind === 'nerve') this.mode = kind;
       this.side.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('on', b.dataset.mode === this.mode));
       if (this.inst) this.inst.select(kind, [id], { focus: kind !== 'bone', dist: kind === 'point' ? 0.75 : undefined });
       this.renderInfo(); this.renderList();
@@ -1110,6 +1237,8 @@
     showMuscles(ids) { showTab('v3d'); this.setLayers({ muscle: true, bone: true, skin: false, meridian: false, point: false, sinew: false }); const go = () => { this.inst.clear(); this.inst.select('muscle', ids, { focus: true, dist: 2.6 }); }; this.whenReady(go); if (this.inst) go(); },
     showMerMuscles(id) { const mn = (window.MER_NOTES || {})[id]; if (!mn) return; showTab('v3d'); this.setLayers({ muscle: true, bone: true, skin: false, meridian: true, point: false });
       const go = () => { this.inst.select('muscle', mn.muscles.filter((m) => MU[m]), { focus: true, dist: 3.0 }); }; this.whenReady(go); if (this.inst) go(); },
+    focusNerve(id) { showTab('v3d'); this.setLayers({ nerve: true, bone: true, muscle: false, skin: false, meridian: false, sinew: false, point: false }); this.whenReady(() => this.pick('nerve', id)); if (this.inst) this.pick('nerve', id); },
+    showDerm(segs) { showTab('v3d'); this.ensure(); this.dermSel = [].concat(segs || []); this.mode = 'derm'; this.side.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('on', b.dataset.mode === 'derm')); this.whenReady(() => { this.inst.setDermatome(this.dermSel.length ? this.dermSel.slice() : 'all'); this.inst.view('front'); }); this.sel = { kind: 'derm', id: this.dermSel[0] || null }; this.renderList(); this.renderInfo(); },
     focusSinew(id) { showTab('v3d'); this.setLayers({ sinew: true, muscle: false, meridian: false, skin: true, bone: true }); this.whenReady(() => this.pick('sinew', id)); if (this.inst) this.pick('sinew', id); },
     showTension(map) {
       this.tension = map; showTab('v3d'); this.setLayers({ muscle: true, bone: true, skin: true, meridian: false, point: false, sinew: false });
@@ -1131,6 +1260,17 @@
         window.MERIDIANS.forEach((x) => { if (m(x.name + x.id + x.short)) B.ap(item('meridian', x.id, x.name, x.id, hex(x.color))); });
       } else if (this.mode === 'sinew') {
         window.SINEWS.forEach((x) => { if (m(x.name + x.note + x.sick)) B.ap(item('sinew', x.id, x.name, '經筋', hex(x.color))); });
+      } else if (this.mode === 'nerve') {
+        const src = Object.keys(NV()).length ? NV() : (window.NERVES3D || {}); const groups = {};
+        Object.entries(src).forEach(([id, n]) => { if (!m(n.name + (n.roots || '') + (n.plexus || '') + (n.course || ''))) return; (groups[n.plexus || '神經'] = groups[n.plexus || '神經'] || []).push([id, n]); });
+        Object.entries(groups).forEach(([g, arr]) => { B.ap(h('div', { class: 'grp' }, g)); arr.forEach(([id, n]) => B.ap(item('nerve', id, n.name, n.roots || '', '#' + (((window.NERVES3D || {})[id] || {}).color || 0xf3d36b).toString(16).padStart(6, '0')))); });
+      } else if (this.mode === 'derm') {
+        const cols = (this.inst && this.inst.dermColors) || {}; const D = (window.NERVE_INFO || {}).dermatomes || [];
+        ['C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12', 'L1', 'L2', 'L3', 'L4', 'L5', 'S1', 'S2', 'S3', 'S4'].forEach((sg) => { const d = D.find((x) => x.seg === sg) || {}; if (!m(sg + (d.area || '') + (NERVE[sg] || ''))) return;
+          B.ap(h('button', { class: 'v3-item' + ((this.dermSel || []).includes(sg) ? ' on' : ''), onclick: () => this.pick('derm', sg) }, h('span', { class: 'sw', style: { background: cols[sg] != null ? '#' + cols[sg].toString(16).padStart(6, '0') : 'var(--line)' } }), h('span', null, sg), h('span', { class: 'en' }, cut(d.area || NERVE[sg] || '', 18)))); });
+      } else if (this.mode === 'cmp') {
+        const pk = h('div', { class: 'pad' }); B.ap(pk); Compare.picker(pk, { quick: () => [].concat(this.sel && ['muscle', 'sinew', 'nerve', 'point'].includes(this.sel.kind) ? [[this.sel.kind, this.sel.id, Compare.label(this.sel.kind, this.sel.id)]] : [], [['muscle', 'piriformis', '梨狀肌'], ['muscle', 'glute_med', '臀中肌'], ['muscle', 'iliopsoas', '髂腰肌'], ['bone', 'bn-hip', '髖骨'], ['bone', 'bn-sacrum', '薦椎'], ['sinew', 'BL', '足太陽經筋'], ['sinew', 'GB', '足少陽經筋']]) });
+        return;
       } else {
         window.MERIDIANS.forEach((mer) => { const arr = window.POINTS.filter((p) => p.mer === mer.id && m(p.name + p.id + p.ind + p.loc)); if (!arr.length) return; B.ap(h('div', { class: 'grp' }, mer.name)); arr.forEach((p) => B.ap(item('point', p.id, p.name, p.id, hex(mer.color)))); });
       }
@@ -1164,7 +1304,7 @@
       }
       if (s.kind === 'muscle') {
         const x = MU[s.id]; const t = this.tension && this.tension[s.id];
-        I.ap(h('div', { class: 'eyebrow' }, x.region + '・' + x.layer), h('h3', null, x.name), h('div', { class: 'muted small mono' }, x.en),
+        I.ap(h('div', { class: 'eyebrow' }, x.region + '・' + x.layer), h('h3', null, x.name), h('div', { class: 'row' }, h('span', { class: 'muted small mono' }, x.en), h('span', { class: 'sp' }), cmpBtn('muscle', s.id)),
           t ? h('div', { class: 'row', style: { marginTop: '6px' } }, ['L', 'R'].map((sd) => t[sd] ? h('span', { class: 'badge ' + (t[sd] > 0 ? 't' : 'w') }, (sd === 'L' ? '左 ' : '右 ') + (t[sd] > 0 ? '偏緊' : '被拉長')) : null)) : null,
           h('dl', { class: 'kv' }, h('dt', null, '起點'), h('dd', null, x.origin), h('dt', null, '止點'), h('dd', null, x.insertion), h('dt', null, '作用'), h('dd', null, x.action), h('dt', null, '觸診'), h('dd', null, x.palpation), h('dt', null, '放鬆'), h('dd', null, x.release), h('dt', null, '轉移痛'), h('dd', null, x.referral), x.nerve ? h('dt', null, '神經') : null, x.nerve ? h('dd', null, x.nerve) : null),
           h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '相關穴位'), h('div', { class: 'chips', style: { marginTop: '4px' } }, (x.points || []).filter((p) => PT[p]).map((p) => h('button', { class: 'chip', onclick: () => this.focusPoint(p) }, PT[p].name))),
@@ -1172,6 +1312,24 @@
           h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '相關經筋'), h('div', { class: 'chips', style: { marginTop: '4px' } }, (x.sinew || []).filter((p) => SIN[p]).map((p) => h('button', { class: 'chip', onclick: () => this.focusSinew(p) }, SIN[p].name))),
           h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'link small', onclick: () => KB.openSearch(x.name.replace(/（.*/, '')) }, '在知識庫搜尋「' + x.name.replace(/（.*/, '') + '」')));
         this.det(I, (DET.mu[s.id] || {}).md, 'mu:' + s.id);
+      } else if (s.kind === 'nerve') {
+        const n = NV()[s.id] || {}; const n3 = (window.NERVES3D || {})[s.id] || {};
+        I.ap(h('div', { class: 'eyebrow' }, (n.plexus || '神經') + (n.roots ? '・' + n.roots : '')), h('h3', null, n.name || n3.name || s.id), h('div', { class: 'row' }, h('span', { class: 'muted small mono' }, n.en || ''), h('span', { class: 'sp' }), cmpBtn('nerve', s.id)),
+          h('p', { class: 'small muted' }, '3D 走向為依骨性標誌畫出的示意，用來理解路徑與卡壓點，不是精確位置。'),
+          n.course ? h('dl', { class: 'kv' }, h('dt', null, '走向'), h('dd', null, n.course), n.sensory ? h('dt', null, '感覺') : null, n.sensory ? h('dd', null, n.sensory) : null, n.lesion ? h('dt', null, '受損') : null, n.lesion ? h('dd', null, n.lesion) : null) : null,
+          (n.motor || []).filter((m) => MU[m]).length ? h('div', null, h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '支配的肌肉'), h('div', { class: 'chips', style: { marginTop: '4px' } }, n.motor.filter((m) => MU[m]).map((m) => h('button', { class: 'chip', onclick: () => this.focusMuscle(m) }, MU[m].name))), n.motorText ? h('p', { class: 'small muted', style: { margin: '4px 0 0' } }, n.motorText) : null,
+            h('button', { class: 'btn sm', style: { marginTop: '6px' }, onclick: () => { this.setLayers({ muscle: true, nerve: true }); this.inst && this.inst.select('muscle', n.motor.filter((m) => MU[m]), { focus: true, dist: 2.4 }); } }, '在 3D 標出這些肌肉')) : null,
+          (n.entrap || []).length ? h('div', null, h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '常見卡壓點'), (n.entrap || []).map((e) => h('div', { class: 'edge-item small' }, h('b', null, e.site), '：', e.cause || '', e.signs ? '。表現：' + e.signs : '', e.test ? '。檢查：' + e.test : '', e.tuina ? h('div', { class: 'muted' }, '推拿：' + e.tuina) : null))) : null,
+          (n.points || []).filter((x) => PT[x]).length ? h('div', null, h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '沿線穴位'), h('div', { class: 'chips', style: { marginTop: '4px' } }, n.points.filter((x) => PT[x]).map((x) => h('button', { class: 'chip', onclick: () => this.focusPoint(x) }, PT[x].name)))) : null,
+          n.notes ? h('p', { class: 'small', style: { marginTop: '8px' } }, h('b', null, '課堂筆記：'), n.notes) : null,
+          KB.has('nv:' + s.id) ? h('button', { class: 'link small', style: { marginTop: '8px' }, onclick: () => KB.open('nv:' + s.id) }, '在知識庫開啟完整頁 →') : null);
+      } else if (s.kind === 'derm') {
+        const sel = this.dermSel || []; const D = (window.NERVE_INFO || {}).dermatomes || [];
+        I.ap(h('div', { class: 'eyebrow' }, '皮節（示意）'), h('h3', null, sel.length ? sel.join('、') : '全部皮節'),
+          h('p', { class: 'small' }, '點清單或皮膚上的區域可選取多個節段比較；再點一次取消。皮膚上的分區是依骨骼位置推算的示意，實際皮節有個人差異且相鄰節段會重疊。'),
+          sel.map((sg) => { const d = D.find((x) => x.seg === sg) || {}; return h('div', { class: 'edge-item small' }, h('b', null, sg), '：', d.area || '', d.landmark ? '（記憶點：' + d.landmark + '）' : '', NERVE[sg] ? h('div', null, h('span', { class: 'muted' }, '課堂筆記：'), NERVE[sg]) : null, d.course ? h('div', { class: 'muted' }, d.course) : null); }),
+          h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn sm', onclick: () => { this.dermSel = []; if (this.inst) this.inst.setDermatome('all'); this.renderInfo(); this.renderList(); } }, '顯示全部'), h('button', { class: 'btn sm', onclick: () => { this.dermSel = []; if (this.inst) this.inst.setDermatome(null); this.setMode('muscle'); } }, '關閉皮節'),
+            KB.has('k-nv-derm') ? h('button', { class: 'link small', onclick: () => KB.open('k-nv-derm') }, '皮節與神經判斷 →') : null));
       } else if (s.kind === 'meridian') {
         const x = MER[s.id]; const pts = window.POINTS.filter((p) => p.mer === s.id);
         const mn = (window.MER_NOTES || {})[s.id];
@@ -1184,7 +1342,7 @@
           h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '本經常用穴'), h('div', { class: 'chips', style: { marginTop: '4px' } }, pts.map((p) => h('button', { class: 'chip', onclick: () => this.pick('point', p.id) }, p.name))));
       } else if (s.kind === 'sinew') {
         const x = SIN[s.id];
-        I.ap(h('div', { class: 'eyebrow' }, '經筋（課堂筆記）'), h('h3', null, x.name), h('p', { class: 'small' }, x.note), h('p', { class: 'small' }, h('b', null, '病候：'), x.sick),
+        I.ap(h('div', { class: 'eyebrow' }, '經筋（課堂筆記）'), h('h3', null, x.name), h('div', { class: 'row' }, h('span', { class: 'sp' }), cmpBtn('sinew', s.id)), h('p', { class: 'small' }, x.note), h('p', { class: 'small' }, h('b', null, '病候：'), x.sick),
           h('p', { class: 'small muted' }, '經筋總則（筆記）：寒則反折筋急、熱則筋弛縱不收；陽（背）急則反折、陰（腹）急則俯不能伸。'),
           h('div', { class: 'eyebrow' }, '「結」的位置'), h('div', { class: 'chips', style: { marginTop: '4px' } }, (x.knots || []).map((k) => h('span', { class: 'chip' }, k.name))),
           MER[s.id] ? h('div', { style: { marginTop: '8px' } }, h('button', { class: 'btn sm', onclick: () => this.focusMeridian(s.id) }, '看同名經脈')) : null);
@@ -1192,7 +1350,7 @@
       } else if (s.kind === 'bone') {
         const info = this.inst && this.inst.partName(s.id); const zh = info ? info.zh : s.id; const en = info ? info.name : '';
         const note = boneNote(zh, en);
-        I.ap(h('div', { class: 'eyebrow' }, info && info.kind === 'cart' ? '軟骨' : '骨骼'), h('h3', null, zh), h('div', { class: 'muted small mono' }, en),
+        I.ap(h('div', { class: 'eyebrow' }, info && info.kind === 'cart' ? '軟骨' : '骨骼'), h('h3', null, zh), h('div', { class: 'row' }, h('span', { class: 'muted small mono' }, en), h('span', { class: 'sp' }), window.boneIdOf && window.boneIdOf(zh) ? cmpBtn('bone', window.boneIdOf(zh)) : null),
           note ? h('div', { class: 'prose small', html: KB.md(note) }) : h('p', { class: 'small muted' }, '可在知識庫搜尋這塊骨頭的相關筆記。'),
           h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'link small', onclick: () => KB.openSearch(zh.replace(/^[左右]/, '').replace(/（.*）/, '')) }, '在知識庫搜尋「' + zh.replace(/^[左右]/, '').replace(/（.*）/, '') + '」')));
         KB.bindRefs(I);
@@ -1200,7 +1358,7 @@
       } else {
         const p = PT[s.id]; const mer = MER[p.mer];
         const rel = window.MUSCLES.filter((x) => (x.points || []).includes(p.id));
-        I.ap(h('div', { class: 'eyebrow' }, (mer ? mer.name : '') + '・' + p.id), h('h3', null, p.name),
+        I.ap(h('div', { class: 'eyebrow' }, (mer ? mer.name : '') + '・' + p.id), h('h3', null, p.name), h('div', { class: 'row' }, h('span', { class: 'sp' }), cmpBtn('point', s.id)),
           h('dl', { class: 'kv' }, h('dt', null, '定位'), h('dd', null, p.loc), h('dt', null, '主治'), h('dd', null, p.ind), p.tn ? h('dt', null, '推拿') : null, p.tn ? h('dd', null, p.tn) : null),
           rel.length ? h('div', null, h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '附近／相關肌肉'), h('div', { class: 'chips', style: { marginTop: '4px' } }, rel.map((x) => h('button', { class: 'chip', onclick: () => this.focusMuscle(x.id) }, x.name)))) : null,
           mer ? h('div', { style: { marginTop: '8px' } }, h('button', { class: 'btn sm', onclick: () => this.focusMeridian(mer.id) }, '看整條' + mer.name)) : null);
@@ -1347,19 +1505,19 @@
       if (sp === 'sub') { SubUI.renderDetail(D, this.selId); return; }
       const it = this.all().find((x) => x.id === this.selId);
       if (!it) {
-        D.ap(h('div', { class: 'eyebrow' }, '知識庫'), h('h3', null, '從左邊選一則來看'), h('p', { class: 'small' }, '收錄課堂筆記（經筋、薦椎、骨盆三角度、頭痛分類）與 12 段錄音整理出的重點，另以肌動學、整脊與經穴的通識補充（標示「補充」）。「逐字稿」可以依堂次、部位、知識點瀏覽 12 段錄音的原始逐字稿；「參考書」收錄老師推薦書籍的重點整理（自己的話＋頁碼）與和課堂理論的比對；「整合說明」是課堂與各書說法不一致處的統一結論；「詳解」為每個穴位、肌肉、骨骼、經筋依參考書整理的完整說明；「手法」收錄各種推拿、整復、整脊手法的步驟與禁忌。'),
+        D.ap(h('div', { class: 'eyebrow' }, '知識庫'), h('h3', null, '從左邊選一則來看'), h('p', { class: 'small' }, '收錄課堂筆記（經筋、薦椎、骨盆三角度、頭痛分類）與課堂錄音整理出的重點，另以肌動學、整脊與經穴的通識補充（標示「補充」）。「逐字稿」可以依堂次、部位、知識點瀏覽各堂課錄音的原始逐字稿；「參考書」收錄老師推薦書籍的重點整理（自己的話＋頁碼）與和課堂理論的比對；「整合說明」是課堂與各書說法不一致處的統一結論；「詳解」為每個穴位、肌肉、骨骼、經筋依參考書整理的完整說明；「手法」收錄各種推拿、整復、整脊手法的步驟與禁忌。'),
           h('p', { class: 'small' }, '搜尋時也會找到肌肉、穴位與經筋資料；沒有搜尋時只列知識條目。'),
           h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '快速入口'), h('div', { class: 'chips', style: { marginTop: '6px' } }, ['薦椎', '三個角度', '被拉長', '膝', '經筋', '頭痛', '梨狀肌', '手法'].map((t) => h('button', { class: 'chip', onclick: () => this.openSearch(t) }, t)), (window.KB_BOOKS || []).length ? h('button', { class: 'chip on', onclick: () => this.open('b-overview') }, '參考書與課程比對') : null, this.has('u-overview') ? h('button', { class: 'chip on', onclick: () => this.open('u-overview') }, '統一說法總表') : null, h('button', { class: 'chip on', onclick: () => this.openSource('手法') }, '手法目錄'), h('button', { class: 'chip on', onclick: () => this.openSource('詳解') }, '穴位・肌肉・骨骼・經筋詳解')),
           h('div', { class: 'eyebrow', style: { marginTop: '12px' } }, '新增知識的方式'),
           h('p', { class: 'small' }, Auth.canPublish() ? '你是管理員：新增或修改的條目會直接發佈；也可以在「審核佇列」核准別人的投稿。' : Auth.canSubmit() ? '你可以投稿：用文字、語音輸入或拍照讓 Claude 辨識，送出後由管理員審核。' : '登入並取得投稿權限後，可以用文字、語音或照片投稿新知識（需管理員審核）。'));
         return;
       }
-      if (it.type === 'muscle') { D.ap(h('div', { class: 'eyebrow' }, '肌肉'), h('h3', null, it.title)); const m = MU[it.mid]; D.ap(h('dl', { class: 'kv' }, h('dt', null, '起點'), h('dd', null, m.origin), h('dt', null, '止點'), h('dd', null, m.insertion), h('dt', null, '作用'), h('dd', null, m.action), h('dt', null, '觸診'), h('dd', null, m.palpation), h('dt', null, '放鬆'), h('dd', null, m.release), h('dt', null, '轉移痛'), h('dd', null, m.referral), m.nerve ? h('dt', null, '神經') : null, m.nerve ? h('dd', null, m.nerve) : null), h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'btn pri', onclick: () => V3.focusMuscle(m.id) }, '在 3D 看位置'))); this.detBlock(D, (DET.mu[m.id] || {}).md); TX.relatedBlock(D, [m.name.replace(/（.*/, '')]); return; }
-      if (it.type === 'point') { const p = PT[it.pid]; D.ap(h('div', { class: 'eyebrow' }, it.src), h('h3', null, it.title), h('dl', { class: 'kv' }, h('dt', null, '定位'), h('dd', null, p.loc), h('dt', null, '主治'), h('dd', null, p.ind), h('dt', null, '推拿'), h('dd', null, p.tn || '—')), h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'btn pri', onclick: () => V3.focusPoint(p.id) }, '在 3D 看位置'))); this.detBlock(D, (DET.pt[p.id] || {}).md); const rm = ((DET.pt[p.id] || {}).muscles || []).filter((x) => MU[x]); if (rm.length) D.ap(h('div', { class: 'chips', style: { marginTop: '8px' } }, rm.map((x) => h('button', { class: 'chip', onclick: () => V3.focusMuscle(x) }, h('span', { class: 'dot t' }), MU[x].name)))); return; }
-      if (it.type === 'sinew') { const s = SIN[it.sid]; D.ap(h('div', { class: 'eyebrow' }, '經筋・課堂筆記'), h('h3', null, s.name), h('p', null, s.note), h('p', null, h('b', null, '病候：'), s.sick), h('div', { class: 'row' }, h('button', { class: 'btn pri', onclick: () => V3.focusSinew(s.id) }, '在 3D 看循行'), h('button', { class: 'btn', onclick: () => this.open('d-sn-overview') }, '經筋總論'))); this.detBlock(D, (DET.sn[s.id] || {}).md); TX.relatedBlock(D, [s.name]); return; }
+      if (it.type === 'muscle') { D.ap(h('div', { class: 'eyebrow' }, '肌肉'), h('h3', null, it.title)); const m = MU[it.mid]; D.ap(h('dl', { class: 'kv' }, h('dt', null, '起點'), h('dd', null, m.origin), h('dt', null, '止點'), h('dd', null, m.insertion), h('dt', null, '作用'), h('dd', null, m.action), h('dt', null, '觸診'), h('dd', null, m.palpation), h('dt', null, '放鬆'), h('dd', null, m.release), h('dt', null, '轉移痛'), h('dd', null, m.referral), m.nerve ? h('dt', null, '神經') : null, m.nerve ? h('dd', null, m.nerve) : null), h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'btn pri', onclick: () => V3.focusMuscle(m.id) }, '在 3D 看位置'), cmpBtn('muscle', m.id))); this.detBlock(D, (DET.mu[m.id] || {}).md); TX.relatedBlock(D, [m.name.replace(/（.*/, '')]); return; }
+      if (it.type === 'point') { const p = PT[it.pid]; D.ap(h('div', { class: 'eyebrow' }, it.src), h('h3', null, it.title), h('dl', { class: 'kv' }, h('dt', null, '定位'), h('dd', null, p.loc), h('dt', null, '主治'), h('dd', null, p.ind), h('dt', null, '推拿'), h('dd', null, p.tn || '—')), h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'btn pri', onclick: () => V3.focusPoint(p.id) }, '在 3D 看位置'), cmpBtn('point', p.id))); this.detBlock(D, (DET.pt[p.id] || {}).md); const rm = ((DET.pt[p.id] || {}).muscles || []).filter((x) => MU[x]); if (rm.length) D.ap(h('div', { class: 'chips', style: { marginTop: '8px' } }, rm.map((x) => h('button', { class: 'chip', onclick: () => V3.focusMuscle(x) }, h('span', { class: 'dot t' }), MU[x].name)))); return; }
+      if (it.type === 'sinew') { const s = SIN[it.sid]; D.ap(h('div', { class: 'eyebrow' }, '經筋・課堂筆記'), h('h3', null, s.name), h('p', null, s.note), h('p', null, h('b', null, '病候：'), s.sick), h('div', { class: 'row' }, h('button', { class: 'btn pri', onclick: () => V3.focusSinew(s.id) }, '在 3D 看循行'), h('button', { class: 'btn', onclick: () => this.open('d-sn-overview') }, '經筋總論'), cmpBtn('sinew', s.id))); this.detBlock(D, (DET.sn[s.id] || {}).md); TX.relatedBlock(D, [s.name]); return; }
       if (it.type === 'bone' || it.type === 'tech') {
         D.ap(h('div', { class: 'row' }, h('span', { class: 'badge j' }, it.cat), h('span', { class: 'badge' }, it.src), it.risk ? h('span', { class: 'badge ' + (it.risk === '高' ? 't' : it.risk === '中' ? 'y' : 'j') }, '風險' + it.risk) : null),
-          h('h3', null, it.title), it.type === 'bone' ? h('div', { class: 'muted small mono' }, DET.bn[it.id].en) : null);
+          h('h3', null, it.title), it.type === 'bone' ? h('div', { class: 'row' }, h('span', { class: 'muted small mono' }, DET.bn[it.id].en), h('span', { class: 'sp' }), cmpBtn('bone', it.id)) : null);
         const md = it.type === 'bone' ? DET.bn[it.id].md : TQ[it.id].md;
         const box = h('div', { class: 'prose', html: this.md(md) }); D.ap(box); this.bindRefs(box);
         const links = [];
@@ -1373,6 +1531,8 @@
         return;
       }
       const pub = Auth.canPublish();
+      const nvId = String(it.id).startsWith('nv:') ? it.id.slice(3) : null;
+      if (nvId) D.ap(h('div', { class: 'row', style: { marginBottom: '6px' } }, (window.NERVES3D || {})[nvId] ? h('button', { class: 'btn pri sm', onclick: () => V3.focusNerve(nvId) }, '在 3D 看走向') : null, cmpBtn('nerve', nvId)));
       D.ap(h('div', { class: 'row' }, h('span', { class: 'badge ' + (it.mine ? 'y' : 'j') }, it.mine ? (it.replaces ? '管理員修訂' : '新增條目') : it.cat), h('span', { class: 'badge' }, it.src), h('span', { class: 'sp' }),
         pub && it.mine ? h('button', { class: 'btn sm', onclick: () => this.edit(Notes.list.find((n) => n.id === it.nid)) }, '編輯') : null,
         pub && it.type === 'kb' ? h('button', { class: 'btn sm', title: '修改後會以管理員修訂版取代原文；可隨時還原', onclick: () => this.edit({ title: it.title, cat: it.cat, src: it.src, body: it.body, muscles: it.muscles || [], points: it.points || [], regions: it.regions || [], tags: it.tags || [], replaces: it.id }) }, '修改') : null,
@@ -1542,7 +1702,7 @@
   };
 
   // =====================================================================
-  //  逐字稿（12 段錄音，依堂次／部位／知識點分類）
+  //  逐字稿（課堂錄音，依堂次／部位／知識點分類）
   // =====================================================================
   const TX = {
     data: null, p: null, failed: false, lec: '全部', part: '全部', topic: '全部', limit: 60,
@@ -1568,7 +1728,7 @@
     renderFilters(F) {
       if (!this.data) { F.ap(h('span', { class: 'small muted' }, this.failed ? '逐字稿載入失敗。' : '載入逐字稿…')); return; }
       const re = () => { KB.selId = null; this.limit = 60; KB.renderFilters(); KB.renderList(); KB.renderDetail(); };
-      F.ap(h('label', { class: 'small tx-sel' }, '堂次 ', h('select', { onchange: (e) => { this.lec = e.target.value; re(); } }, h('option', { value: '全部' }, '全部 12 段'), this.data.lecs.map((L) => h('option', { value: L.id, selected: this.lec === L.id }, this.lecName(L.id) + '（' + Math.round(L.dur / 60) + ' 分）')))));
+      F.ap(h('label', { class: 'small tx-sel' }, '堂次 ', h('select', { onchange: (e) => { this.lec = e.target.value; re(); } }, h('option', { value: '全部' }, '全部 ' + ((this.data && this.data.lecs) || []).length + ' 段'), this.data.lecs.map((L) => h('option', { value: L.id, selected: this.lec === L.id }, this.lecName(L.id) + '（' + Math.round(L.dur / 60) + ' 分）')))));
       F.ap(h('span', { class: 'small muted tx-lab' }, '部位'));
       ['全部'].concat(this.data.parts).forEach((p) => F.ap(h('button', { class: 'chip sm' + (this.part === p ? ' on' : ''), onclick: () => { this.part = p; re(); } }, p)));
       F.ap(h('span', { class: 'small muted tx-lab' }, '知識點'));
@@ -1599,7 +1759,7 @@
       if (!this.data) { D.ap(h('p', { class: 'small muted' }, '載入逐字稿…')); return; }
       const s = selId && selId.startsWith('tx:') ? this.data.segs.find((x) => 'tx:' + x.id === selId) : null;
       if (!s) {
-        D.ap(h('div', { class: 'eyebrow' }, '逐字稿'), h('h3', null, '12 段課堂錄音'), h('p', { class: 'small' }, '每段約 1.5 分鐘，依關鍵字自動標上部位與知識點。點一堂課可以只看那一堂。'));
+        D.ap(h('div', { class: 'eyebrow' }, '逐字稿'), h('h3', null, ((this.data && this.data.lecs) || []).length + ' 段課堂錄音'), h('p', { class: 'small' }, '每段約 1.5 分鐘，依關鍵字自動標上部位與知識點。點一堂課可以只看那一堂。'));
         const G = h('div', { class: 'tx-lecs' });
         this.data.lecs.forEach((L) => G.ap(h('button', { class: 'tx-lec' + (this.lec === L.id ? ' on' : ''), onclick: () => { this.lec = L.id; KB.selId = null; KB.renderFilters(); KB.renderList(); KB.renderDetail(); } },
           h('b', { class: 'mono' }, this.lecName(L.id)), h('span', { class: 'small muted' }, Math.round(L.dur / 60) + ' 分・' + L.n + ' 段・知識條目 ' + this.kbOf(L.id).length),
@@ -1949,6 +2109,6 @@
     showTab(TABS.some((t) => t[0] === start) ? start : 'assess');
     Auth.init().then(() => { Notes.init(); Subs.init(); Cases.init(); });
   }
-  window.APP = { Assess, Chain, Sim, V3, KB, Notes, Subs, Auth, Cases, TX, Admin, showTab };
+  window.APP = { Assess, Chain, Sim, V3, KB, Notes, Subs, Auth, Cases, TX, Admin, Compare, showTab };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
