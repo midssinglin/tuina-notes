@@ -343,7 +343,7 @@
   }
 
   const Assess = {
-    sel: (function (s) { const A = window.FINDING_ALIASES || {}; const o = {}; Object.entries(s || {}).forEach(([k, v]) => { o[A[k] || k] = v; }); return o; })(store.get('assess', null) || Object.assign({}, EXAMPLE_ASSESS)), example: !store.get('assess', null), q: '', st: store.get('assess_st', 'cc'), vas: store.get('assess_vas', null), showHow: store.get('assess_how', false), recTab: 'mu', hover: null,
+    sel: (function (s) { if (window.migrateFindings) return window.migrateFindings(s || {}); const A = window.FINDING_ALIASES || {}; const o = {}; Object.entries(s || {}).forEach(([k, v]) => { o[A[k] || k] = v; }); return o; })(store.get('assess', null) || Object.assign({}, EXAMPLE_ASSESS)), example: !store.get('assess', null), q: '', st: store.get('assess_st', 'cc'), vas: store.get('assess_vas', null), showHow: store.get('assess_how', false), recTab: 'mu', hover: null,
     build(root) {
       const left = h('div', { class: 'card pad as-left' });
       const right = h('div', { class: 'stack', id: 'as-res' });
