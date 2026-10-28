@@ -12,7 +12,8 @@ window.TN_FB = {
   ownerUid: 'bEQ8JvmPHEORpIoOFEoh46V4E473',
   // Gemini 模型（依序嘗試，前一個不存在就換下一個）
   models: ['gemini-3.8-flash', 'gemini-2.5-flash'],
-  // App Check（reCAPTCHA v3 網站金鑰）；2026-11-02 起 AI 功能必填
-  recaptchaKey: '',
+  // App Check（Firebase AI Logic 2026-11-02 起必須）：reCAPTCHA Enterprise 網站金鑰（公開識別碼）；用 v3 金鑰時把 recaptchaType 改成 'v3'
+  recaptchaKey: '6Lf8GQQuAAAAABuLqbuJlRwyAtqlRSggDlGfUWae',
+  recaptchaType: 'enterprise',
   sdk: '12.19.0',
 };
