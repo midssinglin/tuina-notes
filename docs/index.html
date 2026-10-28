@@ -2293,7 +2293,7 @@ window.MER_NOTES = {
           Auth.canSubmit() ? h('button', { class: 'btn sm', onclick: () => { this.open = false; this.render(); KB.openSource('我的投稿'); } }, '我的投稿') : null,
           FB && Auth.isAdmin ? h('button', { class: 'btn sm', onclick: () => { close(); showTab('admin'); } }, '會員後台') : null),
         FB ? h('div', { class: 'row', style: { marginTop: '10px' } },
-          r === 'guest' ? h('button', { class: 'btn pri', onclick: () => BACKEND.signIn().catch((e) => toast('登入失敗：' + (e && e.code || e))) }, '用 Google 帳號登入') : h('button', { class: 'btn sm', onclick: () => BACKEND.signOut() }, '登出'),
+          r === 'guest' ? h('button', { class: 'btn pri', onclick: () => BACKEND.signIn().catch((e) => toast(e && e.code === 'auth/popup-blocked' ? '瀏覽器擋下了登入視窗：請允許這個網站開啟彈出視窗，再按一次' : '登入失敗：' + (e && e.code || e))) }, '用 Google 帳號登入') : h('button', { class: 'btn sm', onclick: () => BACKEND.signOut() }, '登出'),
           Auth.email ? h('span', { class: 'small muted' }, Auth.email) : null) : null,
         h('p', { class: 'small muted', style: { marginTop: '10px' } }, FB ? '用 Google 帳號登入，第一次登入即完成註冊（送出申請），不另外設密碼。管理員批准後即可使用全部功能；管理員由擁有者在「後台」指定。' : '登入就是你的 claude.ai 帳號，不另外設密碼。角色由這個頁面的分享設定決定：「Editor／編輯者」＝管理員，「Contributor／參與者」＝投稿者，其餘為檢視。')));
     },
@@ -4894,7 +4894,7 @@ window.MER_NOTES = {
         : keyMissing ? (Auth.isOwner ? '請到「後台 → 內容金鑰」完成設定。' : '網站擁有者還沒完成內容金鑰設定，請稍後再試。') : '已批准：下載並解開課程內容中，完成後會自動重新整理。';
       root.ap(h('div', { class: 'lock-card gate-card' }, h('div', { class: 'lock-ic', 'aria-hidden': 'true' }, '鎖'), h('h3', null, head), h('p', { class: 'small' }, desc),
         h('div', { class: 'row', style: { marginTop: '10px' } },
-          r === 'guest' && FB ? h('button', { class: 'btn pri', onclick: () => BACKEND.signIn().catch((e) => toast('登入失敗：' + (e && e.code || e))) }, '用 Google 帳號登入申請') : null,
+          r === 'guest' && FB ? h('button', { class: 'btn pri', onclick: () => BACKEND.signIn().catch((e) => toast(e && e.code === 'auth/popup-blocked' ? '瀏覽器擋下了登入視窗：請允許這個網站開啟彈出視窗，再按一次' : '登入失敗：' + (e && e.code || e))) }, '用 Google 帳號登入申請') : null,
           r === 'pending' || (r !== 'guest' && r !== 'blocked' && r !== 'loading') ? h('button', { class: 'btn', onclick: () => location.reload() }, '重新檢查') : null,
           Auth.isOwner && keyMissing ? h('button', { class: 'btn pri', onclick: () => showTab('admin') }, '前往後台') : null,
           h('button', { class: 'btn', onclick: () => showTab('v3d') }, '使用 3D 圖譜'))));
