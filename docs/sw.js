@@ -1,5 +1,5 @@
-/* 離線快取（Service Worker）。版本：08484afab2a0 */
-const VER = '08484afab2a0';
+/* 離線快取（Service Worker）。版本：a5f99c44df81 */
+const VER = 'a5f99c44df81';
 const CORE = 'tn-core-' + VER;
 const RUNTIME = 'tn-runtime';
 const PRECACHE = ["./", "index.html", "manifest.webmanifest", "content.bin", "tx.bin", "config.js", "anatomy.json", "anatomy.data.wasm", "geo.json", "icon-192.png", "icon-512.png", "icon-maskable.png", "apple-touch-icon.png"];
@@ -35,7 +35,8 @@ self.addEventListener('fetch', (e) => {
       e.respondWith((async () => {
         const c = await caches.open(CORE);
         try {
-          const res = await timeout(fetch(req, { cache: 'no-cache' }), 6000);
+          // 有網路就一定等網路（慢也等，避免拿到舊版設定）；只有離線或連線失敗才用快取
+          const res = await timeout(fetch(req, { cache: 'no-cache' }), self.navigator.onLine === false ? 3000 : 30000);
           if (res.ok) c.put(req.mode === 'navigate' ? 'index.html' : req, res.clone());
           return res;
         } catch (err) {

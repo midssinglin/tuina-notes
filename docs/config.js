@@ -17,6 +17,3 @@ window.TN_FB = {
   recaptchaType: 'enterprise',
   sdk: '12.19.0',
 };
-
-// 擁有者交換用：以擁有者瀏覽器的公鑰包住的內容金鑰（只有那台瀏覽器解得開）
-window.TN_FB.keyDrop = {"kid": "19b565a8", "w": "bWrtChsPnJST6XZo7BrnkY9lSmjl/CBSGFvAQS+1T4eAbLhsqBYXXnzC3qIuaIR4gP39Zlvk4oaQtamUGIFSjzrJ4OMB2d7usNY++DyNr9bMJmYqqna71rwZCEJ/hYp5BSdl6LOa5Xnfek5XhsrOTTDHjkrgP2A+NhRp7XadooaZkX73lwvV1ynflPWUkQNXmTveJZO9n1EaWAXrieCoDsEkkpLinrLijH9ydClgWZ8W3Rm1JKF6GrwFlUQlKMQ6D8rqjUhiX8gj7XpFlztbZxUmviT06r6pnGWTjb9jrqiPI58MxExITOevGr8W34wsi6Rp8IBuWSq4PBzg1GQLAQ=="};
