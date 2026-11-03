@@ -1,11 +1,11 @@
-/* 離線快取（Service Worker）。版本：b5ac3d1fe40c */
-const VER = 'b5ac3d1fe40c';
+/* 離線快取（Service Worker）。版本：5ecca4dae3b1 */
+const VER = '5ecca4dae3b1';
 const CORE = 'tn-core-' + VER;
 const RUNTIME = 'tn-runtime';
 const PRECACHE = ["./", "index.html", "manifest.webmanifest", "content.bin", "tx.bin", "config.js", "pdf.html", "anatomy.json", "anatomy.data.wasm", "geo.json", "icon-192.png", "icon-512.png", "icon-maskable.png", "apple-touch-icon.png"];
 const CDN = ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js'];
 // 經常更新的檔案：先上網、離線才用快取
-const FRESH = /(\/|index\.html|config\.js|content\.bin|tx\.bin|transcripts\.json|manifest\.webmanifest)$/;
+const FRESH = /(\/|index\.html|config\.js|content\.bin|tx\.bin|transcripts\.json|manifest\.webmanifest|pdf\.html)$/;
 // 第三方：Firebase SDK、three.js、字型，用快取並在背景更新
 const RT_HOSTS = ['www.gstatic.com', 'storage.googleapis.com', 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
@@ -32,15 +32,17 @@ self.addEventListener('fetch', (e) => {
   if (url.origin === location.origin) {
     const path = url.pathname;
     if (req.mode === 'navigate' || FRESH.test(path)) {
+      // 只有首頁的導覽才存成 index.html；pdf.html 等其他頁面照自己的網址存
+      const key = req.mode === 'navigate' && /(\/|index\.html)$/.test(path) ? 'index.html' : req;
       e.respondWith((async () => {
         const c = await caches.open(CORE);
         try {
           // 有網路就一定等網路（慢也等，避免拿到舊版設定）；只有離線或連線失敗才用快取
           const res = await timeout(fetch(req, { cache: 'no-cache' }), self.navigator.onLine === false ? 3000 : 30000);
-          if (res.ok) c.put(req.mode === 'navigate' ? 'index.html' : req, res.clone());
+          if (res.ok) c.put(key, res.clone());
           return res;
         } catch (err) {
-          return (await c.match(req.mode === 'navigate' ? 'index.html' : req, { ignoreSearch: true })) || Response.error();
+          return (await c.match(key, { ignoreSearch: true })) || Response.error();
         }
       })());
       return;
