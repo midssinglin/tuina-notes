@@ -1,5 +1,5 @@
-/* 離線快取（Service Worker）。版本：1b0a832def69 */
-const VER = '1b0a832def69';
+/* 離線快取（Service Worker）。版本：61049da522c1 */
+const VER = '61049da522c1';
 const CORE = 'tn-core-' + VER;
 const RUNTIME = 'tn-runtime';
 const PRECACHE = ["./", "index.html", "manifest.webmanifest", "content.bin", "tx.bin", "config.js", "anatomy.json", "anatomy.data.wasm", "geo.json", "icon-192.png", "icon-512.png", "icon-maskable.png", "apple-touch-icon.png"];
@@ -7,7 +7,7 @@ const CDN = ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
 // 經常更新的檔案：先上網、離線才用快取
 const FRESH = /(\/|index\.html|config\.js|content\.bin|tx\.bin|transcripts\.json|manifest\.webmanifest)$/;
 // 第三方：Firebase SDK、three.js、字型，用快取並在背景更新
-const RT_HOSTS = ['www.gstatic.com', 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+const RT_HOSTS = ['www.gstatic.com', 'storage.googleapis.com', 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {

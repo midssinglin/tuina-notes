@@ -1244,8 +1244,8 @@ window.NERVES3D = {"n-cord":{"name":"脊髓與馬尾","color":15979371,"paths":[
       Object.entries(nerveMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const on = anySel && sel.kind === 'nerve' && sel.ids.includes(id); m.material.opacity = !anySel || on || sel.kind !== 'nerve' ? 0.95 : 0.12; m.material.emissiveIntensity = on ? 0.9 : 0.25; }));
       // 多選比較：每個項目一種顏色，其餘淡化
       const cmp = state.cmp || []; if (!cmp.length) return;
-      const byK = {}; cmp.forEach((c) => { [].concat(c.ids || c.id).forEach((id) => { (byK[c.kind] = byK[c.kind] || {})[id] = new THREE.Color(c.color); }); });
-      Object.entries(muscleMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.muscle && byK.muscle[id]; m.material.color.copy(c || COL.dim); m.material.opacity = c ? 1 : 0.08; m.material.emissive.copy(c || COL.dim).multiplyScalar(c ? 0.25 : 0); m.material.transparent = !c; m.material.depthWrite = !!c; m.renderOrder = c ? 2 : 1; m.material.needsUpdate = true; }));
+      const byK = {}; cmp.forEach((c) => { if (c.fids) { c.fids.forEach((f) => { (byK.mfid = byK.mfid || {})[f] = new THREE.Color(c.color); }); byK.muscle = byK.muscle || {}; return; } [].concat(c.ids || c.id).forEach((id) => { (byK[c.kind] = byK[c.kind] || {})[id] = new THREE.Color(c.color); }); });
+      Object.entries(muscleMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = (byK.mfid && byK.mfid[m.userData.fid]) || (byK.muscle && byK.muscle[id]); m.material.color.copy(c || COL.dim); m.material.opacity = c ? 1 : 0.08; m.material.emissive.copy(c || COL.dim).multiplyScalar(c ? 0.25 : 0); m.material.transparent = !c; m.material.depthWrite = !!c; m.renderOrder = c ? 2 : 1; m.material.needsUpdate = true; }));
       Object.entries(boneMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.bone && byK.bone[id]; if (c) { m.material = (cmpMat[id] = cmpMat[id] || new THREE.MeshStandardMaterial({ roughness: 0.5 })); m.material.color.copy(c); m.material.emissive = c.clone().multiplyScalar(0.25); } else m.material = byK.bone ? matBoneDim : m.userData.base; }));
       Object.entries(sinewMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.sinew && byK.sinew[id]; m.material.opacity = c ? (m.userData.knot ? 0.95 : 0.7) : 0.05; if (c) m.material.color.copy(c); }));
       Object.entries(nerveMeshes).forEach(([id, meshes]) => meshes.forEach((m) => { const c = byK.nerve && byK.nerve[id]; m.material.opacity = c ? 1 : 0.1; if (c) { m.material.color.copy(c); m.material.emissive.copy(c); m.material.emissiveIntensity = 0.6; } }));
@@ -1263,7 +1263,7 @@ window.NERVES3D = {"n-cord":{"name":"脊髓與馬尾","color":15979371,"paths":[
       const lab = []; const all = [];
       (state.cmp || []).forEach((c) => {
         const pool = c.kind === 'muscle' ? muscleMeshes : c.kind === 'bone' ? boneMeshes : c.kind === 'sinew' ? sinewMeshes : c.kind === 'nerve' ? nerveMeshes : c.kind === 'point' ? pointMeshes : null; if (!pool) return;
-        let ms = []; [].concat(c.ids || c.id).forEach((id) => { if (pool[id]) ms = ms.concat(pool[id]); }); if (!ms.length) return; const left = ms.filter((m) => (m.userData.side != null ? m.userData.side >= 0 : true)); if (left.length) ms = left;
+        let ms = []; if (c.fids) Object.values(muscleMeshes).forEach((arr) => arr.forEach((m) => { if (c.fids.includes(m.userData.fid)) ms.push(m); })); else [].concat(c.ids || c.id).forEach((id) => { if (pool[id]) ms = ms.concat(pool[id]); }); if (!ms.length) return; const left = ms.filter((m) => (m.userData.side != null ? m.userData.side >= 0 : true)); if (left.length) ms = left;
         all.push(...ms); lab.push({ text: c.label || c.id, pos: c.kind === 'point' ? ms[0].position.clone() : centroid(ms), cls: 'mu cmp' });
       });
       setLabels(lab);
@@ -1404,6 +1404,7 @@ window.NERVES3D = {"n-cord":{"name":"脊髓與馬尾","color":15979371,"paths":[
     return {
       select, view, reset, setLayer, refresh, setCompare, setDermatome, dermList: DERM, dermColors: DCOL,
       clearCompare() { setCompare([]); },
+      muscleParts() { return Object.values(partInfo).filter((p) => p.kind === 'muscle').map((p) => ({ fid: p.fid, name: p.name, zh: p.zh, group: p.group })); },
       boneParts() { return Object.keys(boneMeshes).map((fid) => ({ fid, zh: (partInfo[fid] || {}).zh || '', kind: (partInfo[fid] || {}).kind })); },
       setMuscleStates(ms) { state.muscleStates = ms || {}; refresh(); },
       clear() { state.sel = null; state.cmp = []; refresh(); setLabels([]); },
@@ -3573,6 +3574,9 @@ window.MER_NOTES = {
       const go = () => this.inst.showPelvisPose(E); this.whenReady(go); if (this.inst) go();
       const I = clear(this.info); I.ap(h('div', { class: 'eyebrow' }, '症狀模擬 → 3D'), h('h3', null, '目前模擬的骨盆姿勢'), h('p', { class: 'small' }, '藍點＝兩側髂後上棘（PSIS）、紅點＝S2。比較兩側 PSIS 的高低（第一角度）、離 S2 的遠近（第二角度）。角度已放大示意。'), h('div', { class: 'row' }, h('button', { class: 'btn sm', onclick: () => this.setLayers({ muscle: !this.layers.muscle }) }, '顯示／隱藏肌肉'), h('button', { class: 'btn sm', onclick: () => { showTab('sim'); } }, '回到症狀模擬'), h('span', { class: 'sp' }), h('button', { class: 'btn sm', onclick: () => this.stopMotion() }, '結束'))); },
     stopMotion() { if (this.inst) this.inst.stopMotion(); this.sel = null; this.setLayers({ skin: false, bone: true, muscle: true }); this.renderInfo(); this.renderList(); },
+    // 細分肌肉：依模型零件英文名稱挑出網格，單獨上色
+    extFids(id) { const m = MUX[id]; if (!m || !m.p3d || !this.inst || !this.inst.muscleParts) return []; const re = new RegExp(m.p3d[1], 'i'); return this.inst.muscleParts().filter((p) => p.group === m.p3d[0] && re.test(p.name || '')).map((p) => p.fid); },
+    showExt(id) { showTab('v3d'); this.ensure(); this.setLayers({ muscle: true, bone: true, skin: false, meridian: false, point: false, sinew: false }); const go = () => { const f = this.extFids(id); if (!f.length) { this.focusMuscle(MUX[id].parent || MUX[id].p3d[0]); return; } this.inst.setCompare([{ kind: 'muscle', id: 'mx-' + id, fids: f, color: '#d9480f', label: MUX[id].name }, { kind: 'muscle', id: MUX[id].p3d[0], color: '#c9b8a8', label: '同肌群其他部分' }]); this.cmpOn = true; this.renderCmpBar(); }; this.whenReady(go); if (this.inst && this.inst.isReady && this.inst.isReady()) go(); },
     showMuscles(ids) { showTab('v3d'); this.setLayers({ muscle: true, bone: true, skin: false, meridian: false, point: false, sinew: false }); const go = () => { this.inst.clear(); this.inst.select('muscle', ids, { focus: true, dist: 2.6 }); }; this.whenReady(go); if (this.inst) go(); },
     showMerMuscles(id) { const mn = (window.MER_NOTES || {})[id]; if (!mn) return; showTab('v3d'); this.setLayers({ muscle: true, bone: true, skin: false, meridian: true, point: false });
       const go = () => { this.inst.select('muscle', mn.muscles.filter((m) => MU[m]), { focus: true, dist: 3.0 }); }; this.whenReady(go); if (this.inst) go(); },
@@ -3646,6 +3650,7 @@ window.MER_NOTES = {
         I.ap(h('div', { class: 'eyebrow' }, x.region + '・' + x.layer), h('h3', null, x.name), h('div', { class: 'row' }, h('span', { class: 'muted small mono' }, x.en), h('span', { class: 'sp' }), cmpBtn('muscle', s.id)),
           t ? h('div', { class: 'row', style: { marginTop: '6px' } }, ['L', 'R'].map((sd) => t[sd] ? h('span', { class: 'badge ' + (t[sd] > 0 ? 't' : 'w') }, (sd === 'L' ? '左 ' : '右 ') + (t[sd] > 0 ? '偏緊' : '被拉長')) : null)) : null,
           h('dl', { class: 'kv' }, h('dt', null, '起點'), h('dd', null, x.origin), h('dt', null, '止點'), h('dd', null, x.insertion), h('dt', null, '作用'), h('dd', null, x.action), h('dt', null, '觸診'), h('dd', null, x.palpation), h('dt', null, '放鬆'), h('dd', null, x.release), h('dt', null, '轉移痛'), h('dd', null, x.referral), x.nerve ? h('dt', null, '神經') : null, x.nerve ? h('dd', null, x.nerve) : null),
+          KB.has('tp-' + s.id) ? h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn sm', onclick: () => KB.open('tp-' + s.id) }, '激痛點與轉移痛（Travell & Simons）')) : null,
           (() => { const subs = (window.MUSCLES_EXT || []).filter((m) => m.parent === s.id); return subs.length ? h('div', null, h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '細分肌肉（解剖補充）'), h('div', { class: 'chips', style: { marginTop: '4px' } }, subs.map((m) => h('button', { class: 'chip sm', onclick: () => KB.open('mx-' + m.id) }, m.name)))) : null; })(),
           h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '相關穴位'), h('div', { class: 'chips', style: { marginTop: '4px' } }, (x.points || []).filter((p) => PT[p]).map((p) => h('button', { class: 'chip', onclick: () => this.focusPoint(p) }, PT[p].name))),
           (() => { const ms = Object.entries(window.MER_NOTES || {}).filter(([, n]) => n.muscles.includes(s.id)).map(([k]) => k).filter((k) => MER[k]); return ms.length ? h('div', null, h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '所屬經絡（筆記）'), h('div', { class: 'chips', style: { marginTop: '4px' } }, ms.map((k) => h('button', { class: 'chip', onclick: () => this.focusMeridian(k) }, h('span', { class: 'dot', style: { background: hex(MER[k].color) } }), MER[k].name)))) : null; })(),
@@ -3855,7 +3860,7 @@ window.MER_NOTES = {
           h('p', { class: 'small' }, Auth.canPublish() ? '你是管理員：新增或修改的條目會直接發佈；也可以在「審核佇列」核准別人的投稿。' : Auth.canSubmit() ? '你可以投稿：用文字、語音輸入或拍照讓 Claude 辨識，送出後由管理員審核。' : '登入並取得投稿權限後，可以用文字、語音或照片投稿新知識（需管理員審核）。'));
         return;
       }
-      if (it.type === 'muscle') { D.ap(h('div', { class: 'eyebrow' }, '肌肉'), h('h3', null, it.title)); { const subs = (window.MUSCLES_EXT || []).filter((x) => x.parent === it.mid); if (subs.length) D.ap(h('div', { class: 'chips', style: { margin: '6px 0' } }, h('span', { class: 'small muted' }, '細分：'), subs.map((x) => h('button', { class: 'chip sm', onclick: () => this.open('mx-' + x.id) }, x.name)))); } const m = MU[it.mid]; D.ap(h('dl', { class: 'kv' }, h('dt', null, '起點'), h('dd', null, m.origin), h('dt', null, '止點'), h('dd', null, m.insertion), h('dt', null, '作用'), h('dd', null, m.action), h('dt', null, '觸診'), h('dd', null, m.palpation), h('dt', null, '放鬆'), h('dd', null, m.release), h('dt', null, '轉移痛'), h('dd', null, m.referral), m.nerve ? h('dt', null, '神經') : null, m.nerve ? h('dd', null, m.nerve) : null), h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'btn pri', onclick: () => V3.focusMuscle(m.id) }, '在 3D 看位置'), cmpBtn('muscle', m.id))); this.detBlock(D, (DET.mu[m.id] || {}).md); TX.relatedBlock(D, [m.name.replace(/（.*/, '')]); return; }
+      if (it.type === 'muscle') { D.ap(h('div', { class: 'eyebrow' }, '肌肉'), h('h3', null, it.title)); { if (this.has('tp-' + it.mid)) D.ap(h('div', { class: 'row', style: { margin: '6px 0' } }, h('button', { class: 'btn sm', onclick: () => this.open('tp-' + it.mid) }, '激痛點與轉移痛（Travell & Simons）'))); const subs = (window.MUSCLES_EXT || []).filter((x) => x.parent === it.mid); if (subs.length) D.ap(h('div', { class: 'chips', style: { margin: '6px 0' } }, h('span', { class: 'small muted' }, '細分：'), subs.map((x) => h('button', { class: 'chip sm', onclick: () => this.open('mx-' + x.id) }, x.name)))); } const m = MU[it.mid]; D.ap(h('dl', { class: 'kv' }, h('dt', null, '起點'), h('dd', null, m.origin), h('dt', null, '止點'), h('dd', null, m.insertion), h('dt', null, '作用'), h('dd', null, m.action), h('dt', null, '觸診'), h('dd', null, m.palpation), h('dt', null, '放鬆'), h('dd', null, m.release), h('dt', null, '轉移痛'), h('dd', null, m.referral), m.nerve ? h('dt', null, '神經') : null, m.nerve ? h('dd', null, m.nerve) : null), h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'btn pri', onclick: () => V3.focusMuscle(m.id) }, '在 3D 看位置'), cmpBtn('muscle', m.id))); this.detBlock(D, (DET.mu[m.id] || {}).md); TX.relatedBlock(D, [m.name.replace(/（.*/, '')]); return; }
       if (it.type === 'point') { const p = PT[it.pid]; D.ap(h('div', { class: 'eyebrow' }, it.src), h('h3', null, it.title), h('dl', { class: 'kv' }, h('dt', null, '定位'), h('dd', null, p.loc), h('dt', null, '主治'), h('dd', null, p.ind), h('dt', null, '推拿'), h('dd', null, p.tn || '—')), h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'btn pri', onclick: () => V3.focusPoint(p.id) }, '在 3D 看位置'), cmpBtn('point', p.id))); this.detBlock(D, (DET.pt[p.id] || {}).md); const rm = ((DET.pt[p.id] || {}).muscles || []).filter((x) => MU[x]); if (rm.length) D.ap(h('div', { class: 'chips', style: { marginTop: '8px' } }, rm.map((x) => h('button', { class: 'chip', onclick: () => V3.focusMuscle(x) }, h('span', { class: 'dot t' }), MU[x].name)))); return; }
       if (it.type === 'sinew') { const s = SIN[it.sid]; D.ap(h('div', { class: 'eyebrow' }, '經筋・課堂筆記'), h('h3', null, s.name), h('p', null, s.note), h('p', null, h('b', null, '病候：'), s.sick), h('div', { class: 'row' }, h('button', { class: 'btn pri', onclick: () => V3.focusSinew(s.id) }, '在 3D 看循行'), h('button', { class: 'btn', onclick: () => this.open('d-sn-overview') }, '經筋總論'), cmpBtn('sinew', s.id))); this.detBlock(D, (DET.sn[s.id] || {}).md); TX.relatedBlock(D, [s.name]); return; }
       if (it.type === 'bone' || it.type === 'tech') {
@@ -3875,6 +3880,8 @@ window.MER_NOTES = {
       }
       const pub = Auth.canPublish();
       const nvId = String(it.id).startsWith('nv:') ? it.id.slice(3) : null;
+      const mxId = String(it.id).startsWith('mx-') ? it.id.slice(3) : null;
+      if (mxId && MUX[mxId]) D.ap(h('div', { class: 'row', style: { marginBottom: '6px' } }, MUX[mxId].p3d ? h('button', { class: 'btn pri sm', onclick: () => V3.showExt(mxId) }, '在 3D 單獨標出') : MUX[mxId].parent ? h('button', { class: 'btn sm', onclick: () => V3.focusMuscle(MUX[mxId].parent) }, '在 3D 看所屬肌群') : null));
       if (nvId) D.ap(h('div', { class: 'row', style: { marginBottom: '6px' } }, (window.NERVES3D || {})[nvId] ? h('button', { class: 'btn pri sm', onclick: () => V3.focusNerve(nvId) }, '在 3D 看走向') : null, cmpBtn('nerve', nvId)));
       D.ap(h('div', { class: 'row' }, h('span', { class: 'badge ' + (it.mine ? 'y' : 'j') }, it.mine ? (it.replaces ? '管理員修訂' : '新增條目') : it.cat), h('span', { class: 'badge' }, it.src), h('span', { class: 'sp' }),
         pub && it.mine ? h('button', { class: 'btn sm', onclick: () => this.edit(Notes.list.find((n) => n.id === it.nid)) }, '編輯') : null,
@@ -4052,7 +4059,7 @@ window.MER_NOTES = {
     load() {
       if (this.p) return this.p;
       const src = window.TN_TX ? Promise.resolve(window.TN_TX) : window.TN_GATE ? window.TN_GATE.json('tx.bin') : fetch('transcripts.json').then((r) => (r.ok ? r.json() : null));
-      this.p = src.catch(() => null).then((d) => d && TXFIX.apply(d)).then((d) => {
+      this.p = src.catch(() => null).then((d) => d && TXLEC.apply(d)).then((d) => d && TXFIX.apply(d)).then((d) => {
         this.data = d; this.failed = !d;
         if (curTab === 'kb' && KB.list) { KB.renderFilters(); KB.renderList(); if (!KB.editing) KB.renderDetail(); }
         return d;
@@ -4093,7 +4100,7 @@ window.MER_NOTES = {
         const b = h('button', { class: 'kb-item tx' + (KB.selId === id ? ' on' : ''), onclick: () => KB.pick(id, b) },
           h('h4', null, h('span', { class: 'mono' }, this.lecName(s.lec)), '　', h('span', { class: 'mono muted' }, this.fmt(s.t))),
           h('p', { html: KB.hl(this.preview(s)) }),
-          h('div', { class: 'kb-meta' }, s.fixed ? h('span', { class: 'badge ' + (s.fixed.ai ? '' : 'y') }, s.fixed.ai ? 'AI 校正' : '已校對') : null, s.p.map((p) => h('span', { class: 'badge j' }, p)), s.k.map((k) => h('span', { class: 'badge' }, k))));
+          h('div', { class: 'kb-meta' }, s.ai ? h('span', { class: 'badge y' }, 'AI 轉寫') : null, s.fixed ? h('span', { class: 'badge ' + (s.fixed.ai ? '' : 'y') }, s.fixed.ai ? 'AI 校正' : '已校對') : null, s.p.map((p) => h('span', { class: 'badge j' }, p)), s.k.map((k) => h('span', { class: 'badge' }, k))));
         L.ap(b);
       });
       if (segs.length > this.limit) L.ap(h('button', { class: 'btn', style: { width: '100%' }, onclick: () => { this.limit += 60; KB.renderList(); } }, '再顯示 60 段（共 ' + segs.length + ' 段）'));
@@ -4106,9 +4113,9 @@ window.MER_NOTES = {
         D.ap(h('div', { class: 'eyebrow' }, '逐字稿'), h('h3', null, ((this.data && this.data.lecs) || []).length + ' 段課堂錄音'), h('p', { class: 'small' }, '每段約 1.5 分鐘，依關鍵字自動標上部位與知識點。點一堂課可以只看那一堂。'));
         const G = h('div', { class: 'tx-lecs' });
         this.data.lecs.forEach((L) => G.ap(h('button', { class: 'tx-lec' + (this.lec === L.id ? ' on' : ''), onclick: () => { this.lec = L.id; KB.selId = null; KB.renderFilters(); KB.renderList(); KB.renderDetail(); } },
-          h('b', { class: 'mono' }, this.lecName(L.id)), h('span', { class: 'small muted' }, Math.round(L.dur / 60) + ' 分・' + L.n + ' 段・知識條目 ' + this.kbOf(L.id).length),
+          h('b', { class: 'mono' }, this.lecName(L.id), L.ai ? h('span', { class: 'badge y', style: { marginLeft: '6px' } }, L.ai === 'done' ? 'AI 轉寫' : 'AI 轉寫中') : null), h('span', { class: 'small muted' }, Math.round(L.dur / 60) + ' 分・' + L.n + ' 段・知識條目 ' + this.kbOf(L.id).length),
           h('span', { class: 'small' }, L.p.slice(0, 3).join('、')), h('span', { class: 'small muted' }, L.k.slice(0, 3).join('、')))));
-        D.ap(G); if (this.lec !== '全部') TXFIX.batchBox(D, this.lec); return;
+        D.ap(G); if (this.lec !== '全部') TXFIX.batchBox(D, this.lec); TXLEC.box(D); return;
       }
       const same = this.data.segs.filter((x) => x.lec === s.lec); const i = same.indexOf(s);
       D.ap(h('div', { class: 'row' }, h('span', { class: 'badge j' }, '逐字稿'), h('span', { class: 'badge mono' }, this.lecName(s.lec) + '　' + this.fmt(s.t)), h('span', { class: 'sp' }),
@@ -4523,6 +4530,7 @@ window.MER_NOTES = {
       if (S.view === 'side') card.ap(h('div', { class: 'row small', style: { marginBottom: '6px' } }, '客人面向：', ['L', 'R'].map((f) => h('button', { class: 'chip sm' + (S.face === f ? ' on' : ''), onclick: () => { S.face = f; this.render(); } }, f === 'L' ? '畫面左邊' : '畫面右邊'))));
       const file = h('input', { type: 'file', accept: 'image/*', capture: 'environment', hidden: true, onchange: (e) => this.load(e.target.files[0]) });
       card.ap(file, h('div', { class: 'row' }, h('button', { class: 'btn' + (S.img ? '' : ' pri'), onclick: () => file.click() }, S.img ? '換一張照片' : '選擇或拍攝照片'),
+        S.img ? h('button', { class: 'btn sm' + (Object.keys(S.pts).length ? '' : ' pri'), disabled: !!this.busy, onclick: () => this.detect() }, this.busy ? '偵測中…' : '自動找標誌點') : null,
         S.img ? h('button', { class: 'btn sm', onclick: () => { const P = this.order(); const done = P.filter(([k]) => S.pts[k]); if (done.length) { delete S.pts[done[done.length - 1][0]]; this.draw(); this.renderSide(); } } }, '復原上一點') : null,
         S.img ? h('button', { class: 'btn sm', onclick: () => { S.vref = []; S.pickV = true; this.renderSide(); } }, S.vref.length === 2 ? '重設垂直參考' : '設定垂直參考（選用）') : null,
         h('span', { class: 'small muted' }, '照片只在這台裝置處理，不會上傳；存到個案時只存縮圖與數值。')));
@@ -4539,9 +4547,42 @@ window.MER_NOTES = {
         // 縮到長邊 1600 以內，避免手機記憶體不足
         const k = Math.min(1, 1600 / Math.max(im.width, im.height)); const c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
         c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
-        S.img = c; S.pts = {}; S.skip = {}; S.vref = []; this.render();
+        S.img = c; S.pts = {}; S.skip = {}; S.auto = {}; S.vref = []; this.render();
       };
       im.onerror = () => toast('無法讀取這張照片'); im.src = url;
+    },
+    // 自動找標誌點：在瀏覽器內跑 MediaPipe 姿勢偵測（照片不離開裝置），只填可靠的點，其餘仍手動
+    async detect() {
+      const S = this.st; if (!S || !S.img || this.busy) return; this.busy = true; this.render();
+      const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
+      try {
+        if (!this._pl) {
+          toast('第一次使用要下載偵測模型（約 10MB），之後會快取');
+          const V = await import(MP + '/vision_bundle.mjs');
+          const fs = await V.FilesetResolver.forVisionTasks(MP + '/wasm');
+          this._pl = await V.PoseLandmarker.createFromOptions(fs, { baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task', delegate: 'CPU' }, runningMode: 'IMAGE', numPoses: 1 });
+        }
+        if (this.st !== S) return;
+        const r = this._pl.detect(S.img); const L = r && r.landmarks && r.landmarks[0];
+        if (!L) { toast('照片裡找不到人體，請手動點選'); return; }
+        const n = this.autoFill(L); toast(n ? '已自動放好 ' + n + ' 個點（藍色），請逐一確認、拖曳修正' : '偵測到的點不夠清楚，請手動點選');
+      } catch (e) { console.warn(e); toast('自動偵測無法使用（' + (e.message || e) + '），請手動點選'); }
+      finally { this.busy = false; if (this.st === S) this.render(); }
+    },
+    autoFill(L) {
+      const S = this.st, W = S.img.width, H = S.img.height; const auto = {}; let n = 0;
+      const pt = (i) => (L[i] && (L[i].visibility == null || L[i].visibility > 0.5) ? [L[i].x * W, L[i].y * H] : null);
+      const set = (k, i) => { const p = pt(i); if (p && !S.pts[k]) { S.pts[k] = p; auto[k] = 1; n++; } };
+      // MediaPipe：left/right 指被拍者本人的左右
+      if (S.view === 'front') { set('eyeR', 5); set('eyeL', 2); set('acR', 12); set('acL', 11); set('knR', 26); set('knL', 25); set('anR', 28); set('anL', 27); }
+      if (S.view === 'back') { set('acL', 11); set('acR', 12); set('heL', 29); set('heR', 30); }
+      if (S.view === 'side') {
+        const vis = (a, b) => ((L[a].visibility || 0) >= (L[b].visibility || 0) ? a : b);
+        const ear = vis(7, 8), sh = ear === 7 ? 11 : 12, hip = ear === 7 ? 23 : 24, kn = ear === 7 ? 25 : 26, an = ear === 7 ? 27 : 28;
+        if (L[0] && L[ear]) S.face = L[0].x < L[ear].x ? 'L' : 'R';
+        set('ear', ear); set('ac', sh); set('gt', hip); set('kn', kn); set('ma', an);
+      }
+      S.auto = Object.assign(S.auto || {}, auto); this.draw(); this.renderSide(); return n;
     },
     scale() { const S = this.st; const w = this.cv.clientWidth || 360; return w / S.img.width; },
     draw() {
@@ -4557,7 +4598,7 @@ window.MER_NOTES = {
       const base = S.view === 'side' ? P.ma : S.view === 'front' ? (P.anR && P.anL ? [(P.anR[0] + P.anL[0]) / 2, (P.anR[1] + P.anL[1]) / 2] : null) : (P.heL && P.heR ? [(P.heL[0] + P.heR[0]) / 2, (P.heL[1] + P.heR[1]) / 2] : null);
       if (base) { const t = this.tilt(); g.setLineDash([10, 8]); g.strokeStyle = 'rgba(30,30,30,.7)'; g.beginPath(); g.moveTo(base[0], base[1]); g.lineTo(base[0] + Math.tan(t) * base[1], 0); g.stroke(); g.setLineDash([]); }
       if (S.vref.length) { g.strokeStyle = '#0ca678'; g.beginPath(); g.moveTo(S.vref[0][0], S.vref[0][1]); if (S.vref[1]) g.lineTo(S.vref[1][0], S.vref[1][1]); g.stroke(); }
-      Object.entries(P).forEach(([k, p]) => { g.fillStyle = '#bd3d28'; g.strokeStyle = '#fff'; g.beginPath(); g.arc(p[0], p[1], r, 0, 7); g.fill(); g.stroke(); });
+      Object.entries(P).forEach(([k, p]) => { g.fillStyle = (S.auto || {})[k] ? '#1c7ed6' : '#bd3d28'; g.strokeStyle = '#fff'; g.beginPath(); g.arc(p[0], p[1], r, 0, 7); g.fill(); g.stroke(); });
     },
     // 相機傾斜修正（弧度）：有垂直參考線就用它，否則假設照片是正的
     tilt() { const v = this.st.vref; if (v.length < 2) return 0; let dx = v[1][0] - v[0][0], dy = v[1][1] - v[0][1]; if (dy > 0) { dx = -dx; dy = -dy; } return Math.atan2(dx, -dy); },
@@ -4574,7 +4615,7 @@ window.MER_NOTES = {
         if (k) drag = k; else { const i = this.nextIdx(); if (i < 0) return; drag = this.order()[i][0]; this.st.pts[drag] = p; }
         this.draw(); loupe(p);
       });
-      c.addEventListener('pointermove', (e) => { if (!drag) return; const p = at(e); this.st.pts[drag] = p; this.draw(); loupe(p); });
+      c.addEventListener('pointermove', (e) => { if (!drag) return; const p = at(e); this.st.pts[drag] = p; if (this.st.auto) delete this.st.auto[drag]; this.draw(); loupe(p); });
       const up = () => { if (!drag) return; drag = null; this.loupe.hidden = true; this.renderSide(); };
       c.addEventListener('pointerup', up); c.addEventListener('pointercancel', up);
     },
@@ -4637,7 +4678,8 @@ window.MER_NOTES = {
       if (S.pickV) { D.ap(h('div', { class: 'alert' }, '在照片上點一條應該是垂直的線（門框、牆角）的上、下兩端。' + (S.vref.length ? '再點下端。' : ''))); }
       const P = this.order(); const i = this.nextIdx();
       D.ap(h('div', { class: 'eyebrow' }, '標誌點 ' + P.filter(([k]) => S.pts[k]).length + ' / ' + P.length));
-      D.ap(h('ol', { class: 'pos-list' }, P.map(([k, n, opt], j) => h('li', { class: S.pts[k] ? 'done' : j === i ? 'cur' : (S.skip || {})[k] ? 'skip' : '' }, n, opt ? h('span', { class: 'muted small' }, '（選用）') : null,
+      if (Object.keys(S.auto || {}).length) D.ap(h('p', { class: 'small', style: { color: '#1c7ed6', margin: '4px 0' } }, '藍點是自動偵測的位置（關節中心，肩峰、髂嵴等骨性標誌可能差一點），請拖曳到實際觸診到的位置；拖過就變紅色＝已確認。'));
+      D.ap(h('ol', { class: 'pos-list' }, P.map(([k, n, opt], j) => h('li', { class: S.pts[k] ? 'done' : j === i ? 'cur' : (S.skip || {})[k] ? 'skip' : '' }, n, opt ? h('span', { class: 'muted small' }, '（選用）') : null, (S.auto || {})[k] ? h('span', { class: 'small', style: { color: '#1c7ed6' } }, ' 自動') : null,
         j === i && opt ? h('button', { class: 'link small', onclick: () => { (S.skip = S.skip || {})[k] = 1; this.renderSide(); } }, '跳過') : null,
         S.pts[k] ? h('button', { class: 'link small', onclick: () => { delete S.pts[k]; this.draw(); this.renderSide(); } }, '重點') : null))));
       if (i >= 0) D.ap(h('p', { class: 'small pos-next' }, '下一點：', h('b', null, P[i][1]), S.view === 'front' ? '（客人右側在畫面左邊）' : S.view === 'back' ? '（客人左側在畫面左邊）' : ''));
@@ -4761,6 +4803,113 @@ window.MER_NOTES = {
           a.note ? h('p', { class: 'small muted' }, a.note) : null, h('div', { class: 'prose small' }, a.text),
           h('div', { class: 'row', style: { marginTop: '6px' } }, h('button', { class: 'btn sm pri', onclick: () => { this.edit.text = a.text; this.ai = null; KB.renderDetail(); } }, '套用到編輯框'))));
       } else D.ap(h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn sm', onclick: () => { this.edit = { id: s.id, text: s.x }; this.ai = null; KB.renderDetail(); } }, '校對這一段')));
+    },
+  };
+
+  // =====================================================================
+  //  錄音 AI 重新轉寫（管理員）：整堂錄音切段送 AI 聽寫、分段，存在 Firestore txlec/{堂次}
+  //  有 AI 版本的堂次會取代原本的自動辨識逐字稿；刪掉 AI 版本就恢復原樣
+  // =====================================================================
+  const TXLEC = {
+    docs: {}, run: null,
+    async apply(d) {
+      try {
+        if (Auth.db && !Auth.dev) { const s = await Auth.db.collection('txlec').get(); s.docs.forEach((x) => { this.docs[x.id] = x.data(); }); }
+        else Object.assign(this.docs, store.get('txlec', {}));
+      } catch (e) { console.warn('txlec', e); }
+      Object.values(this.docs).forEach((L) => this.merge(d, L));
+      return d;
+    },
+    tag(d, x) {
+      const hit = (m) => Object.keys(m || {}).filter((k) => (m[k] || []).some((w) => w && x.includes(w)));
+      return { p: hit(d.kw.p), k: hit(d.kw.k) };
+    },
+    top(arr) { const c = {}; arr.forEach((v) => (c[v] = (c[v] || 0) + 1)); return Object.keys(c).sort((a, b) => c[b] - c[a]).slice(0, 4); },
+    merge(d, L) {
+      if (!L || !L.id || !(L.segs || []).length) return;
+      d.segs = d.segs.filter((s) => s.lec !== L.id);
+      const segs = L.segs.map((s) => Object.assign({ id: L.id + '@a' + s.t, lec: L.id, t: s.t, x: s.x, ai: true }, this.tag(d, s.x)));
+      d.segs = d.segs.concat(segs).sort((a, b) => (a.lec === b.lec ? a.t - b.t : a.lec < b.lec ? -1 : 1));
+      const m = L.id.match(/^(\d\d)(\d\d)(?:-(\w+))?/);
+      const rec = { id: L.id, date: L.date || (m ? m[1] + '/' + m[2] : L.id), part: L.part != null ? L.part : (m && m[3]) || '', n: segs.length, dur: L.dur || 0, p: this.top([].concat(...segs.map((s) => s.p))), k: this.top([].concat(...segs.map((s) => s.k))), ai: L.final ? 'done' : 'partial' };
+      const i = d.lecs.findIndex((x) => x.id === L.id); if (i >= 0) d.lecs[i] = rec; else d.lecs.push(rec);
+      d.lecs.sort((a, b) => (a.id < b.id ? -1 : 1));
+    },
+    async put(L) {
+      this.docs[L.id] = L;
+      if (Auth.db && !Auth.dev) await Auth.db.doc('txlec/' + L.id).set(L);
+      else { const all = store.get('txlec', {}); all[L.id] = L; store.set('txlec', all); }
+      if (TX.data) this.merge(TX.data, L);
+    },
+    async remove(id) {
+      if (!confirm('刪除「' + id + '」的 AI 轉寫版本？重新整理後會恢復原本的自動辨識逐字稿（若有）。')) return;
+      try { if (Auth.db && !Auth.dev) await Auth.db.doc('txlec/' + id).delete(); else { const all = store.get('txlec', {}); delete all[id]; store.set('txlec', all); } delete this.docs[id]; toast('已刪除，重新整理後生效'); }
+      catch (e) { toast('刪除失敗：' + (e.message || e)); }
+      KB.renderDetail();
+    },
+    duration(f) { return new Promise((res) => { const a = new Audio(); const u = URL.createObjectURL(f); a.preload = 'metadata'; a.onloadedmetadata = () => { URL.revokeObjectURL(u); res(isFinite(a.duration) ? a.duration : 0); }; a.onerror = () => { URL.revokeObjectURL(u); res(0); }; a.src = u; }); },
+    // 依時間切成約 5 分鐘一塊；MP3 切點對齊下一個 frame 開頭
+    async chunks(f, dur) {
+      const mp3 = /mpeg|mp3/i.test(f.type) || /\.mp3$/i.test(f.name);
+      const MAX = 12e6;
+      if (!mp3) { if (f.size > MAX) throw new Error('非 MP3 檔超過 12MB，請先轉成 MP3 再上傳'); return [{ a: 0, b: f.size, t0: 0 }]; }
+      const per = Math.min(MAX, dur ? Math.max(2e6, f.size * 300 / dur) : 5e6); const out = []; let a = 0;
+      while (a < f.size) {
+        let b = Math.min(f.size, Math.round(a + per));
+        if (b < f.size) { const buf = new Uint8Array(await f.slice(b, Math.min(f.size, b + 8192)).arrayBuffer()); let j = 0; for (; j < buf.length - 1; j++) if (buf[j] === 0xff && (buf[j + 1] & 0xe0) === 0xe0) break; b += j; }
+        out.push({ a, b, t0: dur ? (a / f.size) * dur : 0 }); a = b;
+      }
+      return out;
+    },
+    prompt(lec, i, n, t0, t1) {
+      return '你是推拿整復課程的逐字稿整理員。附上的是一堂課錄音的第 ' + (i + 1) + '／' + n + ' 段（大約整堂的 ' + TX.fmt(Math.round(t0)) + '–' + TX.fmt(Math.round(t1)) + '）。老師講台灣華語，偶爾夾台語，也有學員發問。\n'
+        + '請完整聽寫，不要摘要、不要省略：\n1. 用繁體中文（台灣用語）與全形標點；去掉「嗯、啊、那個」等純贅詞，但保留老師的說法與例子。\n'
+        + '2. 專有名詞優先用詞表；聽不清楚的詞寫成「〔?〕」，不要猜。\n3. 台語句子意思明確就寫成華語並在句末加「（台語）」。\n4. 學員發問或回答，句首加「學員：」。\n'
+        + '5. 依話題切段，每段約 60–120 秒；t 是這一段在「這個音檔片段」內開始的時間（mm:ss）。\n'
+        + '只輸出 JSON：{"segs":[{"t":"mm:ss","x":"這段文字"}]}\n\n詞表：' + TXFIX.glossary({ lec });
+    },
+    async start(lec, f, meta) {
+      if (this.run) { this.run.stop = true; return; }
+      const sp = await Auth.sampler(); if (!sp) { toast('AI 目前無法使用'); return; }
+      lec = String(lec || '').trim(); if (!/^[\w-]{3,20}$/.test(lec)) { toast('堂次代碼只能用英數字和 -，例如 1102-2'); return; }
+      const dur = await this.duration(f); let parts;
+      try { parts = await this.chunks(f, dur); } catch (e) { toast(e.message); return; }
+      const prev = this.docs[lec]; const resume = prev && !prev.final && prev.fname === f.name && prev.fsize === f.size;
+      const L = resume ? prev : { id: lec, date: meta.date || '', part: meta.part || '', dur: Math.round(dur), segs: [], done: 0, total: parts.length, fname: f.name, fsize: f.size, final: false };
+      L.total = parts.length;
+      const run = this.run = { lec, done: L.done || 0, total: parts.length, stop: false, err: '' }; KB.renderDetail();
+      const secs = (s) => { const m = String(s || '').match(/(\d+):(\d+)(?::(\d+))?/); if (!m) return 0; return m[3] != null ? +m[1] * 3600 + +m[2] * 60 + +m[3] : +m[1] * 60 + +m[2]; };
+      for (let i = L.done || 0; i < parts.length; i++) {
+        if (run.stop) break;
+        const c = parts[i]; const t1 = i + 1 < parts.length ? parts[i + 1].t0 : dur;
+        const blob = new Blob([f.slice(c.a, c.b)], { type: /mp3|mpeg/i.test(f.type) || /\.mp3$/i.test(f.name) ? 'audio/mpeg' : (f.type || 'audio/mpeg') });
+        let r = null;
+        for (let k = 0; k < 3 && !r; k++) {
+          try { r = await sp.json(this.prompt(lec, i, parts.length, c.t0, t1), { files: [blob] }); }
+          catch (e) { run.err = String(e && (e.code || e.message) || e); if (/not_granted/.test(run.err)) break; await new Promise((z) => setTimeout(z, /rate/.test(run.err) ? 30000 : 5000)); }
+        }
+        if (!r) break;
+        const segs = (Array.isArray(r.segs) ? r.segs : []).map((s) => ({ t: Math.round(c.t0 + secs(s.t)), x: String(s.x || '').trim() })).filter((s) => s.x);
+        L.segs = L.segs.filter((s) => s.t < c.t0 - 1).concat(segs); L.done = i + 1; run.err = '';
+        L.by = Auth.name || Auth.email || ''; L.at = Date.now(); L.final = L.done >= parts.length;
+        try { await this.put(L); } catch (e) { run.err = '儲存失敗：' + (e.message || e); break; }
+        run.done = L.done; KB.renderDetail();
+      }
+      this.run = null; toast(run.stop ? '已停止，下次選同一個檔案可以接著做' : run.err ? '轉寫中斷：' + run.err + '（再選同一個檔案可接著做）' : '「' + lec + '」轉寫完成，共 ' + L.segs.length + ' 段');
+      KB.renderFilters(); KB.renderList(); KB.renderDetail();
+    },
+    box(D) {
+      if (!Auth.canPublish()) return;
+      const r = this.run; const lecIn = h('input', { class: 'inp', placeholder: '堂次代碼，例如 1102-2', list: 'txlec-ids', style: { maxWidth: '180px' } });
+      const file = h('input', { type: 'file', accept: 'audio/*,.mp3,.m4a,.wav', hidden: true, onchange: (e) => { const f = e.target.files[0]; if (f) this.start(lecIn.value, f, {}); e.target.value = ''; } });
+      const have = Object.values(this.docs);
+      D.ap(h('div', { class: 'card pad', style: { marginTop: '12px' } },
+        h('div', { class: 'row' }, h('b', null, 'AI 重新轉寫課堂錄音'), h('span', { class: 'badge' }, '管理員')),
+        h('p', { class: 'small muted' }, '選一個錄音檔（MP3 最好），AI 會每 5 分鐘一段聽寫、校正術語並依話題分段，完成的部分會即時存檔；中途停止或斷線，再選同一個檔案會從斷點接著做。轉寫結果會取代該堂原本的自動辨識逐字稿。錄音只送給 AI 處理，不會存放在網站。'),
+        h('datalist', { id: 'txlec-ids' }, ((TX.data && TX.data.lecs) || []).map((L) => h('option', { value: L.id }))),
+        file, h('div', { class: 'row' }, lecIn, h('button', { class: 'btn sm' + (r ? '' : ' pri'), onclick: () => { if (r) { r.stop = true; return; } if (!lecIn.value.trim()) { toast('先填堂次代碼'); lecIn.focus(); return; } file.click(); } }, r ? '停止（' + r.done + ' / ' + r.total + '）' : '選擇錄音並開始')),
+        r ? h('p', { class: 'small' }, '正在轉寫「' + r.lec + '」第 ' + (r.done + 1) + ' / ' + r.total + ' 段…每段約 30–90 秒' + (r.err ? '（重試中：' + r.err + '）' : '')) : null,
+        have.length ? h('div', { class: 'small', style: { marginTop: '6px' } }, '已有 AI 版本：', have.map((L) => h('span', { class: 'chip sm' }, L.id + (L.final ? '' : '（' + L.done + '/' + L.total + '）'), h('button', { class: 'link small', title: '刪除 AI 版本', onclick: () => this.remove(L.id) }, '×')))) : null));
     },
   };
 
@@ -4954,7 +5103,7 @@ window.MER_NOTES = {
     showTab(TABS.some((t) => t[0] === start) ? start : 'assess');
     Auth.init().then(() => { if (LOCKED) return; Notes.init(); Subs.init(); Cases.init(); });
   }
-  window.APP = { Assess, Ask, Chain, Sim, V3, KB, Notes, Subs, Auth, Cases, TX, Admin, Compare, Practice, Posture, TXFIX, Gate, showTab, LOCKED };
+  window.APP = { Assess, Ask, Chain, Sim, V3, KB, Notes, Subs, Auth, Cases, TX, Admin, Compare, Practice, Posture, TXFIX, TXLEC, Gate, showTab, LOCKED };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
 
