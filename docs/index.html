@@ -521,6 +521,15 @@ details.det .prose p { margin: 4px 0; }
 .tab.locked[aria-selected="true"] { opacity: 1; }
 
 .pdfp { color: var(--ink3); font-size: .88em; white-space: nowrap; }
+
+.kb-hint.sx { border-color: var(--jade); background: var(--jade-soft); }
+.cmp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 6px; }
+.cmp-col { display: flex; flex-direction: column; gap: 6px; }
+.cmp-card { display: flex; flex-direction: column; gap: 3px; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 8px 10px; }
+.cmp-card:hover { border-color: var(--jade); }
+.pdfset { display: grid; gap: 8px; }
+.pdfrow { display: grid; gap: 3px; }
+a.pdfp { color: var(--jade); text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -3746,20 +3755,33 @@ window.MER_NOTES = {
   const ANAT_SUB = { 原理說明: (it) => /^ax-/.test(it.id), 肌肉細分: (it) => /^mx-/.test(it.id), 脊椎節段: (it) => /^sg-/.test(it.id), 軟組織: (it) => it.cat === '軟組織', 經筋臨床: (it) => /^sc-/.test(it.id) };
   const CATS = ['全部', '原則', '評估', '骨盆', '薦椎', '脊椎', '頸肩', '上肢', '膝', '踝足', '骨骼', '肌肉', '軟組織', '神經', '經筋', '經絡穴位', '中醫基礎', '手法', '安全', '人物與流派'];
   const REGION_OPTS = window.CHAIN_NODES.map((n) => [n.id, n.name]);
+  // 參考書 PDF：使用者自己貼上 PDF 網址（只存在這台裝置），頁碼就能一鍵開到那一頁
+  const BOOKPDF = [
+    { k: 'jjs', name: '經筋手療法圖解（黃國松）', re: '經筋手療法(?:圖解)?', off: 18, src: '參考書・經筋手療法圖解' },
+    { k: 'jxdq', name: '經穴大全', re: '經穴大全', off: 46 },
+    { k: 'zj', name: '針灸學（中國中醫藥出版社）', src: '參考書・針灸學', plain: true },
+    { k: 'met', name: 'Muscle Energy Techniques 4th ed.', src: '參考書・肌肉能量技術' },
+    { k: 'mcgill', name: 'Low Back Disorders（McGill）', src: '參考書・McGill 下背' },
+    { k: 'nmt2', name: 'Clinical Application of NMT Vol. 2', src: '參考書・神經肌肉技術' },
+    { k: 'hjw', name: '經筋療法（黃敬偉）', src: '參考書・經筋療法（黃敬偉）' },
+    { k: 'yzjj', name: '醫宗金鑑 第 5 分冊（正骨心法要旨）', src: '古籍・醫宗金鑑' },
+  ];
+  const PDFURL = { get() { try { return JSON.parse(localStorage.getItem('tn_pdfurl') || '{}'); } catch (e) { return {}; } }, set(o) { try { localStorage.setItem('tn_pdfurl', JSON.stringify(o)); } catch (e) {} } };
+  const pdfLink = (k, n, label) => { const u = PDFURL.get()[k]; return u ? '<a class="pdfp" href="' + esc(u.split('#')[0]) + '#page=' + n + '" target="_blank" rel="noopener">' + label + '</a>' : '<span class="pdfp">' + label + '</span>'; };
   const KB = {
     q: '', cat: '全部', src: '全部', dsub: '全部', selId: null, editing: null,
     build(root) {
       root.ap(h('div', { class: 'sec-h' }, h('h2', null, '知識庫'), h('span', { class: 'muted small', id: 'kb-count' })));
       const search = h('input', { class: 'kb-search', id: 'kb-q', placeholder: '搜尋知識點、肌肉、穴位、經筋、逐字稿…（例如：薦椎、梨狀肌、跑者膝、風池）', value: this.q, oninput: (e) => { this.q = e.target.value.trim(); this.renderList(); } });
       this.addBtn = h('button', { class: 'btn pri', onclick: () => this.edit(null) }, '＋ 新增知識');
-      root.ap(h('div', { class: 'kb-top' }, search, this.addBtn));
+      root.ap(h('div', { class: 'kb-top' }, search, h('button', { class: 'btn', title: '客人說哪裡痛，從症狀找原因', onclick: () => this.open('sx-index') }, '🩺 症狀導覽'), h('button', { class: 'btn', title: '參考書 PDF 連結設定', 'aria-label': '參考書 PDF 連結設定', onclick: () => { this.selId = '__pdf'; this.editing = null; this.renderDetail(); } }, '📖'), this.addBtn));
       this.filters = h('div', { class: 'kb-filters' }); this.subf = h('div', { class: 'kb-filters sub' }); root.ap(this.filters, this.subf);
       this.list = h('div', { class: 'kb-list' }); this.detail = h('div', { class: 'card pad kb-detail' });
       root.ap(h('div', { class: 'kb-layout' }, h('div', null, this.list), this.detail));
       this.renderFilters(); this.renderList(); this.renderDetail();
     },
     sources() {
-      const s = ['全部', '課堂', '補充', '解剖補充', '參考書', '整合說明', '詳解', '手法', '新增條目', '逐字稿'];
+      const s = ['全部', '課堂', '症狀導覽', '補充', '解剖補充', '參考書', '整合說明', '詳解', '手法', '新增條目', '逐字稿'];
       if (Auth.isAdmin) s.push('審核佇列'); else if (Auth.canSubmit() || Object.keys(Subs.mine).length) s.push('我的投稿');
       return s;
     },
@@ -3789,16 +3811,26 @@ window.MER_NOTES = {
       if (this.src === '新增條目' && !it.mine) return false;
       if (this.src === '課堂' && !(String(it.src).includes('課堂') || String(it.src).includes('筆記'))) return false;
       if (this.src === '補充' && !String(it.src).includes('補充')) return false;
+      if (this.src === '症狀導覽' && it.src !== '症狀導覽') return false;
       if (this.src === '解剖補充' && (it.src !== '解剖補充' || (this.dsub !== '全部' && ANAT_SUB[this.dsub] && !ANAT_SUB[this.dsub](it)))) return false;
-      if (this.src === '參考書' && !String(it.src).startsWith('參考書')) return false;
+      if (this.src === '參考書' && !/^參考書|^古籍/.test(String(it.src))) return false;
       if (this.src === '整合說明' && it.src !== '整合說明') return false;
       if (this.src === '詳解' && !(['muscle', 'point', 'sinew', 'bone'].includes(it.type) || it.id === 'd-sn-overview')) return false;
       if (this.src === '手法' && it.type !== 'tech') return false;
       if ((this.src === '詳解' || this.src === '手法') && this.dsub !== '全部' && it.dsub !== this.dsub && !(it.id === 'd-sn-overview' && this.dsub === '經筋')) return false;
       if (!this.q) return it.type === 'kb' || it.type === 'note' || this.src === '詳解' || this.src === '手法' || (this.cat === '經筋' && it.type === 'sinew') || (this.cat === '手法' && it.type === 'tech') || (this.cat === '骨骼' && it.type === 'bone');
-      const terms = this.q.split(/\s+/).filter(Boolean);
+      const terms = this.q.split(/\s+/).filter(Boolean).map((t) => this.syn(t));
       const hay = (it.title + ' ' + it.body + ' ' + (it.tags || []).join(' ') + ' ' + (it.symptoms || []).join(' ') + ' ' + (it.muscles || []).map((m) => (MU[m] || {}).name || '').join(' ') + ' ' + it.cat).toLowerCase();
-      return terms.every((t) => hay.includes(t.toLowerCase()));
+      return terms.every((alts) => alts.some((t) => hay.includes(t)));
+    },
+    syn(t) {
+      if (!this._syn2) {
+        const G = (window.KB_SYNONYMS || []).map((g) => g.slice());
+        window.MUSCLES.forEach((m) => { if (m.en) G.push([m.name, m.en]); }); (window.MUSCLES_EXT || []).forEach((m) => { if (m.en) G.push([m.name, m.en]); });
+        const M = {}; G.forEach((g) => { const low = g.map((x) => String(x).toLowerCase()); low.forEach((x) => { M[x] = [...new Set((M[x] || []).concat(low))]; }); });
+        this._syn2 = M;
+      }
+      const k = String(t).toLowerCase(); return this._syn2[k] || [k];
     },
     special() { return this.src === '逐字稿' ? 'tx' : this.src === '審核佇列' || this.src === '我的投稿' ? 'sub' : null; },
     renderFilters() {
@@ -3837,6 +3869,11 @@ window.MER_NOTES = {
       items.sort((a, b) => score(a) - score(b));
       const nn = Notes.list.length;
       $('#kb-count').textContent = items.length + ' 筆' + (nn ? '・新增條目 ' + nn + ' 筆' : '') + (Notes.mode === 'local' && Auth.dev ? '（本機模式）' : '');
+      if (this.q) {
+        const ql = this.q.toLowerCase(); const sx = window.KB_ITEMS.filter((x) => x.src === '症狀導覽' && x.id !== 'sx-index' && (x.tags || []).some((t) => t.toLowerCase() === ql || ql.includes(t.toLowerCase()) || (t.length >= 2 && t.toLowerCase().includes(ql) && ql.length >= 2)));
+        sx.slice(0, 3).forEach((x) => L.ap(h('button', { class: 'kb-hint sx', onclick: () => this.open(x.id) }, '🩺 ', h('b', null, x.title.replace('症狀導覽：', '')), '　依課堂思路、激痛點、神經卡壓一步步找 →')));
+        const alts = this.syn(this.q).filter((a) => a !== ql); if (alts.length) L.ap(h('p', { class: 'small muted', style: { margin: '2px 0 6px' } }, '也一併搜尋：' + alts.join('、')));
+      }
       if (this.q && TX.data) {
         const n = TX.filtered(this.q, true).length;
         if (n) L.ap(h('button', { class: 'kb-hint', onclick: () => { TX.lec = '全部'; TX.part = '全部'; TX.topic = '全部'; this.openSource('逐字稿'); } }, '逐字稿中有 ', h('b', null, n), ' 段提到「' + this.q + '」→ 查看'));
@@ -3850,11 +3887,14 @@ window.MER_NOTES = {
         L.ap(b);
       });
     },
-    md(text) {
-      // 書上印刷頁 → 使用者手上 PDF 的頁碼（PDF_OFF：PDF 頁＝印刷頁＋位移）
-      const PDF_OFF = { '經筋手療法': 18, '經筋手療法圖解': 18 };
-      const pdfPg = (s) => s.replace(/《(經筋手療法(?:圖解)?)》([^p《。]{0,12}?)p\.\s?([\d–\-、, ]*\d)/g, (m0, bk, mid, pg) => { const o = PDF_OFF[bk]; if (!o) return m0;
-        return m0 + '<span class="pdfp">（PDF p.' + pg.replace(/\d+/g, (n) => +n + o) + '）</span>'; });
+    md(text, src) {
+      // 書上印刷頁 → 使用者手上 PDF 的頁碼（off：PDF 頁＝印刷頁＋位移）；有設定 PDF 網址時變成連結
+      const ctx = BOOKPDF.find((b) => b.src && src && String(src) === b.src);
+      const pdfPg = (s) => {
+        BOOKPDF.filter((b) => b.re).forEach((b) => { s = s.replace(new RegExp('《(' + b.re + ')》([^p《。]{0,12}?)p\\.\\s?([\\d–\\-、, ]*\\d)', 'g'), (m0, bk, mid, pg) => {
+          const first = +pg.match(/\d+/)[0] + b.off; return m0 + pdfLink(b.k, first, '（PDF p.' + pg.replace(/\d+/g, (n) => +n + b.off) + '）'); }); });
+        if (ctx && !ctx.re) s = s.replace(ctx.plain ? /(PDF )?p\.\s?(\d+)(?![\d])/g : /(PDF )p\.\s?(\d+)(?![\d])/g, (m0, pre, n) => (PDFURL.get()[ctx.k] ? pdfLink(ctx.k, +n, m0) : m0));
+        return s; };
       // 極簡 markdown：段落、**粗體**、- 清單、表格 |a|b|、[[m:id]] [[p:id]] [[s:id]] 連結
       const lines = String(text).split('\n'); let html = ''; let inList = false; let tbl = [];
       const inline = (s) => pdfPg(esc(s)).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\[\[([mpsrk]):([\w-]+)\]\]/g, (m0, k, id) => {
@@ -3877,9 +3917,41 @@ window.MER_NOTES = {
     bindRefs(root) {
       root.querySelectorAll('button.ref').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.k, id = b.dataset.id; if (k === 'm') V3.focusMuscle(id); else if (k === 'p') V3.focusPoint(id); else if (k === 's') V3.focusSinew(id); else if (k === 'k') KB.open(id); else Chain.highlight([id], id); }));
     },
+    pdfSettings(D) {
+      const cur = PDFURL.get();
+      D.ap(h('div', { class: 'eyebrow' }, '設定'), h('h3', null, '參考書 PDF 連結'),
+        h('p', { class: 'small' }, '把你自己存放的 PDF 網址貼上（例如雲端硬碟裡可直接開啟的 PDF 連結），之後知識庫裡這本書的頁碼就能一鍵開到那一頁。網址只存在這台裝置的瀏覽器，不會上傳。'),
+        h('p', { class: 'small muted' }, '提示：要能「跳到某頁」，網址需要是瀏覽器直接開啟的 PDF（網址後面加 #page=頁碼 有效）。Google 雲端硬碟的預覽頁不支援跳頁，可改用 OneDrive／Dropbox 直接連結或電腦上的 file:/// 路徑。'));
+      const rows = BOOKPDF.map((b) => { const inp = h('input', { class: 'fsearch', value: cur[b.k] || '', placeholder: 'https://… 或 file:///…', 'aria-label': b.name + ' PDF 網址' }); inp.dataset.k = b.k;
+        return h('label', { class: 'pdfrow' }, h('span', { class: 'small' }, b.name + (b.off ? '（PDF 頁＝書頁＋' + b.off + '）' : '')), inp); });
+      D.ap(h('div', { class: 'pdfset' }, rows), h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn pri', onclick: () => { const o = {}; D.querySelectorAll('.pdfrow input').forEach((i) => { const v = i.value.trim(); if (v) o[i.dataset.k] = v; }); PDFURL.set(o); toast('已儲存 ' + Object.keys(o).length + ' 本書的 PDF 連結'); } }, '儲存'), h('button', { class: 'btn', onclick: () => { this.selId = null; this.renderDetail(); } }, '返回')));
+    },
+    srcGroup(src) { src = String(src || ''); return /課堂|筆記/.test(src) ? '課堂' : /^參考書|^古籍/.test(src) ? '參考書' : src === '解剖補充' ? '解剖補充' : src === '症狀導覽' ? '症狀導覽' : '其他整理'; },
+    related(it, n) {
+      const GEN = new Set(['激痛點', '轉移痛', '症狀導覽', '解剖', '肌肉', '經筋', '脊椎', '整脊', '神經', '推拿', '總覽', '手法']);
+      const mu = new Set(it.muscles || []); const tg = new Set((it.tags || []).filter((t) => !GEN.has(t)));
+      const bi = this.bigramsOf(it.title.replace(/^[^：]*：/, ''));
+      return window.KB_ITEMS.filter((x) => x.id !== it.id).map((x) => {
+        let s = 0; (x.muscles || []).forEach((m) => { if (mu.has(m)) s += 2; }); (x.tags || []).forEach((t) => { if (tg.has(t)) s += 2.5; });
+        this.bigramsOf(x.title.replace(/^[^：]*：/, '')).forEach((g) => { if (bi.has(g)) s += 1; });
+        return { x, s };
+      }).filter((r) => r.s >= 3).sort((a, b) => b.s - a.s).slice(0, n || 24).map((r) => r.x);
+    },
+    bigramsOf(t) { const o = new Set(); t = String(t).replace(/[\s，。、；：（）()「」・／]/g, ''); for (let i = 0; i < t.length - 1; i++) o.add(t.slice(i, i + 2)); return o; },
+    cmpBlock(D, it) {
+      const mine = this.srcGroup(it.src); const by = {};
+      this.related(it).forEach((x) => { const g = this.srcGroup(x.src); if (g === mine && g !== '課堂') return; (by[g] = by[g] || []).length < 3 && by[g].push(x); });
+      const order = ['課堂', '參考書', '解剖補充', '症狀導覽', '其他整理'].filter((g) => by[g]);
+      if (!order.length || (order.length === 1 && order[0] === mine)) return;
+      const strip = (b) => String(b || '').replace(/\[\[[a-z]+:([\w-]+)\]\]/g, (m0, id) => (MU[id] || PT[id] || {}).name || this.title(id) || id).replace(/[#*|!]/g, ' ').replace(/\s+/g, ' ').trim();
+      const first = (b) => { const t = strip(b).replace(/^(出處|這是一張)[^。]*。/, '').trim(); const i = t.search(/[。；]/); return (i > 0 && i < 110 ? t.slice(0, i + 1) : t.slice(0, 110) + '…'); };
+      const cols = order.map((g) => h('div', { class: 'cmp-col' }, h('div', { class: 'eyebrow' }, g + (g === '課堂' ? '（優先）' : '')), by[g].map((x) => h('button', { class: 'cmp-card', onclick: () => this.open(x.id) }, h('b', null, x.title), h('span', { class: 'small muted' }, x.src), h('span', { class: 'small' }, first(x.body))))));
+      D.ap(h('details', { class: 'det cmp-det' }, h('summary', null, '同主題對照（課堂 ↔ 參考書 ↔ 解剖補充）'), h('p', { class: 'small muted' }, '依共同的肌肉、標籤與標題自動找出；說法不同時以課堂為準。'), h('div', { class: 'cmp-grid' }, cols)));
+    },
     renderDetail() {
       const D = clear(this.detail);
       if (this.editing) { this.renderForm(D); return; }
+      if (this.selId === '__pdf') { this.pdfSettings(D); return; }
       const sp = this.special();
       if (sp === 'tx') { TX.renderDetail(D, this.selId); return; }
       if (sp === 'sub') { SubUI.renderDetail(D, this.selId); return; }
@@ -3923,7 +3995,7 @@ window.MER_NOTES = {
         !pub && Auth.canSubmit() && it.type === 'kb' ? h('button', { class: 'btn sm', title: '提出修改建議，由管理員審核', onclick: () => this.edit({ title: it.title, cat: it.cat, src: it.src, body: it.body, muscles: it.muscles || [], points: it.points || [], regions: it.regions || [], tags: it.tags || [], replaces: it.id }) }, '建議修改') : null));
       D.ap(h('h3', null, it.title));
       if (it.tags && it.tags.length) D.ap(h('div', { class: 'chips', style: { margin: '6px 0' } }, it.tags.map((t) => h('button', { class: 'chip sm', onclick: () => this.openSearch(t) }, '#' + t))));
-      const body = h('div', { class: 'prose', html: this.md(it.body) }); D.ap(body); this.bindRefs(body);
+      const body = h('div', { class: 'prose', html: this.md(it.body, it.src) }); D.ap(body); this.bindRefs(body);
       const links = [];
       (it.muscles || []).forEach((m) => MU[m] && links.push(h('button', { class: 'chip', onclick: () => V3.focusMuscle(m) }, h('span', { class: 'dot t' }), MU[m].name)));
       (it.points || []).forEach((p) => PT[p] && links.push(h('button', { class: 'chip', onclick: () => V3.focusPoint(p) }, h('span', { class: 'dot j' }), PT[p].name)));
@@ -3933,6 +4005,7 @@ window.MER_NOTES = {
       if (mots.length) D.ap(h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '3D 動作示範'), h('div', { class: 'chips', style: { marginTop: '4px' } }, mots.map((m) => h('button', { class: 'chip', onclick: () => V3.playMotion(m.id) }, '▶ ' + m.name))));
       const mus = (it.muscles || []).filter((m) => MU[m]); if (mus.length > 1) D.ap(h('div', { style: { marginTop: '8px' } }, h('button', { class: 'btn sm', onclick: () => V3.showMuscles(mus) }, '在 3D 一次標出這 ' + mus.length + ' 條肌肉')));
       this.figBlock(D, it.id);
+      if (it.type === 'kb') this.cmpBlock(D, it);
       TX.relatedBlock(D, TX.termsOf(it), it.src);
       if (pub && it.replaces) D.ap(h('p', { class: 'small muted', style: { marginTop: '10px' } }, '這是管理員修訂版。', h('button', { class: 'link small', onclick: async () => { if (await Notes.remove(it.nid)) { toast('已還原原文'); this.renderDetail(); } } }, '還原原文')));
     },
@@ -4731,6 +4804,11 @@ window.MER_NOTES = {
       if (ms.length) {
         D.ap(h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '結果'), h('table', { class: 'pos-tbl' }, ms.map((m) => h('tr', { class: 'lv' + m.level }, h('th', null, m.label), h('td', { class: 'mono' }, m.val == null ? '—' : m.val + (m.unit === '°' ? '°' : ' ' + m.unit)), h('td', null, m.txt)))));
         D.ap(h('p', { class: 'small muted' }, '照片量測受站姿、衣物與拍攝角度影響，只當參考；結果請再用觸診確認。' + (S.vref.length === 2 ? '已用垂直參考線修正相機傾斜 ' + Math.round(deg(this.tilt()) * 10) / 10 + '°。' : '')));
+        const POSKB = { head: ['k-scm-lever', 'jj-front'], sh: ['tp-trap_u', 'tp-levator', 'k-scap-look', 'sx-scoliosis'], pel: ['k-angle3', 'ext-janda', 'tp-ql', 'sx-scoliosis'], cr: ['k-angle3', 'ext-janda', 'tp-ql', 'sx-scoliosis'], kn: ['k-varus', 'sx-knee'],
+          shift: ['k-scoliosis-form', 'ext-janda'], sc: ['k-scap-look', 'k-scap6'], gf: ['tp-glute_max', 'ext-janda'], fhp: ['jj-side', 'ext-janda', 'k-scm-lever', 'sx-posture'], cva: ['jj-side', 'tp-subocc', 'sx-posture'], earp: ['jj-side', 'sx-posture'],
+          pt: ['k-angle1', 'ext-janda', 'ext-kendall'], knee: ['ext-janda', 'ext-kendall'], hip: ['ext-kendall', 'jj-side'], sho: ['sx-posture', 'tp-pec_minor'] };
+        const rel = []; ms.filter((m) => m.level > 0).forEach((m) => (POSKB[m.k] || []).forEach((id) => { if (KB.has(id) && !rel.includes(id)) rel.push(id); }));
+        if (rel.length) D.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '相關知識（依量測結果）'), h('div', { class: 'chips pos-rel', style: { marginTop: '4px' } }, rel.slice(0, 10).map((id) => h('button', { class: 'chip sm', onclick: () => { this.close && this.close(); KB.open(id); } }, KB.title(id).replace(/^(症狀導覽|激痛點|體態評估)：/, '')))));
         const fs = ms.filter((m) => m.finding && FIND[m.finding]);
         this.apply = {}; fs.forEach((m) => (this.apply[m.finding] = FIND[m.finding].side ? m.side : 'B'));
         D.ap(h('div', { class: 'row', style: { marginTop: '8px' } },
