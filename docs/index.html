@@ -2207,6 +2207,30 @@ window.MER_NOTES = {
   // =====================================================================
   //  身分、權限（claude.ai 帳號）
   // =====================================================================
+  // 登入：社群 App 內建瀏覽器（LINE、Facebook、Instagram、微信）會被 Google 擋下，先提醒改用 Safari／Chrome
+  const IN_APP = /(\bLine\/|FBAN|FBAV|FB_IAB|Instagram|MicroMessenger|WeChat)/i.test(navigator.userAgent);
+  const LOGIN_ERR = {
+    'auth/popup-blocked': '瀏覽器擋下了登入視窗：請允許這個網站開啟彈出視窗，再按一次。',
+    'auth/popup-closed-by-user': '登入視窗被關掉了，請再按一次並選擇 Google 帳號。',
+    'auth/cancelled-popup-request': '登入視窗被關掉了，請再按一次。',
+    'auth/unauthorized-domain': '這個網址還沒加入 Firebase 的授權網域，請通知管理員。',
+    'auth/network-request-failed': '網路連線失敗，請確認網路後再試。',
+    'auth/web-storage-unsupported': '瀏覽器關閉了網站資料（Cookie）或在無痕模式，請改用一般模式的 Safari／Chrome。',
+    'auth/operation-not-supported-in-this-environment': '這個瀏覽器不支援登入，請改用 Safari 或 Chrome 開啟網址。',
+    'auth/internal-error': '登入暫時失敗；若是從 LINE、Facebook 等 App 裡開啟，請改用 Safari 或 Chrome。',
+  };
+  function inAppTip() {
+    const url = location.origin + location.pathname;
+    const box = h('div', { class: 'modal-bg', role: 'dialog' }); const card = h('div', { class: 'modal card pad', style: { maxWidth: '420px' } }); box.ap(card);
+    card.ap(h('h3', { style: { marginTop: 0 } }, '請用 Safari 或 Chrome 開啟'), h('p', { class: 'small' }, '你現在是在 LINE、Facebook、Instagram 等 App 裡面的瀏覽器開啟，Google 不允許在這裡登入。'),
+      h('ol', { class: 'small' }, h('li', null, '按右上角「⋯」或分享鈕，選「用瀏覽器開啟」（Safari／Chrome）；或'), h('li', null, '複製網址，貼到 Safari 或 Chrome。')),
+      h('div', { class: 'row' }, h('button', { class: 'btn pri', onclick: async () => { try { await navigator.clipboard.writeText(url); toast('已複製網址'); } catch (e) { prompt('請複製這個網址', url); } } }, '複製網址'), h('button', { class: 'btn', onclick: () => box.remove() }, '關閉')));
+    document.body.appendChild(box);
+  }
+  function doLogin() {
+    if (IN_APP) { inAppTip(); return; }
+    BACKEND.signIn().catch((e) => { const c = (e && e.code) || ''; console.warn('signIn', e); toast(LOGIN_ERR[c] || ('登入失敗（' + (c || (e && e.message) || e) + '），請截圖給管理員')); });
+  }
   const Auth = {
     ready: false, dev: !(window.claude && window.claude.use), db: null, user: null,
     id: null, name: '', avatar: '', isOwner: false, isAdmin: false, ownWrite: null, listeners: [],
@@ -2296,7 +2320,7 @@ window.MER_NOTES = {
           Auth.canSubmit() ? h('button', { class: 'btn sm', onclick: () => { this.open = false; this.render(); KB.openSource('我的投稿'); } }, '我的投稿') : null,
           FB && Auth.isAdmin ? h('button', { class: 'btn sm', onclick: () => { close(); showTab('admin'); } }, '會員後台') : null),
         FB ? h('div', { class: 'row', style: { marginTop: '10px' } },
-          r === 'guest' ? h('button', { class: 'btn pri', onclick: () => BACKEND.signIn().catch((e) => toast(e && e.code === 'auth/popup-blocked' ? '瀏覽器擋下了登入視窗：請允許這個網站開啟彈出視窗，再按一次' : '登入失敗：' + (e && e.code || e))) }, '用 Google 帳號登入') : h('button', { class: 'btn sm', onclick: () => BACKEND.signOut() }, '登出'),
+          r === 'guest' ? h('button', { class: 'btn pri', onclick: () => doLogin() }, '用 Google 帳號登入') : h('button', { class: 'btn sm', onclick: () => BACKEND.signOut() }, '登出'),
           Auth.email ? h('span', { class: 'small muted' }, Auth.email) : null) : null,
         h('p', { class: 'small muted', style: { marginTop: '10px' } }, FB ? '用 Google 帳號登入，第一次登入即完成註冊（送出申請），不另外設密碼。管理員批准後即可使用全部功能；管理員由擁有者在「後台」指定。' : '登入就是你的 claude.ai 帳號，不另外設密碼。角色由這個頁面的分享設定決定：「Editor／編輯者」＝管理員，「Contributor／參與者」＝投稿者，其餘為檢視。')));
     },
@@ -3931,7 +3955,7 @@ window.MER_NOTES = {
       const r = Auth.role();
       D.ap(h('div', { class: 'lock-card' }, h('div', { class: 'lock-ic', 'aria-hidden': 'true' }, '鎖'), h('h3', null, r === 'guest' ? '請先登入' : '目前沒有投稿權限'),
         h('p', { class: 'small' }, r === 'guest' ? (FB ? '新增知識條目需要先登入（Google 帳號，第一次登入即註冊）。管理員可直接發佈，會員送出後需管理員審核。' : '新增知識條目需要登入 claude.ai。登入後依頁面分享設定，管理員可直接發佈，投稿者送出後需管理員審核。') : r === 'blocked' ? '你的帳號已被管理員停用投稿。' : '這個帳號對本頁只有檢視權限。請頁面擁有者在分享設定把你加為「Contributor／參與者」（可投稿）或「Editor／編輯者」（管理員）。'),
-        h('div', { class: 'row' }, FB && r === 'guest' ? h('button', { class: 'btn pri', onclick: () => BACKEND.signIn().catch(() => toast('登入失敗')) }, '用 Google 帳號登入') : null, h('button', { class: 'btn', onclick: () => { this.editing = null; this.renderDetail(); } }, '返回'))));
+        h('div', { class: 'row' }, FB && r === 'guest' ? h('button', { class: 'btn pri', onclick: () => doLogin() }, '用 Google 帳號登入') : null, h('button', { class: 'btn', onclick: () => { this.editing = null; this.renderDetail(); } }, '返回'))));
     },
     renderForm(D) {
       const n = this.editing; const pub = Auth.canPublish(); const sub = Auth.canSubmit();
@@ -4263,7 +4287,7 @@ window.MER_NOTES = {
       if (this.mode === 'locked') {
         B.ap(h('div', { class: 'lock-card' }, h('div', { class: 'lock-ic', 'aria-hidden': 'true' }, '鎖'), h('h3', null, '登入後才能使用個案紀錄'),
           h('p', { class: 'small' }, FB ? '個案資料包含客人姓名與電話，必須登入才能使用（Google 帳號，第一次登入即註冊）。資料只有你和網站管理員看得到。' : '個案資料包含客人姓名與電話，必須登入 claude.ai 帳號才能使用，而且只存在你自己的帳號底下，其他人（包括頁面擁有者）都看不到。'),
-          FB ? h('div', { class: 'row' }, h('button', { class: 'btn pri', onclick: () => BACKEND.signIn().catch(() => toast('登入失敗')) }, '用 Google 帳號登入')) : null,
+          FB ? h('div', { class: 'row' }, h('button', { class: 'btn pri', onclick: () => doLogin() }, '用 Google 帳號登入')) : null,
           h('p', { class: 'small muted' }, '評估、連鎖、模擬、3D 與知識庫不需登入即可使用。')));
         return;
       }
@@ -5075,7 +5099,7 @@ window.MER_NOTES = {
         : keyMissing ? (Auth.isOwner ? '請到「後台 → 內容金鑰」完成設定。' : '網站擁有者還沒完成內容金鑰設定，請稍後再試。') : '已批准：下載並解開課程內容中，完成後會自動重新整理。';
       root.ap(h('div', { class: 'lock-card gate-card' }, h('div', { class: 'lock-ic', 'aria-hidden': 'true' }, '鎖'), h('h3', null, head), h('p', { class: 'small' }, desc),
         h('div', { class: 'row', style: { marginTop: '10px' } },
-          r === 'guest' && FB ? h('button', { class: 'btn pri', onclick: () => BACKEND.signIn().catch((e) => toast(e && e.code === 'auth/popup-blocked' ? '瀏覽器擋下了登入視窗：請允許這個網站開啟彈出視窗，再按一次' : '登入失敗：' + (e && e.code || e))) }, '用 Google 帳號登入申請') : null,
+          r === 'guest' && FB ? h('button', { class: 'btn pri', onclick: () => doLogin() }, '用 Google 帳號登入申請') : null,
           r === 'pending' || (r !== 'guest' && r !== 'blocked' && r !== 'loading') ? h('button', { class: 'btn', onclick: () => location.reload() }, '重新檢查') : null,
           Auth.isOwner && keyMissing ? h('button', { class: 'btn pri', onclick: () => showTab('admin') }, '前往後台') : null,
           h('button', { class: 'btn', onclick: () => showTab('v3d') }, '使用 3D 圖譜'))));
@@ -5130,6 +5154,14 @@ window.MER_NOTES = {
 </script>
 <script>window.TN_KID = "19b565a8";
 /* 安裝成 App、離線使用 */
+// LINE 內建瀏覽器不能用 Google 登入：自動改用手機的外部瀏覽器開啟（LINE 支援 openExternalBrowser=1）
+(function () {
+  try {
+    if (/\bLine\//i.test(navigator.userAgent) && !/[?&]openExternalBrowser=1/.test(location.search)) {
+      location.replace(location.pathname + (location.search ? location.search + '&' : '?') + 'openExternalBrowser=1' + location.hash);
+    }
+  } catch (e) { }
+})();
 (function () {
   if (!('serviceWorker' in navigator) || !/^https:$|^http:$/.test(location.protocol)) return;
   if (location.protocol === 'http:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
