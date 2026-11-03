@@ -1,8 +1,8 @@
-/* 離線快取（Service Worker）。版本：f32381426502 */
-const VER = 'f32381426502';
+/* 離線快取（Service Worker）。版本：953ecec63be3 */
+const VER = '953ecec63be3';
 const CORE = 'tn-core-' + VER;
 const RUNTIME = 'tn-runtime';
-const PRECACHE = ["./", "index.html", "manifest.webmanifest", "content.bin", "tx.bin", "config.js", "anatomy.json", "anatomy.data.wasm", "geo.json", "icon-192.png", "icon-512.png", "icon-maskable.png", "apple-touch-icon.png"];
+const PRECACHE = ["./", "index.html", "manifest.webmanifest", "content.bin", "tx.bin", "config.js", "pdf.html", "anatomy.json", "anatomy.data.wasm", "geo.json", "icon-192.png", "icon-512.png", "icon-maskable.png", "apple-touch-icon.png"];
 const CDN = ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js'];
 // 經常更新的檔案：先上網、離線才用快取
 const FRESH = /(\/|index\.html|config\.js|content\.bin|tx\.bin|transcripts\.json|manifest\.webmanifest)$/;

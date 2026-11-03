@@ -3806,6 +3806,7 @@ window.MER_NOTES = {
     local() { try { return JSON.parse(localStorage.getItem('tn_pdfcfg') || localStorage.getItem('tn_pdfurl') && JSON.stringify({ url: JSON.parse(localStorage.getItem('tn_pdfurl')) }) || '{}'); } catch (e) { return {}; } },
     get() { const l = this.local(); const m = this.cloud.mine || {}; return { url: Object.assign({}, l.url, m.url), off: Object.assign({}, l.off, m.off) }; },
     shared() { return (this.cloud.shared && this.cloud.shared.url) || {}; },
+    apiKey() { return (this.cloud.shared && this.cloud.shared.apiKey) || ''; },
     async load(force) {
       if (this._p && !force) return this._p;
       this._p = (async () => { if (!Auth.db || Auth.dev || !Auth.id) return;
@@ -3815,15 +3816,17 @@ window.MER_NOTES = {
     },
     async set(o) { try { localStorage.setItem('tn_pdfcfg', JSON.stringify(o)); } catch (e) {}
       if (Auth.db && !Auth.dev && Auth.id) { try { await Auth.db.doc('data/users/' + Auth.id + '/pdfcfg').set(Object.assign({ kind: 'pdfcfg', at: Date.now() }, o)); this.cloud.mine = o; return true; } catch (e) { return false; } } return false; },
-    async setShared(url) { const clean = {}; Object.entries(url).forEach(([k, v]) => { if (BK[k] && BK[k].pd && v) clean[k] = v; }); await Auth.db.doc('shared/pdf').set({ url: clean, at: Date.now(), by: Auth.id }); this.cloud.shared = { url: clean }; },
+    async setShared(url, apiKey) { const clean = {}; Object.entries(url).forEach(([k, v]) => { if (BK[k] && BK[k].pd && v) clean[k] = v; }); const d = { url: clean, apiKey: String(apiKey || '').trim(), at: Date.now(), by: Auth.id }; await Auth.db.doc('shared/pdf').set(d); this.cloud.shared = d; },
     url(k) { return ((this.get().url) || {})[k] || (BK[k] && BK[k].pd ? this.shared()[k] : '') || ''; },
     off(k) { const o = (this.get().off || {})[k]; return o != null && o !== '' ? +o : BK[k] && BK[k].off; },
   };
   // 雲端網址轉成「瀏覽器直接開 PDF」的形式，才能用 #page= 跳頁
-  function pdfHref(u, page) {
+  function pdfHref(u, page, title) {
     u = String(u || '').trim(); if (!u) return null;
-    const gd = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)([\w-]+)/);
-    if (gd) return { href: 'https://drive.google.com/file/d/' + gd[1] + '/view', jump: false, note: 'Google 雲端硬碟的檢視器不支援跳頁，已開啟檔案，請手動翻到第 ' + page + ' 頁' };
+    const gd = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/) || u.match(/docs\.google\.com\/[^?]*\/d\/([\w-]+)/);
+    if (gd) { const key = PDFCFG.apiKey();
+      if (key) return { href: 'pdf.html#id=' + encodeURIComponent(gd[1]) + '&page=' + page + '&key=' + encodeURIComponent(key) + '&t=' + encodeURIComponent(title || ''), jump: true };
+      return { href: 'https://drive.google.com/file/d/' + gd[1] + '/view', jump: false, note: '還沒設定 Google API 金鑰，雲端硬碟只能開檔、不能跳頁：請手動翻到第 ' + page + ' 頁' }; }
     if (/dropbox\.com/.test(u)) { u = u.replace(/[?&]dl=0/, '').replace(/[?&]raw=1/, ''); u += (u.includes('?') ? '&' : '?') + 'raw=1'; }
     return { href: u.split('#')[0] + '#page=' + page, jump: true };
   }
@@ -3858,7 +3861,7 @@ window.MER_NOTES = {
     const win = window.open('about:blank', '_blank');
     try { if (await PDFLOCAL.open(k, page, win)) return; } catch (e) { /* 改用網址 */ }
     await PDFCFG.load();
-    const r = pdfHref(PDFCFG.url(k), page); if (r) { if (win) win.location.href = r.href; else window.open(r.href, '_blank'); if (r.note) toast(r.note); return; }
+    const r = pdfHref(PDFCFG.url(k), page, b.name); if (r && !/^https?:/.test(r.href)) r.href = new URL(r.href, location.href).href; if (r) { if (win) win.location.href = r.href; else window.open(r.href, '_blank'); if (r.note) toast(r.note); return; }
     if (win) win.close(); toast('還沒設定「' + b.name + '」的 PDF，請到知識庫 📖 連結本機資料夾或貼上網址'); KB.selId = '__pdf'; KB.editing = null; showTab('kb'); KB.renderDetail();
   }
   document.addEventListener('click', (e) => { const a = e.target.closest && e.target.closest('a.pdfp[data-bk]'); if (!a) return; e.preventDefault(); openPdf(a.dataset.bk, a.dataset.pg, a.dataset.print === '1'); });
@@ -4020,7 +4023,7 @@ window.MER_NOTES = {
       const cfg = PDFCFG.get(); const sh = PDFCFG.shared(); const names = PDFLOCAL.ok ? await PDFLOCAL.known() : {}; const hasDir = PDFLOCAL.ok && !!(await PDFLOCAL.get('dir'));
       D.ap(h('div', { class: 'eyebrow' }, '設定'), h('h3', null, '參考書 PDF：頁碼一鍵開到那一頁'),
         h('ol', { class: 'small' },
-          h('li', null, h('b', null, '雲端連結（建議）：'), '把 PDF 放在自己的 Dropbox 或 OneDrive，複製「分享連結」貼到下面。登入後會同步到你的帳號，換手機、電腦都能用；只有你自己看得到。Dropbox 連結會自動轉成可跳頁的格式；Google 雲端硬碟只能開檔、不能跳頁。'),
+          h('li', null, h('b', null, '雲端連結（建議）：'), '把 PDF 放在自己的 Dropbox 或 OneDrive，複製「分享連結」貼到下面。登入後會同步到你的帳號，換手機、電腦都能用；只有你自己看得到。Google 雲端硬碟：分享設為「知道連結的任何人都能查看」，網站會用內建檢視器跳頁；Dropbox 也可以。'),
           h('li', null, h('b', null, '本機資料夾（電腦 Chrome／Edge）：'), '選電腦裡的參考資料夾，依檔名自動配對。'),
           h('li', null, h('b', null, '全站共用：'), '只限已是公有領域的古籍（素問、太素、靈樞集注、醫宗金鑑），由管理員設定一次，所有會員都能點開。有版權的書不能共用給所有人，請每位會員用自己的合法副本設定。')));
       if (PDFLOCAL.ok) D.ap(h('div', { class: 'row', style: { margin: '6px 0 10px' } }, h('button', { class: 'btn', onclick: async () => { try { await PDFLOCAL.pick(); this.renderDetail(); } catch (e) { if (e && e.name !== 'AbortError') toast('無法讀取資料夾：' + (e.message || e)); } } }, hasDir ? '重新選擇本機資料夾' : '連結本機參考書資料夾'), hasDir ? h('span', { class: 'small muted' }, '已連結，配對到 ' + Object.keys(names).length + ' 本') : null));
@@ -4030,9 +4033,11 @@ window.MER_NOTES = {
       D.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '我的連結'), h('div', { class: 'pdfset' }, rows), h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn pri', onclick: async () => { const o = { url: {}, off: {} }; D.querySelectorAll('.pdfrow input').forEach((i) => { const v = i.value.trim(); if (v !== '') o[i.dataset.f][i.dataset.k] = i.dataset.f === 'off' ? +v : v; }); const synced = await PDFCFG.set(o); toast(synced ? '已儲存並同步到你的帳號' : '已儲存在這台裝置（登入並獲批准後可同步到帳號）'); } }, '儲存我的連結'), h('button', { class: 'btn', onclick: () => { this.selId = null; this.renderDetail(); } }, '返回')),
         h('p', { class: 'small muted', style: { marginTop: '8px' } }, '位移怎麼查：打開那本書的 PDF，翻到書上印「100」的那頁，看閱讀器顯示第幾頁，相減就是位移。'));
       if (Auth.isAdmin && !Auth.dev) {
-        const pdb = BOOKPDF.filter((b) => b.pd); const ins = pdb.map((b) => { const i = h('input', { class: 'fsearch', value: sh[b.k] || '', placeholder: 'Dropbox／OneDrive 分享連結', 'aria-label': b.name + ' 全站共用連結' }); i.dataset.k = b.k; return h('label', { class: 'pdfrow' }, h('span', { class: 'small' }, h('b', null, b.name)), i); });
-        D.ap(h('hr', { class: 'thin' }), h('div', { class: 'eyebrow' }, '管理員：全站共用連結（只限公有領域古籍）'), h('div', { class: 'pdfset' }, ins),
-          h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn pri', onclick: async () => { const o = {}; ins.forEach((l) => { const i = l.querySelector('input'); if (i.value.trim()) o[i.dataset.k] = i.value.trim(); }); try { await PDFCFG.setShared(o); toast('已更新全站共用連結'); this.renderDetail(); } catch (e) { toast('儲存失敗：請先在 Firebase 發佈新的安全性規則（shared 集合）'); } } }, '儲存全站共用')));
+        const keyIn = h('input', { class: 'fsearch', value: PDFCFG.apiKey(), placeholder: 'Google API 金鑰（只啟用 Drive API、限定本網站網址）', 'aria-label': 'Google API 金鑰' });
+        const pdb = BOOKPDF.filter((b) => b.pd); const ins = pdb.map((b) => { const i = h('input', { class: 'fsearch', value: sh[b.k] || '', placeholder: 'Google 雲端硬碟或 Dropbox 分享連結', 'aria-label': b.name + ' 全站共用連結' }); i.dataset.k = b.k; return h('label', { class: 'pdfrow' }, h('span', { class: 'small' }, h('b', null, b.name)), i); });
+        D.ap(h('hr', { class: 'thin' }), h('div', { class: 'eyebrow' }, '管理員：Google 雲端硬碟跳頁用的 API 金鑰'), h('p', { class: 'small muted' }, '設定後，所有人（含會員自己的連結）只要是 Google 雲端硬碟、且分享設為「知道連結的任何人都能查看」，點頁碼就會用網站內建的檢視器直接開到那一頁。'), keyIn,
+          h('div', { class: 'eyebrow', style: { marginTop: '10px' } }, '管理員：全站共用連結（只限公有領域古籍）'), h('div', { class: 'pdfset' }, ins),
+          h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn pri', onclick: async () => { const o = {}; ins.forEach((l) => { const i = l.querySelector('input'); if (i.value.trim()) o[i.dataset.k] = i.value.trim(); }); try { await PDFCFG.setShared(o, keyIn.value); toast('已更新全站共用設定'); this.renderDetail(); } catch (e) { toast('儲存失敗：請先在 Firebase 發佈新的安全性規則（shared 集合）'); } } }, '儲存全站共用')));
       }
     },
     srcGroup(src) { src = String(src || ''); return /課堂|筆記/.test(src) ? '課堂' : /^參考書|^古籍/.test(src) ? '參考書' : src === '解剖補充' ? '解剖補充' : src === '症狀導覽' ? '症狀導覽' : '其他整理'; },

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>參考書 PDF 檢視</title>
+<style>
+  :root { --bg: #f4f1ea; --ink: #23201c; --ink3: #8a8378; --line: #ddd5c6; --jade: #23705d; --surface: #fffdf8; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #1b1a18; --ink: #ece7dd; --ink3: #9c958a; --line: #3a3732; --jade: #6fc2a9; --surface: #24221f; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; }
+  header { position: sticky; top: 0; z-index: 2; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 8px 12px; background: var(--surface); border-bottom: 1px solid var(--line); }
+  header b { margin-right: auto; font-size: 14px; }
+  button, input { font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px; }
+  button { cursor: pointer; } input { width: 72px; text-align: center; }
+  #msg { padding: 24px 16px; text-align: center; color: var(--ink3); }
+  #pages { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px; }
+  canvas { max-width: 100%; height: auto; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.18); }
+  .pg { position: relative; } .pg span { position: absolute; right: 6px; bottom: 4px; font-size: 12px; color: #777; }
+</style>
+</head>
+<body>
+<header>
+  <b id="title">參考書 PDF</b>
+  <button id="prev" aria-label="上一頁">‹</button>
+  <input id="num" type="number" min="1" aria-label="頁碼"> <span id="tot"></span>
+  <button id="next" aria-label="下一頁">›</button>
+  <button id="zin" aria-label="放大">＋</button><button id="zout" aria-label="縮小">－</button>
+  <a id="orig" target="_blank" rel="noopener" style="font-size:13px;color:var(--jade)">在雲端硬碟開啟</a>
+</header>
+<div id="msg">載入中…（大檔第一次開啟需要一點時間，之後只會讀需要的頁）</div>
+<div id="pages"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function () {
+  // 參數放在 # 後面（不會送到任何伺服器）：id＝Google 雲端硬碟檔案 ID、page＝頁碼、key＝Google API 金鑰（只開 Drive API、限本網站使用）、t＝書名
+  var P = {}; location.hash.slice(1).split('&').forEach(function (kv) { var i = kv.indexOf('='); if (i > 0) P[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); });
+  var $ = function (id) { return document.getElementById(id); };
+  var msg = function (t) { $('msg').textContent = t; $('msg').hidden = !t; };
+  if (P.t) { $('title').textContent = P.t; document.title = P.t; }
+  if (!P.id || !P.key) { msg('缺少檔案或金鑰設定，請回知識庫「📖」確認。'); return; }
+  $('orig').href = 'https://drive.google.com/file/d/' + encodeURIComponent(P.id) + '/view';
+  if (!window.pdfjsLib) { msg('PDF 元件載入失敗，請檢查網路後重新整理。'); return; }
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  var url = 'https://www.googleapis.com/drive/v3/files/' + encodeURIComponent(P.id) + '?alt=media&key=' + encodeURIComponent(P.key);
+  var doc = null, cur = Math.max(1, parseInt(P.page || '1', 10) || 1), scale = 1.4, rendered = {};
+  function render(n) {
+    if (!doc || n < 1 || n > doc.numPages || rendered[n]) return Promise.resolve();
+    rendered[n] = 1;
+    return doc.getPage(n).then(function (pg) {
+      var dpr = window.devicePixelRatio || 1; var vp = pg.getViewport({ scale: scale * dpr });
+      var c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height; c.style.width = (vp.width / dpr) + 'px';
+      var wrap = document.createElement('div'); wrap.className = 'pg'; wrap.id = 'p' + n; wrap.appendChild(c);
+      var s = document.createElement('span'); s.textContent = n; wrap.appendChild(s);
+      var after = null; Object.keys(rendered).map(Number).sort(function (a, b) { return a - b; }).forEach(function (k) { if (k > n && !after) after = document.getElementById('p' + k); });
+      $('pages').insertBefore(wrap, after);
+      return pg.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+    });
+  }
+  function go(n) {
+    if (!doc) return; n = Math.min(doc.numPages, Math.max(1, n)); cur = n; $('num').value = n;
+    var el = document.getElementById('p' + n);
+    var p = el ? Promise.resolve() : render(n).then(function () { return render(n + 1); });
+    p.then(function () { var e = document.getElementById('p' + n); if (e) e.scrollIntoView({ block: 'start' }); });
+  }
+  function rerender() { rendered = {}; $('pages').innerHTML = ''; go(cur); }
+  $('prev').onclick = function () { go(cur - 1); }; $('next').onclick = function () { go(cur + 1); };
+  $('num').onchange = function () { go(parseInt($('num').value, 10) || 1); };
+  $('zin').onclick = function () { scale = Math.min(3, scale + 0.2); rerender(); }; $('zout').onclick = function () { scale = Math.max(0.6, scale - 0.2); rerender(); };
+  window.addEventListener('scroll', function () {
+    if (!doc) return; if (window.innerHeight + window.scrollY > document.body.scrollHeight - 400) { var mx = Math.max.apply(null, Object.keys(rendered).map(Number)); if (mx < doc.numPages) render(mx + 1); }
+  });
+  pdfjsLib.getDocument({ url: url, disableAutoFetch: true, disableStream: false, rangeChunkSize: 1 << 20 }).promise.then(function (d) {
+    doc = d; $('tot').textContent = '/ ' + d.numPages; msg(''); go(cur);
+  }).catch(function (e) {
+    var s = String(e && (e.message || e));
+    msg(/403|401/.test(s) ? '無法讀取：請確認這個檔案已設成「知道連結的任何人都能查看」，以及 API 金鑰已啟用 Google Drive API、允許本網站使用。' : /404/.test(s) ? '找不到檔案：連結可能已失效或檔案被移除。' : '載入失敗：' + s);
+  });
+})();
+</script>
+</body>
+</html>
