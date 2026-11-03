@@ -3870,6 +3870,8 @@ window.MER_NOTES = {
           h('h3', null, it.title), it.type === 'bone' ? h('div', { class: 'row' }, h('span', { class: 'muted small mono' }, DET.bn[it.id].en), h('span', { class: 'sp' }), cmpBtn('bone', it.id)) : null);
         const md = it.type === 'bone' ? DET.bn[it.id].md : TQ[it.id].md;
         const box = h('div', { class: 'prose', html: this.md(md) }); D.ap(box); this.bindRefs(box);
+        if (it.type === 'tech') this.detBlock(D, (window.TECHADD || {})[it.id], '教材要領（推拿手法學等）');
+        if (it.type === 'bone') this.figBlock(D, 'bn:' + it.id);
         const links = [];
         (it.muscles || []).forEach((m) => MU[m] && links.push(h('button', { class: 'chip', onclick: () => V3.focusMuscle(m) }, h('span', { class: 'dot t' }), MU[m].name)));
         (it.points || []).forEach((p) => PT[p] && links.push(h('button', { class: 'chip', onclick: () => V3.focusPoint(p) }, h('span', { class: 'dot j' }), PT[p].name)));
@@ -4886,6 +4888,11 @@ window.MER_NOTES = {
       lec = String(lec || '').trim(); if (!/^[\w-]{3,20}$/.test(lec)) { toast('堂次代碼只能用英數字和 -，例如 1102-2'); return; }
       const dur = await this.duration(f); let parts;
       try { parts = await this.chunks(f, dur); } catch (e) { toast(e.message); return; }
+      const mime = /mp3|mpeg/i.test(f.type) || /\.mp3$/i.test(f.name) ? 'audio/mpeg' : (f.type || 'audio/mpeg');
+      return this.loop(sp, lec, parts, dur, f.name, f.size, meta, async (c) => new Blob([f.slice(c.a, c.b)], { type: mime }));
+    },
+    async loop(sp, lec, parts, dur, fname, fsize, meta, getBlob) {
+      const f = { name: fname, size: fsize };
       const prev = this.docs[lec]; const resume = prev && !prev.final && prev.fname === f.name && prev.fsize === f.size;
       const L = resume ? prev : { id: lec, date: meta.date || '', part: meta.part || '', dur: Math.round(dur), segs: [], done: 0, total: parts.length, fname: f.name, fsize: f.size, final: false };
       L.total = parts.length;
@@ -4894,7 +4901,7 @@ window.MER_NOTES = {
       for (let i = L.done || 0; i < parts.length; i++) {
         if (run.stop) break;
         const c = parts[i]; const t1 = i + 1 < parts.length ? parts[i + 1].t0 : dur;
-        const blob = new Blob([f.slice(c.a, c.b)], { type: /mp3|mpeg/i.test(f.type) || /\.mp3$/i.test(f.name) ? 'audio/mpeg' : (f.type || 'audio/mpeg') });
+        let blob; try { blob = await getBlob(c); } catch (e) { run.err = '讀取錄音失敗：' + (e.message || e); break; }
         let r = null;
         for (let k = 0; k < 3 && !r; k++) {
           try { r = await sp.json(this.prompt(lec, i, parts.length, c.t0, t1), { files: [blob] }); }
