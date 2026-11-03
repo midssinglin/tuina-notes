@@ -4030,6 +4030,23 @@ window.MER_NOTES = {
       const rows = BOOKPDF.map((b) => { const u = h('input', { class: 'fsearch', value: (cfg.url || {})[b.k] || '', placeholder: b.pd && sh[b.k] ? '已有全站共用連結（可留空）' : '我的 PDF 雲端連結', 'aria-label': b.name + ' PDF 網址' }); u.dataset.k = b.k; u.dataset.f = 'url';
         const showOff = b.re || b.plain; const o = showOff ? h('input', { class: 'fsearch', style: { width: '72px' }, type: 'number', value: (cfg.off || {})[b.k] != null ? cfg.off[b.k] : (b.off != null ? b.off : ''), placeholder: '位移', 'aria-label': b.name + ' 頁碼位移' }) : null; if (o) { o.dataset.k = b.k; o.dataset.f = 'off'; }
         return h('div', { class: 'pdfrow' }, h('span', { class: 'small' }, h('b', null, b.name), b.pd ? h('span', { class: 'badge', style: { marginLeft: '6px' } }, '古籍') : null, names[b.k] ? h('span', { class: 'badge j', style: { marginLeft: '6px' } }, '本機 ✓') : null, b.pd && sh[b.k] ? h('span', { class: 'badge j', style: { marginLeft: '6px' } }, '全站共用 ✓') : null, showOff ? h('span', { class: 'muted' }, '　PDF 頁＝書頁＋') : null, o, showOff && b.off == null && (cfg.off || {})[b.k] == null ? h('span', { class: 'muted' }, '（未知，請填）') : null), u); });
+      // 雲端硬碟資料夾自動配對（只存在自己的帳號）
+      const fIn = h('input', { class: 'fsearch', placeholder: '貼上 Google 雲端硬碟「資料夾」的分享連結', 'aria-label': '雲端硬碟資料夾連結' });
+      const fBtn = h('button', { class: 'btn', onclick: async () => {
+        const m = fIn.value.match(/folders\/([\w-]+)/) || fIn.value.match(/[?&]id=([\w-]+)/); if (!m) { toast('看不出資料夾 ID，請貼「資料夾」的分享連結'); return; }
+        const key = PDFCFG.apiKey(); if (!key) { toast('管理員還沒設定 Google API 金鑰'); return; }
+        fBtn.disabled = true; fBtn.textContent = '讀取中…';
+        try {
+          let files = [], tok = '';
+          do { const r = await fetch('https://www.googleapis.com/drive/v3/files?q=' + encodeURIComponent("'" + m[1] + "' in parents and trashed=false") + '&fields=nextPageToken,files(id,name,mimeType)&pageSize=1000&supportsAllDrives=true&includeItemsFromAllDrives=true' + (tok ? '&pageToken=' + tok : '') + '&key=' + encodeURIComponent(key));
+            if (!r.ok) throw new Error(r.status === 404 || r.status === 403 ? '讀不到資料夾：請把資料夾的一般存取權設為「知道連結的任何人」' : 'HTTP ' + r.status);
+            const j = await r.json(); files = files.concat(j.files || []); tok = j.nextPageToken || ''; } while (tok);
+          const cur = PDFCFG.get(); const o = { url: Object.assign({}, cur.url), off: Object.assign({}, cur.off) }; let n = 0;
+          BOOKPDF.forEach((b) => { const f = files.find((x) => /pdf/i.test(x.mimeType + x.name) && new RegExp(b.fn, 'i').test(x.name)); if (f) { o.url[b.k] = 'https://drive.google.com/file/d/' + f.id + '/view'; n++; } });
+          const synced = await PDFCFG.set(o); toast('找到 ' + files.length + ' 個檔案，配對 ' + n + ' 本' + (synced ? '，已同步到你的帳號' : '（只存在這台裝置）')); this.renderDetail();
+        } catch (e) { toast(String(e.message || e)); fBtn.disabled = false; fBtn.textContent = '自動配對'; }
+      } }, '自動配對');
+      D.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '一次設定：雲端硬碟資料夾'), h('p', { class: 'small muted' }, '把放參考書的雲端硬碟資料夾連結貼上，網站會依檔名自動配對每本書，存到你自己的帳號（其他會員看不到）。資料夾與檔案需設為「知道連結的任何人可查看」。'), h('div', { class: 'row' }, fIn, fBtn));
       D.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '我的連結'), h('div', { class: 'pdfset' }, rows), h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn pri', onclick: async () => { const o = { url: {}, off: {} }; D.querySelectorAll('.pdfrow input').forEach((i) => { const v = i.value.trim(); if (v !== '') o[i.dataset.f][i.dataset.k] = i.dataset.f === 'off' ? +v : v; }); const synced = await PDFCFG.set(o); toast(synced ? '已儲存並同步到你的帳號' : '已儲存在這台裝置（登入並獲批准後可同步到帳號）'); } }, '儲存我的連結'), h('button', { class: 'btn', onclick: () => { this.selId = null; this.renderDetail(); } }, '返回')),
         h('p', { class: 'small muted', style: { marginTop: '8px' } }, '位移怎麼查：打開那本書的 PDF，翻到書上印「100」的那頁，看閱讀器顯示第幾頁，相減就是位移。'));
       if (Auth.isAdmin && !Auth.dev) {

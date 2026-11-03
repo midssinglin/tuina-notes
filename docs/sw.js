@@ -1,5 +1,5 @@
-/* 離線快取（Service Worker）。版本：953ecec63be3 */
-const VER = '953ecec63be3';
+/* 離線快取（Service Worker）。版本：3f2f0abeb8ee */
+const VER = '3f2f0abeb8ee';
 const CORE = 'tn-core-' + VER;
 const RUNTIME = 'tn-runtime';
 const PRECACHE = ["./", "index.html", "manifest.webmanifest", "content.bin", "tx.bin", "config.js", "pdf.html", "anatomy.json", "anatomy.data.wasm", "geo.json", "icon-192.png", "icon-512.png", "icon-maskable.png", "apple-touch-icon.png"];

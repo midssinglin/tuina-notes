@@ -71,7 +71,19 @@
   window.addEventListener('scroll', function () {
     if (!doc) return; if (window.innerHeight + window.scrollY > document.body.scrollHeight - 400) { var mx = Math.max.apply(null, Object.keys(rendered).map(Number)); if (mx < doc.numPages) render(mx + 1); }
   });
-  pdfjsLib.getDocument({ url: url, disableAutoFetch: true, disableStream: false, rangeChunkSize: 1 << 20 }).promise.then(function (d) {
+  // Google API 的 CORS 不公開 Content-Range，pdf.js 自己判斷不了能否分段讀；改成自己分段抓（先問檔案大小）
+  var meta = 'https://www.googleapis.com/drive/v3/files/' + encodeURIComponent(P.id) + '?fields=size,name&supportsAllDrives=true&key=' + encodeURIComponent(P.key);
+  fetch(meta).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (m) {
+    var size = +m.size; if (!P.t && m.name) { $('title').textContent = m.name; document.title = m.name; }
+    var first = 1 << 16;
+    return fetch(url, { headers: { Range: 'bytes=0-' + (Math.min(size, first) - 1) } }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); }).then(function (buf) {
+      var tr = new pdfjsLib.PDFDataRangeTransport(size, new Uint8Array(buf));
+      tr.requestDataRange = function (begin, end) {
+        fetch(url, { headers: { Range: 'bytes=' + begin + '-' + (end - 1) } }).then(function (r) { return r.arrayBuffer(); }).then(function (b) { tr.onDataRange(begin, new Uint8Array(b)); });
+      };
+      return pdfjsLib.getDocument({ range: tr, length: size, rangeChunkSize: 1 << 19, disableAutoFetch: true }).promise;
+    });
+  }).then(function (d) {
     doc = d; $('tot').textContent = '/ ' + d.numPages; msg(''); go(cur);
   }).catch(function (e) {
     var s = String(e && (e.message || e));
