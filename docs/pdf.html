@@ -99,7 +99,15 @@
     doc = d; $('tot').textContent = '/ ' + d.numPages; msg(''); go(cur);
   }).catch(function (e) {
     var s = String(e && (e.message || e));
-    msg(/403|401/.test(s) ? '無法讀取：請確認這個檔案已設成「知道連結的任何人都能查看」，以及 API 金鑰已啟用 Google Drive API、允許本網站使用。' : /404/.test(s) ? '找不到檔案：連結可能已失效或檔案被移除。' : '載入失敗：' + s);
+    var back = '　可以先按右上「在雲端硬碟開啟」，手動翻到第 ' + cur + ' 頁。';
+    if (/Failed to fetch|NetworkError|Load failed/.test(s)) {
+      // 下載被 Google 限流或網路擋住時，改用雲端硬碟內建預覽（不能自動跳頁，但能直接看）
+      msg('直接下載被 Google 暫時擋住，已改用雲端硬碟預覽；請在下方往下捲到第 ' + cur + ' 頁（過一陣子再開，通常就能自動跳頁）。');
+      var f = document.createElement('iframe'); f.src = 'https://drive.google.com/file/d/' + encodeURIComponent(P.id) + '/preview';
+      f.style.cssText = 'width:100%;height:calc(100vh - 120px);border:0;background:#fff'; f.allow = 'autoplay';
+      $('pages').appendChild(f); return;
+    }
+    msg((/403|401/.test(s) ? '無法讀取：請確認這個檔案已設成「知道連結的任何人都能查看」，以及 API 金鑰已啟用 Google Drive API、允許本網站使用。' : /404/.test(s) ? '找不到檔案：連結可能已失效或檔案被移除。' : /Failed to fetch/.test(s) ? 'Google 雲端硬碟暫時拒絕下載（短時間內下載量太大時會限流，通常過一陣子就恢復）。' : '載入失敗：' + s) + back);
   });
 })();
 </script>
