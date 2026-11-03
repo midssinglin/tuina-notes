@@ -519,6 +519,8 @@ details.det .prose p { margin: 4px 0; }
 .tx-orig { border-left: 3px solid var(--line); padding-left: 10px; margin: 6px 0; }
 .tab.locked { color: var(--ink3); opacity: .75; }
 .tab.locked[aria-selected="true"] { opacity: 1; }
+
+.pdfp { color: var(--ink3); font-size: .88em; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -3849,9 +3851,13 @@ window.MER_NOTES = {
       });
     },
     md(text) {
+      // 書上印刷頁 → 使用者手上 PDF 的頁碼（PDF_OFF：PDF 頁＝印刷頁＋位移）
+      const PDF_OFF = { '經筋手療法': 18, '經筋手療法圖解': 18 };
+      const pdfPg = (s) => s.replace(/《(經筋手療法(?:圖解)?)》([^p《。]{0,12}?)p\.\s?([\d–\-、, ]*\d)/g, (m0, bk, mid, pg) => { const o = PDF_OFF[bk]; if (!o) return m0;
+        return m0 + '<span class="pdfp">（PDF p.' + pg.replace(/\d+/g, (n) => +n + o) + '）</span>'; });
       // 極簡 markdown：段落、**粗體**、- 清單、表格 |a|b|、[[m:id]] [[p:id]] [[s:id]] 連結
       const lines = String(text).split('\n'); let html = ''; let inList = false; let tbl = [];
-      const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\[\[([mpsrk]):([\w-]+)\]\]/g, (m0, k, id) => {
+      const inline = (s) => pdfPg(esc(s)).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\[\[([mpsrk]):([\w-]+)\]\]/g, (m0, k, id) => {
         if (k === 'm' && !MU[id] && MUX[id]) { k = 'k'; id = 'mx-' + id; }
         const name = k === 'm' ? (MU[id] || {}).name : k === 'p' ? (PT[id] || {}).name : k === 's' ? (SIN[id] || {}).name : k === 'k' ? this.title(id) : (NODE[id] || {}).name; return name ? `<button class="link ref" data-k="${k}" data-id="${id}">${esc(name)}</button>` : (k === 'k' ? id : m0); });
       const flushT = () => { if (!tbl.length) return; html += '<div class="tblwrap"><table>' + tbl.map((r, i) => '<tr>' + r.map((c) => (i === 0 ? '<th>' : '<td>') + inline(c.trim()) + (i === 0 ? '</th>' : '</td>')).join('') + '</tr>').join('') + '</table></div>'; tbl = []; };
