@@ -3771,7 +3771,11 @@ window.MER_NOTES = {
     { k: 'zj', name: '針灸學（中國中醫藥出版社）', fn: '針灸學', src: '參考書・針灸學', plain: 1, off: 0, fig: 'zj' },
     { k: 'xl', name: '中國經筋學（薛立功）', fn: '中国经筋学', src: '參考書・中國經筋學（薛立功）', pdf: 1 },
     { k: 'hjw', name: '經筋療法（黃敬偉）', fn: '经筋疗法', src: '參考書・經筋療法（黃敬偉）', pdf: 1 },
-    { k: 'yzjj', name: '醫宗金鑑 第 5 分冊（正骨心法要旨）', fn: '医宗金鉴', src: '古籍・醫宗金鑑', pdf: 1 },
+    { k: 'yzjj', name: '醫宗金鑑 第 5 分冊（正骨心法要旨）', fn: '医宗金鉴', src: '古籍・醫宗金鑑', pdf: 1, pd: 1 },
+    { k: 'lingshu', name: '黃帝內經靈樞集注（張隱菴，中國醫學大成本）', fn: '靈樞集注', src: '參考書・靈樞集注（張隱菴）', pdf: 1, pd: 1 },
+    { k: 'suwen', name: '黃帝內經素問（王冰注，明刊本）', fn: '素問', pd: 1 },
+    { k: 'taisu', name: '黃帝內經太素（楊上善）', fn: '太素', pd: 1 },
+    { k: 'pmm', name: 'Principles of Manual Medicine（Greenman）', fn: 'Principles of Manual Medicine', src: '參考書・Greenman 徒手醫學', plain: 1, off: 12 },
     { k: 'xzr', name: '宣蟄人軟組織外科學（上）', fn: '宣蛰人', src: '參考書・宣蟄人軟組織外科學', pdf: 1 },
     { k: 'sf', name: '推拿手法學', fn: '推拿手法學', re: '推拿手法學', off: null },
     { k: 'ts', name: 'Travell & Simons 第 1 冊（上半身）', fn: 'Travell & Simons', src: '參考書・Travell & Simons', plain: 1, off: 0, fig: 'ts' },
@@ -3795,9 +3799,33 @@ window.MER_NOTES = {
     { k: 'kap3', name: 'Kapandji 第 3 冊（脊柱與骨盆）', fn: 'vol\\. 3', bare: 'Kapandji 3', off: 0 },
   ];
   const BK = {}; BOOKPDF.forEach((b) => (BK[b.k] = b));
-  const PDFCFG = { get() { try { return JSON.parse(localStorage.getItem('tn_pdfcfg') || localStorage.getItem('tn_pdfurl') && JSON.stringify({ url: JSON.parse(localStorage.getItem('tn_pdfurl')) }) || '{}'); } catch (e) { return {}; } },
-    set(o) { try { localStorage.setItem('tn_pdfcfg', JSON.stringify(o)); } catch (e) {} },
-    url(k) { return ((this.get().url) || {})[k] || ''; }, off(k) { const o = (this.get().off || {})[k]; return o != null && o !== '' ? +o : BK[k] && BK[k].off; } };
+  // 設定來源：① 本機（這台瀏覽器）② 個人雲端（登入後同步到自己的帳號，只有自己看得到）③ 全站共用（管理員設定，只限公有領域古籍）
+  const PDFCFG = {
+    cloud: { mine: null, shared: null }, _p: null,
+    local() { try { return JSON.parse(localStorage.getItem('tn_pdfcfg') || localStorage.getItem('tn_pdfurl') && JSON.stringify({ url: JSON.parse(localStorage.getItem('tn_pdfurl')) }) || '{}'); } catch (e) { return {}; } },
+    get() { const l = this.local(); const m = this.cloud.mine || {}; return { url: Object.assign({}, l.url, m.url), off: Object.assign({}, l.off, m.off) }; },
+    shared() { return (this.cloud.shared && this.cloud.shared.url) || {}; },
+    async load(force) {
+      if (this._p && !force) return this._p;
+      this._p = (async () => { if (!Auth.db || Auth.dev || !Auth.id) return;
+        try { const d = await Auth.db.doc('data/users/' + Auth.id + '/pdfcfg').get(); if (d.exists) this.cloud.mine = d.data(); } catch (e) { /* 未批准或離線 */ }
+        try { const d = await Auth.db.doc('shared/pdf').get(); if (d.exists) this.cloud.shared = d.data(); } catch (e) { /* 規則未發佈 */ } })();
+      return this._p;
+    },
+    async set(o) { try { localStorage.setItem('tn_pdfcfg', JSON.stringify(o)); } catch (e) {}
+      if (Auth.db && !Auth.dev && Auth.id) { try { await Auth.db.doc('data/users/' + Auth.id + '/pdfcfg').set(Object.assign({ kind: 'pdfcfg', at: Date.now() }, o)); this.cloud.mine = o; return true; } catch (e) { return false; } } return false; },
+    async setShared(url) { const clean = {}; Object.entries(url).forEach(([k, v]) => { if (BK[k] && BK[k].pd && v) clean[k] = v; }); await Auth.db.doc('shared/pdf').set({ url: clean, at: Date.now(), by: Auth.id }); this.cloud.shared = { url: clean }; },
+    url(k) { return ((this.get().url) || {})[k] || (BK[k] && BK[k].pd ? this.shared()[k] : '') || ''; },
+    off(k) { const o = (this.get().off || {})[k]; return o != null && o !== '' ? +o : BK[k] && BK[k].off; },
+  };
+  // 雲端網址轉成「瀏覽器直接開 PDF」的形式，才能用 #page= 跳頁
+  function pdfHref(u, page) {
+    u = String(u || '').trim(); if (!u) return null;
+    const gd = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)([\w-]+)/);
+    if (gd) return { href: 'https://drive.google.com/file/d/' + gd[1] + '/view', jump: false, note: 'Google 雲端硬碟的檢視器不支援跳頁，已開啟檔案，請手動翻到第 ' + page + ' 頁' };
+    if (/dropbox\.com/.test(u)) { u = u.replace(/[?&]dl=0/, '').replace(/[?&]raw=1/, ''); u += (u.includes('?') ? '&' : '?') + 'raw=1'; }
+    return { href: u.split('#')[0] + '#page=' + page, jump: true };
+  }
   // 本機資料夾：FileSystemDirectoryHandle 存在 IndexedDB
   const PDFLOCAL = {
     ok: typeof window.showDirectoryPicker === 'function',
@@ -3828,7 +3856,8 @@ window.MER_NOTES = {
     const b = BK[k]; if (!b) return; let page = +pg; if (print) { const o = PDFCFG.off(k); if (o == null) toast('「' + b.name + '」的書頁與 PDF 頁位移還沒設定，先開到同號頁；可在 📖 設定裡填'); page += o || 0; }
     const win = window.open('about:blank', '_blank');
     try { if (await PDFLOCAL.open(k, page, win)) return; } catch (e) { /* 改用網址 */ }
-    const u = PDFCFG.url(k); if (u) { if (win) win.location.href = u.split('#')[0] + '#page=' + page; else window.open(u.split('#')[0] + '#page=' + page, '_blank'); return; }
+    await PDFCFG.load();
+    const r = pdfHref(PDFCFG.url(k), page); if (r) { if (win) win.location.href = r.href; else window.open(r.href, '_blank'); if (r.note) toast(r.note); return; }
     if (win) win.close(); toast('還沒設定「' + b.name + '」的 PDF，請到知識庫 📖 連結本機資料夾或貼上網址'); KB.selId = '__pdf'; KB.editing = null; showTab('kb'); KB.renderDetail();
   }
   document.addEventListener('click', (e) => { const a = e.target.closest && e.target.closest('a.pdfp[data-bk]'); if (!a) return; e.preventDefault(); openPdf(a.dataset.bk, a.dataset.pg, a.dataset.print === '1'); });
@@ -3986,18 +4015,24 @@ window.MER_NOTES = {
       root.querySelectorAll('button.ref').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.k, id = b.dataset.id; if (k === 'm') V3.focusMuscle(id); else if (k === 'p') V3.focusPoint(id); else if (k === 's') V3.focusSinew(id); else if (k === 'k') KB.open(id); else Chain.highlight([id], id); }));
     },
     async pdfSettings(D) {
-      const cfg = PDFCFG.get(); const names = PDFLOCAL.ok ? await PDFLOCAL.known() : {}; const hasDir = PDFLOCAL.ok && !!(await PDFLOCAL.get('dir'));
+      await PDFCFG.load(true);
+      const cfg = PDFCFG.get(); const sh = PDFCFG.shared(); const names = PDFLOCAL.ok ? await PDFLOCAL.known() : {}; const hasDir = PDFLOCAL.ok && !!(await PDFLOCAL.get('dir'));
       D.ap(h('div', { class: 'eyebrow' }, '設定'), h('h3', null, '參考書 PDF：頁碼一鍵開到那一頁'),
-        h('p', { class: 'small' }, '兩種方式擇一（設定只存在這台裝置的瀏覽器，檔案不會上傳）：'),
-        h('ol', { class: 'small' }, h('li', null, h('b', null, '電腦（Chrome／Edge）：'), '按下面按鈕，選你的「參考資料」資料夾，網站會依檔名自動配對每本書；之後點任何頁碼就直接開 PDF 那一頁。第一次開啟時瀏覽器會再問一次是否允許讀取。'),
-          h('li', null, h('b', null, '手機或其他瀏覽器：'), '在每本書後面貼上自己能直接開啟的 PDF 網址（OneDrive／Dropbox 直接連結等；Google 雲端硬碟預覽不支援跳頁）。')));
-      if (PDFLOCAL.ok) D.ap(h('div', { class: 'row', style: { margin: '6px 0 10px' } }, h('button', { class: 'btn pri', onclick: async () => { try { await PDFLOCAL.pick(); this.renderDetail(); } catch (e) { if (e && e.name !== 'AbortError') toast('無法讀取資料夾：' + (e.message || e)); } } }, hasDir ? '重新選擇本機資料夾' : '連結本機參考書資料夾'), hasDir ? h('span', { class: 'small muted' }, '已連結，配對到 ' + Object.keys(names).length + ' 本') : null));
-      else D.ap(h('p', { class: 'small muted' }, '這個瀏覽器不支援連結本機資料夾（手機與 Safari、Firefox）；請用網址方式。'));
-      const rows = BOOKPDF.map((b) => { const u = h('input', { class: 'fsearch', value: (cfg.url || {})[b.k] || '', placeholder: 'PDF 網址（選填）', 'aria-label': b.name + ' PDF 網址' }); u.dataset.k = b.k; u.dataset.f = 'url';
+        h('ol', { class: 'small' },
+          h('li', null, h('b', null, '雲端連結（建議）：'), '把 PDF 放在自己的 Dropbox 或 OneDrive，複製「分享連結」貼到下面。登入後會同步到你的帳號，換手機、電腦都能用；只有你自己看得到。Dropbox 連結會自動轉成可跳頁的格式；Google 雲端硬碟只能開檔、不能跳頁。'),
+          h('li', null, h('b', null, '本機資料夾（電腦 Chrome／Edge）：'), '選電腦裡的參考資料夾，依檔名自動配對。'),
+          h('li', null, h('b', null, '全站共用：'), '只限已是公有領域的古籍（素問、太素、靈樞集注、醫宗金鑑），由管理員設定一次，所有會員都能點開。有版權的書不能共用給所有人，請每位會員用自己的合法副本設定。')));
+      if (PDFLOCAL.ok) D.ap(h('div', { class: 'row', style: { margin: '6px 0 10px' } }, h('button', { class: 'btn', onclick: async () => { try { await PDFLOCAL.pick(); this.renderDetail(); } catch (e) { if (e && e.name !== 'AbortError') toast('無法讀取資料夾：' + (e.message || e)); } } }, hasDir ? '重新選擇本機資料夾' : '連結本機參考書資料夾'), hasDir ? h('span', { class: 'small muted' }, '已連結，配對到 ' + Object.keys(names).length + ' 本') : null));
+      const rows = BOOKPDF.map((b) => { const u = h('input', { class: 'fsearch', value: (cfg.url || {})[b.k] || '', placeholder: b.pd && sh[b.k] ? '已有全站共用連結（可留空）' : '我的 PDF 雲端連結', 'aria-label': b.name + ' PDF 網址' }); u.dataset.k = b.k; u.dataset.f = 'url';
         const showOff = b.re || b.plain; const o = showOff ? h('input', { class: 'fsearch', style: { width: '72px' }, type: 'number', value: (cfg.off || {})[b.k] != null ? cfg.off[b.k] : (b.off != null ? b.off : ''), placeholder: '位移', 'aria-label': b.name + ' 頁碼位移' }) : null; if (o) { o.dataset.k = b.k; o.dataset.f = 'off'; }
-        return h('div', { class: 'pdfrow' }, h('span', { class: 'small' }, h('b', null, b.name), names[b.k] ? h('span', { class: 'badge j', style: { marginLeft: '6px' } }, '本機 ✓') : null, showOff ? h('span', { class: 'muted' }, '　PDF 頁＝書頁＋') : null, o, showOff && b.off == null && (cfg.off || {})[b.k] == null ? h('span', { class: 'muted' }, '（未知，請填）') : null), u); });
-      D.ap(h('div', { class: 'pdfset' }, rows), h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn pri', onclick: () => { const o = { url: {}, off: {} }; D.querySelectorAll('.pdfrow input').forEach((i) => { const v = i.value.trim(); if (v !== '') o[i.dataset.f][i.dataset.k] = i.dataset.f === 'off' ? +v : v; }); PDFCFG.set(o); toast('已儲存'); } }, '儲存'), h('button', { class: 'btn', onclick: () => { this.selId = null; this.renderDetail(); } }, '返回')),
-        h('p', { class: 'small muted', style: { marginTop: '8px' } }, '位移怎麼查：打開那本書的 PDF，翻到書上印「100」的那頁，看 PDF 閱讀器顯示第幾頁，相減就是位移。'));
+        return h('div', { class: 'pdfrow' }, h('span', { class: 'small' }, h('b', null, b.name), b.pd ? h('span', { class: 'badge', style: { marginLeft: '6px' } }, '古籍') : null, names[b.k] ? h('span', { class: 'badge j', style: { marginLeft: '6px' } }, '本機 ✓') : null, b.pd && sh[b.k] ? h('span', { class: 'badge j', style: { marginLeft: '6px' } }, '全站共用 ✓') : null, showOff ? h('span', { class: 'muted' }, '　PDF 頁＝書頁＋') : null, o, showOff && b.off == null && (cfg.off || {})[b.k] == null ? h('span', { class: 'muted' }, '（未知，請填）') : null), u); });
+      D.ap(h('div', { class: 'eyebrow', style: { marginTop: '8px' } }, '我的連結'), h('div', { class: 'pdfset' }, rows), h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn pri', onclick: async () => { const o = { url: {}, off: {} }; D.querySelectorAll('.pdfrow input').forEach((i) => { const v = i.value.trim(); if (v !== '') o[i.dataset.f][i.dataset.k] = i.dataset.f === 'off' ? +v : v; }); const synced = await PDFCFG.set(o); toast(synced ? '已儲存並同步到你的帳號' : '已儲存在這台裝置（登入並獲批准後可同步到帳號）'); } }, '儲存我的連結'), h('button', { class: 'btn', onclick: () => { this.selId = null; this.renderDetail(); } }, '返回')),
+        h('p', { class: 'small muted', style: { marginTop: '8px' } }, '位移怎麼查：打開那本書的 PDF，翻到書上印「100」的那頁，看閱讀器顯示第幾頁，相減就是位移。'));
+      if (Auth.isAdmin && !Auth.dev) {
+        const pdb = BOOKPDF.filter((b) => b.pd); const ins = pdb.map((b) => { const i = h('input', { class: 'fsearch', value: sh[b.k] || '', placeholder: 'Dropbox／OneDrive 分享連結', 'aria-label': b.name + ' 全站共用連結' }); i.dataset.k = b.k; return h('label', { class: 'pdfrow' }, h('span', { class: 'small' }, h('b', null, b.name)), i); });
+        D.ap(h('hr', { class: 'thin' }), h('div', { class: 'eyebrow' }, '管理員：全站共用連結（只限公有領域古籍）'), h('div', { class: 'pdfset' }, ins),
+          h('div', { class: 'row', style: { marginTop: '8px' } }, h('button', { class: 'btn pri', onclick: async () => { const o = {}; ins.forEach((l) => { const i = l.querySelector('input'); if (i.value.trim()) o[i.dataset.k] = i.value.trim(); }); try { await PDFCFG.setShared(o); toast('已更新全站共用連結'); this.renderDetail(); } catch (e) { toast('儲存失敗：請先在 Firebase 發佈新的安全性規則（shared 集合）'); } } }, '儲存全站共用')));
+      }
     },
     srcGroup(src) { src = String(src || ''); return /課堂|筆記/.test(src) ? '課堂' : /^參考書|^古籍/.test(src) ? '參考書' : src === '解剖補充' ? '解剖補充' : src === '症狀導覽' ? '症狀導覽' : '其他整理'; },
     related(it, n) {
