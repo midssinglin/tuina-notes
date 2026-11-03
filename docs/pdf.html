@@ -29,7 +29,7 @@
   <button id="zin" aria-label="放大">＋</button><button id="zout" aria-label="縮小">－</button>
   <a id="orig" target="_blank" rel="noopener" style="font-size:13px;color:var(--jade)">在雲端硬碟開啟</a>
 </header>
-<div id="msg">載入中…（大檔第一次開啟需要一點時間，之後只會讀需要的頁）</div>
+<div id="msg">載入中…</div>
 <div id="pages"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
@@ -71,18 +71,30 @@
   window.addEventListener('scroll', function () {
     if (!doc) return; if (window.innerHeight + window.scrollY > document.body.scrollHeight - 400) { var mx = Math.max.apply(null, Object.keys(rendered).map(Number)); if (mx < doc.numPages) render(mx + 1); }
   });
-  // Google API 的 CORS 不公開 Content-Range，pdf.js 自己判斷不了能否分段讀；改成自己分段抓（先問檔案大小）
-  var meta = 'https://www.googleapis.com/drive/v3/files/' + encodeURIComponent(P.id) + '?fields=size,name&supportsAllDrives=true&key=' + encodeURIComponent(P.key);
-  fetch(meta).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (m) {
-    var size = +m.size; if (!P.t && m.name) { $('title').textContent = m.name; document.title = m.name; }
-    var first = 1 << 16;
-    return fetch(url, { headers: { Range: 'bytes=0-' + (Math.min(size, first) - 1) } }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); }).then(function (buf) {
-      var tr = new pdfjsLib.PDFDataRangeTransport(size, new Uint8Array(buf));
-      tr.requestDataRange = function (begin, end) {
-        fetch(url, { headers: { Range: 'bytes=' + begin + '-' + (end - 1) } }).then(function (r) { return r.arrayBuffer(); }).then(function (b) { tr.onDataRange(begin, new Uint8Array(b)); });
-      };
-      return pdfjsLib.getDocument({ range: tr, length: size, rangeChunkSize: 1 << 19, disableAutoFetch: true }).promise;
+  // 掃描書的 PDF 多半沒有線性化，pdf.js 會從頭讀到尾；改成「平行分段下載整本＋存在瀏覽器快取」，第二次開就是秒開
+  var meta = 'https://www.googleapis.com/drive/v3/files/' + encodeURIComponent(P.id) + '?fields=size,name,md5Checksum&supportsAllDrives=true&key=' + encodeURIComponent(P.key);
+  function getAll(size, ver) {
+    var ck = 'https://tn-pdf.local/' + P.id + '/' + (ver || size);
+    var cacheP = window.caches ? caches.open('tn-pdf').catch(function () { return null; }) : Promise.resolve(null);
+    return cacheP.then(function (c) {
+      return (c ? c.match(ck) : Promise.resolve(null)).then(function (hit) {
+        if (hit) { msg('從瀏覽器快取開啟…'); return hit.arrayBuffer(); }
+        var CH = 8 << 20, N = Math.ceil(size / CH), parts = new Array(N), done = 0, next = 0;
+        function one() { if (next >= N) return Promise.resolve(); var i = next++; var b0 = i * CH, b1 = Math.min(size, b0 + CH) - 1;
+          return fetch(url, { headers: { Range: 'bytes=' + b0 + '-' + b1 } }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })
+            .then(function (ab) { parts[i] = new Uint8Array(ab); done += ab.byteLength; msg('第一次開啟，下載中 ' + Math.round(done / size * 100) + '%（' + Math.round(done / 1048576) + ' / ' + Math.round(size / 1048576) + ' MB）；之後會存在這台裝置，秒開'); return one(); }); }
+        var w = []; for (var k = 0; k < Math.min(6, N); k++) w.push(one());
+        return Promise.all(w).then(function () { var all = new Uint8Array(size), o = 0; parts.forEach(function (p) { all.set(p, o); o += p.length; });
+          if (c) c.put(ck, new Response(all.slice(0), { headers: { 'Content-Type': 'application/pdf' } })).catch(function () {});
+          return all.buffer; });
+      });
     });
+  }
+  fetch(meta).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (m) {
+    if (!P.t && m.name) { $('title').textContent = m.name; document.title = m.name; }
+    return getAll(+m.size, m.md5Checksum);
+  }).then(function (buf) {
+    msg('排版中…'); return pdfjsLib.getDocument({ data: new Uint8Array(buf) }).promise;
   }).then(function (d) {
     doc = d; $('tot').textContent = '/ ' + d.numPages; msg(''); go(cur);
   }).catch(function (e) {
