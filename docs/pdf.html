@@ -18,6 +18,15 @@
   #pages { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px; }
   canvas { max-width: 100%; height: auto; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.18); }
   .pg { position: relative; } .pg span { position: absolute; right: 6px; bottom: 4px; font-size: 12px; color: #777; }
+  #find { display: none; padding: 10px 12px; background: var(--surface); border-bottom: 1px solid var(--line); }
+  #find.on { display: block; }
+  #find .row { display: flex; gap: 8px; } #find input { flex: 1; width: auto; text-align: left; font-size: 16px; }
+  #find h4 { margin: 10px 0 4px; font-size: 13px; color: var(--ink3); font-weight: 600; }
+  #find ol { list-style: none; margin: 0; padding: 0; max-height: 40vh; overflow: auto; }
+  #find li button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 8px 4px; font-size: 14px; }
+  #find li b { color: var(--jade); margin-right: 6px; } #find mark { background: #f3d97a; color: #000; }
+  #fmsg { font-size: 13px; color: var(--ink3); margin-top: 6px; }
+  @media (max-width: 600px) { header { gap: 6px; padding: 6px 8px; } header b { flex-basis: 100%; font-size: 13px; } button { padding: 6px 10px; } input { width: 60px; } }
 </style>
 </head>
 <body>
@@ -27,8 +36,16 @@
   <input id="num" type="number" min="1" aria-label="頁碼"> <span id="tot"></span>
   <button id="next" aria-label="下一頁">›</button>
   <button id="zin" aria-label="放大">＋</button><button id="zout" aria-label="縮小">－</button>
+  <button id="fbtn" aria-label="搜尋這本書" aria-expanded="false">🔍 搜尋</button>
   <a id="orig" target="_blank" rel="noopener" style="font-size:13px;color:var(--jade)">在雲端硬碟開啟</a>
 </header>
+<div id="find" role="region" aria-label="搜尋與本站引用頁">
+  <div class="row"><input id="fq" type="search" placeholder="搜尋書中文字（有文字層的 PDF 才找得到）" aria-label="搜尋文字"><button id="fgo">搜尋</button></div>
+  <div id="fmsg"></div>
+  <ol id="fres"></ol>
+  <h4 id="ch" hidden>本站引用過的頁（點了跳頁）</h4>
+  <ol id="cites"></ol>
+</div>
 <div id="msg">載入中…</div>
 <div id="pages"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -90,6 +107,33 @@
       });
     });
   }
+  // 搜尋：有文字層的 PDF 逐頁比對；掃描書沒有文字層，改看「本站引用過的頁」
+  var TXT = {}, scanned = null, job = 0;
+  function pageText(n) { if (TXT[n] != null) return Promise.resolve(TXT[n]); return doc.getPage(n).then(function (pg) { return pg.getTextContent(); }).then(function (tc) { var t = tc.items.map(function (i) { return i.str; }).join('').replace(/\s+/g, ' '); TXT[n] = t; return t; }); }
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function search() {
+    var q = $('fq').value.trim(); var my = ++job; var R = $('fres'); R.innerHTML = ''; if (!q || !doc) { $('fmsg').textContent = doc ? '' : '書還在載入，等一下再搜尋。'; return; }
+    if (scanned) { $('fmsg').textContent = '這本是掃描書，沒有文字層，無法搜尋文字；可以用下面「本站引用過的頁」。'; return; }
+    var n = 1, hits = 0, chars = 0, qs = q.replace(/\s+/g, ' ');
+    (function next() {
+      if (my !== job) return;
+      if (n > doc.numPages || hits >= 200) { $('fmsg').textContent = hits ? '找到 ' + hits + ' 處' + (hits >= 200 ? '（只列前 200 處）' : '') : '找不到「' + q + '」。'; return; }
+      $('fmsg').textContent = '搜尋中… 第 ' + n + ' / ' + doc.numPages + ' 頁，已找到 ' + hits + ' 處';
+      pageText(n).then(function (t) {
+        chars += t.length;
+        if (n === Math.min(8, doc.numPages) && chars < 30) { scanned = true; $('fmsg').textContent = '這本是掃描書，沒有文字層，無法搜尋文字；可以用下面「本站引用過的頁」。'; return; }
+        var i = t.indexOf(qs), pg = n;
+        while (i >= 0 && hits < 200) { hits++; var a = Math.max(0, i - 24), sn = esc(t.slice(a, i)) + '<mark>' + esc(qs) + '</mark>' + esc(t.slice(i + qs.length, i + qs.length + 24));
+          var li = document.createElement('li'); li.innerHTML = '<button type="button"><b>p.' + pg + '</b>' + sn + '</button>'; li.firstChild.onclick = (function (p) { return function () { go(p); }; })(pg); R.appendChild(li); i = t.indexOf(qs, i + qs.length); }
+        n++; setTimeout(next, 0);
+      }).catch(function () { n++; setTimeout(next, 0); });
+    })();
+  }
+  $('fbtn').onclick = function () { var on = $('find').classList.toggle('on'); $('fbtn').setAttribute('aria-expanded', on ? 'true' : 'false'); if (on) $('fq').focus(); };
+  $('fgo').onclick = search; $('fq').onkeydown = function (e) { if (e.key === 'Enter') search(); };
+  (function () { var L = []; try { L = JSON.parse(localStorage.getItem('tn-cites-' + (P.bk || '')) || '[]'); } catch (e) { L = []; }
+    if (!L.length) return; $('ch').hidden = false; $('ch').textContent = '本站引用過的頁（' + L.length + ' 處，點了跳頁）';
+    L.forEach(function (c) { var li = document.createElement('li'); li.innerHTML = '<button type="button"><b>p.' + c[0] + '</b>' + esc(c[1]) + '</button>'; li.firstChild.onclick = function () { if (!doc) { cur = c[0]; $('fmsg').textContent = '書載入完會開到第 ' + c[0] + ' 頁。'; return; } go(c[0]); }; $('cites').appendChild(li); }); })();
   fetch(meta).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (m) {
     if (!P.t && m.name) { $('title').textContent = m.name; document.title = m.name; }
     return getAll(+m.size, m.md5Checksum);
